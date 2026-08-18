@@ -3,42 +3,51 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Direcciones - Monto codificado 2026</title>
+    <title>Dashboard Direcciones - Monto codificado 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
     <style>
       :root {
         color-scheme: light;
-        --bg: #f7f2ea;
-        --bg-soft: #fffaf3;
-        --ink: #172432;
-        --muted: #566575;
-        --border: rgba(23, 36, 50, 0.12);
-        --panel: rgba(255, 255, 255, 0.84);
-        --shadow: 0 24px 60px rgba(76, 57, 31, 0.12);
-        --tone-a: #1e6f85;
-        --tone-a-soft: #d9edf3;
-        --tone-b: #2f855a;
-        --tone-b-soft: #dff2e5;
-        --tone-c: #c97020;
-        --tone-c-soft: #f8e4d0;
-        --tone-d: #9c542d;
-        --tone-d-soft: #f5e0d4;
-        --positive: #2f855a;
-        --negative: #c05621;
-        --neutral: #90a0ae;
+        --bg: #edf1f6;
+        --bg-deep: #dce6f2;
+        --surface: rgba(255, 255, 255, 0.9);
+        --surface-strong: #ffffff;
+        --ink: #102033;
+        --muted: #617185;
+        --line: rgba(16, 32, 51, 0.1);
+        --navy: #18345e;
+        --navy-soft: #dde7f5;
+        --teal: #0f766e;
+        --teal-soft: #d6f2ee;
+        --amber: #c97317;
+        --amber-soft: #f8e4cc;
+        --rose: #be4d44;
+        --rose-soft: #f6ddd9;
+        --shadow: 0 26px 60px rgba(34, 58, 94, 0.14);
       }
 
       * {
         box-sizing: border-box;
       }
 
+      html,
       body {
         margin: 0;
-        font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+        min-height: 100%;
+      }
+
+      body {
+        font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
         color: var(--ink);
         background:
-          radial-gradient(circle at top left, rgba(201, 112, 32, 0.12), transparent 28%),
-          radial-gradient(circle at top right, rgba(30, 111, 133, 0.14), transparent 32%),
-          linear-gradient(180deg, #f7f2ea 0%, #f9f5ee 42%, #f3ede3 100%);
+          radial-gradient(circle at top left, rgba(15, 118, 110, 0.15), transparent 22%),
+          radial-gradient(circle at top right, rgba(201, 115, 23, 0.12), transparent 26%),
+          linear-gradient(180deg, #eaf0f7 0%, #eef2f8 44%, #e3e9f1 100%);
       }
 
       body::before,
@@ -46,458 +55,548 @@
         content: "";
         position: fixed;
         inset: auto;
-        border-radius: 999px;
         pointer-events: none;
         z-index: -1;
+        border-radius: 999px;
+        filter: blur(16px);
       }
 
       body::before {
         width: 420px;
         height: 420px;
-        top: -140px;
-        right: -120px;
-        background: rgba(47, 133, 90, 0.08);
-        filter: blur(20px);
+        left: -120px;
+        bottom: -120px;
+        background: rgba(24, 52, 94, 0.1);
       }
 
       body::after {
-        width: 320px;
-        height: 320px;
-        bottom: -120px;
-        left: -80px;
-        background: rgba(30, 111, 133, 0.08);
-        filter: blur(24px);
+        width: 360px;
+        height: 360px;
+        right: -100px;
+        top: 120px;
+        background: rgba(15, 118, 110, 0.08);
       }
 
-      .shell {
-        width: min(1440px, calc(100% - 28px));
-        margin: 0 auto;
-        padding: 22px 0 54px;
+      .dashboard-shell {
+        width: min(1480px, calc(100% - 26px));
+        margin: 14px auto 28px;
+        padding: 18px;
+        border-radius: 34px;
+        background: rgba(248, 251, 255, 0.68);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(18px);
       }
 
       .panel {
-        background: var(--panel);
-        border: 1px solid var(--border);
+        background: var(--surface);
+        border: 1px solid var(--line);
         border-radius: 28px;
-        box-shadow: var(--shadow);
-        backdrop-filter: blur(16px);
+        box-shadow: 0 14px 28px rgba(17, 36, 63, 0.06);
       }
 
-      .hero {
-        padding: 28px;
-      }
-
-      .eyebrow {
-        font-size: 12px;
-        letter-spacing: 0.16em;
-        text-transform: uppercase;
-        color: var(--muted);
-        margin-bottom: 12px;
-      }
-
-      h1 {
-        margin: 0;
-        font-size: clamp(2rem, 4vw, 3.7rem);
-        line-height: 0.96;
-        max-width: 760px;
-      }
-
-      .intro {
-        max-width: 840px;
-        margin: 14px 0 0;
-        color: var(--muted);
-        line-height: 1.55;
-        font-size: 15px;
-      }
-
-      .hero-grid {
+      .masthead {
         display: grid;
-        grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.95fr);
+        grid-template-columns: 210px minmax(0, 1fr) 200px;
         gap: 18px;
-        margin-top: 22px;
+        align-items: center;
+        padding: 24px 26px;
       }
 
-      .selector-card,
-      .summary-card,
-      .focus-card,
-      .chart-card,
-      .info-card,
-      .blocks-card,
-      .table-card {
-        padding: 22px;
-      }
-
-      .selector-card {
-        display: grid;
-        gap: 12px;
-      }
-
-      .section-kicker {
-        font-size: 12px;
-        text-transform: uppercase;
-        letter-spacing: 0.12em;
-        color: var(--muted);
-      }
-
-      .selector-head {
+      .brand-lockup {
         display: flex;
-        align-items: flex-end;
-        justify-content: space-between;
+        align-items: center;
         gap: 14px;
       }
 
-      .selector-head h2,
-      .chart-head h2,
-      .focus-head h2,
-      .info-card h2,
-      .blocks-card h2,
-      .table-card h2 {
-        margin: 0;
-        font-size: 1.2rem;
+      .brand-crest {
+        width: 64px;
+        height: 64px;
+        border-radius: 20px;
+        background:
+          linear-gradient(135deg, rgba(24, 52, 94, 0.12), rgba(24, 52, 94, 0.02)),
+          linear-gradient(180deg, #ffffff 0%, #e7eef7 100%);
+        border: 1px solid rgba(24, 52, 94, 0.1);
+        display: grid;
+        place-items: center;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: var(--navy);
       }
 
-      .selector-note,
-      .chart-note,
-      .focus-note,
-      .info-copy,
-      .blocks-copy,
-      .table-copy {
-        margin: 0;
+      .brand-name {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 1.35rem;
+        line-height: 0.95;
+        letter-spacing: -0.03em;
+      }
+
+      .brand-sub {
+        margin-top: 6px;
         color: var(--muted);
+        font-size: 12px;
+      }
+
+      .eyebrow {
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .headline h1 {
+        margin: 6px 0 10px;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: clamp(2rem, 4vw, 3.7rem);
+        line-height: 0.96;
+        letter-spacing: -0.05em;
+      }
+
+      .headline p {
+        margin: 0;
+        max-width: 760px;
+        color: var(--muted);
+        line-height: 1.6;
         font-size: 14px;
-        line-height: 1.5;
+      }
+
+      .scope-pill {
+        justify-self: end;
+        padding: 14px 16px;
+        border-radius: 20px;
+        background: linear-gradient(180deg, rgba(24, 52, 94, 0.08), rgba(255, 255, 255, 0.82));
+        border: 1px solid rgba(24, 52, 94, 0.08);
+        min-width: 180px;
+      }
+
+      .scope-label {
+        color: var(--muted);
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .scope-value {
+        margin-top: 6px;
+        font-size: 1.45rem;
+        font-weight: 800;
+        color: var(--navy);
+      }
+
+      .scope-note {
+        margin-top: 6px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
+      .control-deck {
+        display: grid;
+        grid-template-columns: 130px 220px 190px minmax(0, 1fr);
+        gap: 12px;
+        margin-top: 14px;
+        padding: 16px;
+      }
+
+      .control {
+        display: grid;
+        gap: 8px;
+      }
+
+      .control label {
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+
+      .control select {
+        width: 100%;
+        appearance: none;
+        padding: 14px 42px 14px 14px;
+        border-radius: 16px;
+        border: 1px solid rgba(16, 32, 51, 0.14);
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(238, 244, 252, 0.94));
+        color: var(--ink);
+        font: inherit;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.88);
       }
 
       .select-wrap {
         position: relative;
       }
 
-      select {
-        width: 100%;
-        padding: 14px 46px 14px 16px;
-        border: 1px solid rgba(23, 36, 50, 0.14);
-        border-radius: 16px;
-        appearance: none;
-        font: inherit;
-        color: var(--ink);
-        background:
-          linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(247, 242, 234, 0.94));
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
-      }
-
       .select-wrap::after {
         content: "▾";
         position: absolute;
-        right: 16px;
+        right: 14px;
         top: 50%;
         transform: translateY(-52%);
         color: var(--muted);
-        font-size: 15px;
         pointer-events: none;
       }
 
-      .selector-meta {
+      .tab-strip {
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
+        margin-top: 14px;
+        padding: 12px;
+        background: rgba(255, 255, 255, 0.74);
+        border-radius: 24px;
+        border: 1px solid rgba(16, 32, 51, 0.08);
       }
 
-      .pill {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        padding: 8px 12px;
-        border-radius: 999px;
-        background: rgba(23, 36, 50, 0.06);
-        font-size: 12px;
+      .tab-button {
+        appearance: none;
+        border: 0;
+        background: transparent;
         color: var(--muted);
+        padding: 12px 16px;
+        border-radius: 16px;
+        font: inherit;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.01em;
+        cursor: pointer;
+        transition: background 180ms ease, color 180ms ease, transform 180ms ease;
       }
 
-      .pill strong {
-        color: var(--ink);
+      .tab-button:hover {
+        transform: translateY(-1px);
       }
 
-      .summary-grid {
+      .tab-button.active {
+        background: linear-gradient(180deg, #1a3560 0%, #204476 100%);
+        color: #ffffff;
+        box-shadow: 0 10px 20px rgba(24, 52, 94, 0.18);
+      }
+
+      .ribbon-grid {
         display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 14px;
+      }
+
+      .ribbon-card {
+        padding: 18px 18px 16px;
+        border-radius: 24px;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(236, 243, 250, 0.9));
+        border: 1px solid rgba(16, 32, 51, 0.08);
+      }
+
+      .ribbon-label {
+        color: var(--muted);
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .ribbon-value {
+        margin-top: 10px;
+        font-size: clamp(1.1rem, 1.8vw, 1.7rem);
+        font-weight: 800;
+        line-height: 1;
+      }
+
+      .ribbon-note {
+        margin-top: 10px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.5;
+      }
+
+      .view-panel {
+        display: none;
+        margin-top: 16px;
+        padding: 18px;
+      }
+
+      .view-panel.active {
+        display: block;
+      }
+
+      .summary-layout {
+        display: grid;
+        grid-template-columns: 260px minmax(0, 1fr) 260px;
+        gap: 18px;
+        align-items: stretch;
+      }
+
+      .metric-stack {
+        display: grid;
         gap: 12px;
       }
 
       .metric-card {
-        min-height: 122px;
-        padding: 16px;
-        border-radius: 20px;
-        border: 1px solid rgba(23, 36, 50, 0.08);
-        background: rgba(255, 255, 255, 0.74);
+        padding: 18px 18px 16px;
+        border-radius: 24px;
+        background: linear-gradient(180deg, #1a3660 0%, #23487d 100%);
+        color: #ffffff;
+        min-height: 104px;
       }
 
-      .metric-label {
-        color: var(--muted);
+      .metric-card.alt {
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(235, 242, 250, 0.94));
+        color: var(--ink);
+        border: 1px solid rgba(16, 32, 51, 0.08);
+      }
+
+      .metric-card .label {
         font-size: 12px;
         text-transform: uppercase;
         letter-spacing: 0.08em;
+        opacity: 0.82;
       }
 
-      .metric-value {
-        margin-top: 10px;
-        font-size: clamp(1.25rem, 2vw, 2rem);
-        line-height: 1;
-        font-weight: 700;
+      .metric-card .value {
+        margin-top: 12px;
+        font-size: clamp(1.1rem, 1.7vw, 1.6rem);
+        line-height: 1.1;
+        font-weight: 800;
       }
 
-      .metric-foot {
+      .metric-card .note {
         margin-top: 10px;
-        color: var(--muted);
-        font-size: 13px;
+        font-size: 12px;
         line-height: 1.45;
+        opacity: 0.85;
       }
 
-      .metric-value.positive,
-      .mini-change.positive {
-        color: var(--positive);
+      .metric-card.alt .label,
+      .metric-card.alt .note {
+        color: var(--muted);
+        opacity: 1;
       }
 
-      .metric-value.negative,
-      .mini-change.negative {
-        color: var(--negative);
+      .metric-card .value.positive {
+        color: #7fe0b7;
       }
 
-      .layout {
+      .metric-card.alt .value.positive {
+        color: var(--teal);
+      }
+
+      .metric-card .value.negative {
+        color: #ffc1b8;
+      }
+
+      .metric-card.alt .value.negative {
+        color: var(--rose);
+      }
+
+      .gauge-stage {
         display: grid;
-        grid-template-columns: minmax(0, 1.14fr) minmax(320px, 0.86fr);
-        gap: 18px;
-        margin-top: 18px;
-      }
-
-      .stack {
-        display: grid;
         gap: 18px;
       }
 
-      .focus-card {
-        padding: 24px;
-      }
-
-      .focus-head {
+      .summary-head {
         display: flex;
         justify-content: space-between;
         gap: 18px;
         align-items: flex-start;
+        padding: 6px 6px 0;
       }
 
-      .focus-title {
-        margin: 6px 0 0;
-        font-size: clamp(1.45rem, 2.3vw, 2.3rem);
-        line-height: 1.1;
+      .summary-head h2,
+      .section-head h2,
+      .detail-head h2,
+      .block-brief h3,
+      .reform-list h3 {
+        margin: 0;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 1.55rem;
+        letter-spacing: -0.03em;
       }
 
-      .focus-badge {
-        display: inline-flex;
-        align-items: center;
-        padding: 8px 12px;
-        border-radius: 999px;
-        font-size: 12px;
-        font-weight: 700;
-        color: #fff;
-      }
-
-      .focus-copy {
-        margin: 14px 0 0;
+      .summary-copy,
+      .section-copy,
+      .detail-copy,
+      .block-brief p,
+      .reform-list p {
+        margin: 10px 0 0;
         color: var(--muted);
+        font-size: 14px;
         line-height: 1.6;
-        font-size: 15px;
-        max-width: 760px;
       }
 
-      .focus-grid {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 12px;
-        margin-top: 18px;
-      }
-
-      .focus-stat {
-        padding: 16px;
-        border-radius: 20px;
-        background: rgba(255, 255, 255, 0.72);
-        border: 1px solid rgba(23, 36, 50, 0.08);
-      }
-
-      .focus-stat-label {
+      .summary-tag {
+        padding: 10px 14px;
+        border-radius: 18px;
+        background: rgba(24, 52, 94, 0.08);
+        color: var(--navy);
         font-size: 12px;
-        color: var(--muted);
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-      }
-
-      .focus-stat-value {
-        margin-top: 10px;
-        font-size: clamp(1.05rem, 1.8vw, 1.6rem);
         font-weight: 700;
       }
 
-      .focus-stat-foot {
-        margin-top: 8px;
-        color: var(--muted);
-        font-size: 13px;
-      }
-
-      .meter-grid {
+      .gauge-grid {
         display: grid;
-        gap: 12px;
-        margin-top: 18px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
       }
 
-      .meter-row {
-        display: grid;
-        gap: 8px;
+      .gauge-card {
+        padding: 20px;
+        border-radius: 30px;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(239, 245, 252, 0.92));
+        border: 1px solid rgba(16, 32, 51, 0.08);
       }
 
-      .meter-copy {
-        display: flex;
-        justify-content: space-between;
-        gap: 12px;
-        font-size: 13px;
+      .gauge-card h3 {
+        margin: 0 0 6px;
+        font-size: 1rem;
+        font-weight: 800;
       }
 
-      .meter-copy span:last-child {
+      .gauge-caption {
+        margin-top: 6px;
         color: var(--muted);
+        font-size: 12px;
+        line-height: 1.5;
       }
 
-      .meter-track {
-        height: 12px;
-        border-radius: 999px;
-        background: rgba(23, 36, 50, 0.08);
-        overflow: hidden;
+      .gauge-svg {
+        width: 100%;
+        height: auto;
+        display: block;
       }
 
-      .meter-fill {
-        height: 100%;
-        border-radius: inherit;
+      .section-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.18fr) 340px;
+        gap: 18px;
       }
 
-      .chart-head {
+      .chart-card,
+      .sidebar-card,
+      .detail-card {
+        padding: 20px;
+        border-radius: 28px;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(237, 244, 252, 0.9));
+        border: 1px solid rgba(16, 32, 51, 0.08);
+      }
+
+      .section-head,
+      .detail-head {
         display: flex;
         justify-content: space-between;
         gap: 16px;
         align-items: flex-start;
       }
 
-      .legend {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
-        margin-top: 14px;
-        color: var(--muted);
+      .section-badge {
+        padding: 10px 12px;
+        border-radius: 16px;
+        background: rgba(24, 52, 94, 0.08);
+        color: var(--navy);
         font-size: 12px;
-      }
-
-      .legend-item {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-      }
-
-      .legend-dot {
-        width: 10px;
-        height: 10px;
-        border-radius: 999px;
+        font-weight: 700;
       }
 
       .chart-scroll {
         margin-top: 18px;
-        max-height: 560px;
         overflow: auto;
+        max-height: 760px;
         padding-right: 6px;
       }
 
-      .chart-scroll.short {
-        max-height: 420px;
-      }
-
       .chart-scroll svg {
-        display: block;
         width: 100%;
         height: auto;
+        display: block;
       }
 
-      .chart-footer {
-        margin-top: 12px;
+      .section-footer {
+        margin-top: 14px;
         color: var(--muted);
         font-size: 13px;
-        line-height: 1.5;
+        line-height: 1.55;
       }
 
-      .info-list,
-      .mini-list {
-        margin: 16px 0 0;
+      .sidebar-list,
+      .block-peer-list,
+      .reform-top-list {
+        margin: 18px 0 0;
         padding: 0;
         list-style: none;
         display: grid;
         gap: 10px;
       }
 
-      .info-item,
-      .mini-item {
+      .sidebar-item,
+      .peer-item,
+      .reform-item {
         padding: 14px 16px;
-        border-radius: 18px;
-        background: rgba(255, 255, 255, 0.72);
-        border: 1px solid rgba(23, 36, 50, 0.08);
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.82);
+        border: 1px solid rgba(16, 32, 51, 0.08);
       }
 
-      .info-item strong,
-      .mini-item strong {
+      .sidebar-item strong,
+      .peer-item strong,
+      .reform-item strong {
         display: block;
-        margin-bottom: 6px;
         font-size: 14px;
       }
 
-      .info-item span,
-      .mini-item span {
+      .sidebar-item span,
+      .peer-item span,
+      .reform-item span {
+        display: block;
+        margin-top: 6px;
         color: var(--muted);
-        font-size: 13px;
+        font-size: 12px;
         line-height: 1.5;
       }
 
-      .mini-list {
-        margin-top: 18px;
+      .block-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 340px;
+        gap: 18px;
       }
 
-      .mini-head {
-        margin-top: 18px;
-        font-size: 13px;
+      .block-brief {
+        padding: 20px;
+        border-radius: 28px;
+        background: linear-gradient(180deg, rgba(24, 52, 94, 0.06), rgba(255, 255, 255, 0.88));
+        border: 1px solid rgba(16, 32, 51, 0.08);
+      }
+
+      .block-stat-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 16px;
+      }
+
+      .block-stat {
+        padding: 16px;
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.8);
+        border: 1px solid rgba(16, 32, 51, 0.08);
+      }
+
+      .block-stat .label {
+        font-size: 11px;
         text-transform: uppercase;
         letter-spacing: 0.08em;
         color: var(--muted);
       }
 
-      .mini-main {
-        display: flex;
-        justify-content: space-between;
-        gap: 12px;
-        align-items: flex-start;
+      .block-stat .value {
+        margin-top: 10px;
+        font-size: 1.25rem;
+        font-weight: 800;
       }
 
-      .mini-code {
-        color: var(--muted);
-        font-size: 12px;
-      }
-
-      .mini-value {
-        font-size: 14px;
-        font-weight: 700;
-        text-align: right;
-      }
-
-      .mini-change {
-        margin-top: 6px;
-        font-size: 12px;
-        text-align: right;
-      }
-
-      .block-grid {
+      .block-card-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
         gap: 12px;
         margin-top: 18px;
       }
@@ -505,341 +604,384 @@
       .block-card {
         padding: 18px;
         border-radius: 22px;
-        border: 1px solid rgba(23, 36, 50, 0.08);
-        background: rgba(255, 255, 255, 0.76);
+        border: 1px solid rgba(16, 32, 51, 0.08);
+        background: rgba(255, 255, 255, 0.88);
       }
 
       .block-card.active {
-        box-shadow: inset 0 0 0 2px rgba(23, 36, 50, 0.1);
+        box-shadow: inset 0 0 0 2px rgba(24, 52, 94, 0.12);
       }
 
-      .block-card-header {
-        display: flex;
-        justify-content: space-between;
-        gap: 10px;
-        align-items: center;
-      }
-
-      .block-label {
+      .block-card .title {
         font-size: 15px;
-        font-weight: 700;
+        font-weight: 800;
       }
 
-      .block-tag {
-        padding: 6px 10px;
-        border-radius: 999px;
-        font-size: 11px;
-        color: var(--ink);
-        background: rgba(255, 255, 255, 0.54);
-      }
-
-      .block-total {
-        margin-top: 14px;
+      .block-card .value {
+        margin-top: 12px;
         font-size: 1.35rem;
-        font-weight: 700;
+        font-weight: 800;
       }
 
-      .block-note {
+      .block-card .note {
         margin-top: 8px;
         color: var(--muted);
-        font-size: 13px;
+        font-size: 12px;
         line-height: 1.45;
       }
 
-      .block-meter {
-        margin-top: 14px;
+      .reforms-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 340px;
+        gap: 18px;
       }
 
-      details {
-        margin-top: 18px;
-        border-radius: 22px;
-        background: rgba(255, 255, 255, 0.56);
-        border: 1px solid rgba(23, 36, 50, 0.08);
-      }
-
-      summary {
-        cursor: pointer;
-        list-style: none;
-        padding: 18px 20px;
-        font-weight: 700;
-      }
-
-      summary::-webkit-details-marker {
-        display: none;
-      }
-
-      summary::after {
-        content: "Mostrar";
-        float: right;
-        color: var(--muted);
-        font-weight: 500;
-      }
-
-      details[open] summary::after {
-        content: "Ocultar";
-      }
-
-      .table-wrap {
-        padding: 0 18px 18px;
-        overflow: auto;
-      }
-
-      table {
+      .detail-card table {
         width: 100%;
         border-collapse: collapse;
-        min-width: 860px;
+        min-width: 920px;
+        margin-top: 18px;
       }
 
-      thead th {
+      .detail-card thead th {
         position: sticky;
         top: 0;
+        background: rgba(234, 240, 247, 0.96);
         padding: 14px 12px;
         text-align: left;
-        font-size: 12px;
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
         color: var(--muted);
-        background: rgba(247, 242, 234, 0.95);
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
       }
 
-      tbody td {
+      .detail-card tbody td {
         padding: 14px 12px;
-        border-top: 1px solid rgba(23, 36, 50, 0.08);
+        border-top: 1px solid rgba(16, 32, 51, 0.08);
         font-size: 14px;
         vertical-align: top;
       }
 
-      tbody tr.selected {
-        background: rgba(23, 36, 50, 0.04);
+      .detail-card tbody tr.selected {
+        background: rgba(24, 52, 94, 0.05);
       }
 
       .row-code {
         display: block;
+        margin-top: 4px;
         color: var(--muted);
         font-size: 12px;
-        margin-top: 4px;
       }
 
-      .row-money {
-        font-variant-numeric: tabular-nums;
+      .money {
         white-space: nowrap;
+        font-variant-numeric: tabular-nums;
       }
 
-      .tone-a {
-        background: linear-gradient(180deg, rgba(217, 237, 243, 0.92), rgba(255, 255, 255, 0.7));
+      .positive {
+        color: var(--teal);
       }
 
-      .tone-b {
-        background: linear-gradient(180deg, rgba(223, 242, 229, 0.92), rgba(255, 255, 255, 0.7));
+      .negative {
+        color: var(--rose);
       }
 
-      .tone-c {
-        background: linear-gradient(180deg, rgba(248, 228, 208, 0.92), rgba(255, 255, 255, 0.7));
-      }
-
-      .tone-d {
-        background: linear-gradient(180deg, rgba(245, 224, 212, 0.92), rgba(255, 255, 255, 0.7));
-      }
-
-      @media (max-width: 1160px) {
-        .hero-grid,
-        .layout {
-          grid-template-columns: 1fr;
-        }
-      }
-
-      @media (max-width: 760px) {
-        .shell {
-          width: min(100%, calc(100% - 18px));
-          padding-top: 12px;
-        }
-
-        .hero,
-        .selector-card,
-        .summary-card,
-        .focus-card,
-        .chart-card,
-        .info-card,
-        .blocks-card,
-        .table-card {
-          padding: 18px;
-        }
-
-        .summary-grid,
-        .focus-grid {
+      @media (max-width: 1280px) {
+        .masthead {
           grid-template-columns: 1fr;
         }
 
-        .focus-head,
-        .selector-head,
-        .chart-head,
-        .mini-main,
-        .meter-copy {
-          flex-direction: column;
-          align-items: flex-start;
+        .scope-pill {
+          justify-self: start;
         }
 
-        .chart-scroll {
-          max-height: 520px;
+        .summary-layout,
+        .section-grid,
+        .block-layout,
+        .reforms-layout {
+          grid-template-columns: 1fr;
+        }
+
+        .control-deck {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 860px) {
+        .dashboard-shell {
+          width: min(100%, calc(100% - 14px));
+          margin: 8px auto 18px;
+          padding: 10px;
+          border-radius: 22px;
+        }
+
+        .masthead,
+        .control-deck,
+        .view-panel {
+          padding: 16px;
+        }
+
+        .gauge-grid,
+        .ribbon-grid,
+        .block-stat-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .control-deck {
+          grid-template-columns: 1fr;
+        }
+
+        .tab-strip {
+          overflow: auto;
+          flex-wrap: nowrap;
         }
       }
     </style>
   </head>
   <body>
-    <div class="shell">
-      <section class="hero panel">
-        <div class="eyebrow">Presupuesto 2026 | monto codificado consolidado</div>
-        <h1>Un visor para leer una direccion a la vez, sin perder el contexto general.</h1>
-        <p class="intro">
-          El tablero ahora arranca con un selector desplegable, luego enfoca una sola direccion o bloque y
-          deja las comparaciones fuertes en graficos. La tabla completa sigue disponible, pero ya no invade la lectura.
-        </p>
-        <div class="hero-grid">
-          <div class="selector-card panel">
-            <div class="selector-head">
-              <div>
-                <div class="section-kicker">Seleccion</div>
-                <h2>Escoge la direccion o bloque</h2>
-              </div>
-              <p class="selector-note">El cambio tambien queda guardado en la URL para compartir la vista.</p>
-            </div>
-            <div class="select-wrap">
-              <select id="directionSelect" aria-label="Escoger direccion o bloque"></select>
-            </div>
-            <div id="selectorMeta" class="selector-meta"></div>
+    <div class="dashboard-shell">
+      <header class="masthead panel">
+        <div class="brand-lockup">
+          <div class="brand-crest">RIO</div>
+          <div>
+            <div class="brand-name">Rio<br />bamba</div>
+            <div class="brand-sub">Direccionamiento presupuestario 2026</div>
           </div>
-          <div class="summary-card panel">
-            <div class="section-kicker">Resumen rapido</div>
-            <div id="summaryGrid" class="summary-grid"></div>
+        </div>
+        <div class="headline">
+          <div class="eyebrow">Dashboard Presupuestario</div>
+          <h1>Lectura ejecutiva por direccion y bloque.</h1>
+          <p>
+            El tablero toma la idea del panel de control clasico, pero la reordena en una vista mas limpia:
+            filtros arriba, una sola pestana activa a la vez, indicadores fuertes en el centro y comparaciones al bajar.
+          </p>
+        </div>
+        <div id="scopePill" class="scope-pill"></div>
+      </header>
+
+      <section class="control-deck panel">
+        <div class="control">
+          <label for="yearSelect">Periodo</label>
+          <div class="select-wrap">
+            <select id="yearSelect">
+              <option value="2026">2026</option>
+            </select>
+          </div>
+        </div>
+        <div class="control">
+          <label for="blockFilter">Bloque</label>
+          <div class="select-wrap">
+            <select id="blockFilter"></select>
+          </div>
+        </div>
+        <div class="control">
+          <label for="kindFilter">Tipo</label>
+          <div class="select-wrap">
+            <select id="kindFilter">
+              <option value="all">Direcciones y bloques</option>
+              <option value="direccion">Solo direcciones</option>
+              <option value="bloque">Solo bloques especiales</option>
+            </select>
+          </div>
+        </div>
+        <div class="control">
+          <label for="directionSelect">Direccion o bloque</label>
+          <div class="select-wrap">
+            <select id="directionSelect"></select>
           </div>
         </div>
       </section>
 
-      <div class="layout">
-        <main class="stack">
-          <section id="focusCard" class="focus-card panel"></section>
+      <nav id="tabStrip" class="tab-strip panel" aria-label="Secciones del dashboard">
+        <button class="tab-button active" type="button" data-panel="resumen">Resumen ejecutivo</button>
+        <button class="tab-button" type="button" data-panel="ranking">Ranking general</button>
+        <button class="tab-button" type="button" data-panel="bloque">Vista por bloque</button>
+        <button class="tab-button" type="button" data-panel="reformas">Reformas</button>
+        <button class="tab-button" type="button" data-panel="detalle">Detalle</button>
+      </nav>
 
-          <section class="chart-card panel">
-            <div class="chart-head">
-              <div>
-                <div class="section-kicker">Comparacion general</div>
-                <h2>Ranking por monto codificado</h2>
-              </div>
-              <p class="chart-note">Todas las direcciones y bloques ordenados de mayor a menor, con la seleccion resaltada.</p>
+      <section id="ribbonStats" class="ribbon-grid"></section>
+
+      <section class="view-panel panel active" data-panel="resumen">
+        <div class="summary-head">
+          <div>
+            <h2 id="summaryTitle"></h2>
+            <p id="summaryCopy" class="summary-copy"></p>
+          </div>
+          <div id="summaryTag" class="summary-tag"></div>
+        </div>
+        <div class="summary-layout" style="margin-top: 18px;">
+          <div id="leftMetrics" class="metric-stack"></div>
+          <div class="gauge-stage">
+            <div class="gauge-grid">
+              <article class="gauge-card">
+                <h3 id="gaugeOneTitle"></h3>
+                <div id="gaugeOne"></div>
+                <p id="gaugeOneCaption" class="gauge-caption"></p>
+              </article>
+              <article class="gauge-card">
+                <h3 id="gaugeTwoTitle"></h3>
+                <div id="gaugeTwo"></div>
+                <p id="gaugeTwoCaption" class="gauge-caption"></p>
+              </article>
             </div>
-            <div class="legend">
-              <span class="legend-item"><span class="legend-dot" style="background:#334155;"></span> Seleccion actual</span>
-              <span class="legend-item"><span class="legend-dot" style="background:#cbd5e1;"></span> Resto del universo</span>
+          </div>
+          <div id="rightMetrics" class="metric-stack"></div>
+        </div>
+      </section>
+
+      <section class="view-panel panel" data-panel="ranking">
+        <div class="section-grid">
+          <article class="chart-card">
+            <div class="section-head">
+              <div>
+                <h2>Ranking por monto codificado</h2>
+                <p class="section-copy">El orden respeta los filtros activos y mantiene resaltada la seleccion actual.</p>
+              </div>
+              <div id="rankingBadge" class="section-badge"></div>
             </div>
             <div id="rankingChart" class="chart-scroll"></div>
-            <p id="rankingFooter" class="chart-footer"></p>
-          </section>
-
-          <section class="chart-card panel">
-            <div class="chart-head">
+            <p id="rankingFooter" class="section-footer"></p>
+          </article>
+          <aside class="sidebar-card">
+            <div class="section-head">
               <div>
-                <div class="section-kicker">Dentro del bloque</div>
-                <h2>Comparacion con su mismo entorno</h2>
+                <h2>Lectura rapida</h2>
+                <p class="section-copy">Puntos de contexto para no perder escala cuando cambias de direccion.</p>
               </div>
-              <p class="chart-note">Asi se ubica la seleccion frente a las otras direcciones del mismo bloque programatico.</p>
             </div>
-            <div id="blockChart" class="chart-scroll short"></div>
-            <p id="blockFooter" class="chart-footer"></p>
-          </section>
+            <ul id="rankingInsights" class="sidebar-list"></ul>
+          </aside>
+        </div>
+      </section>
 
-          <section class="table-card panel">
-            <div class="section-kicker">Detalle completo</div>
-            <h2>Tabla de referencia</h2>
-            <p class="table-copy">La tabla queda plegada para que el visor no se sienta amontonado, pero sigue ahi cuando se necesita bajar al detalle.</p>
-            <details>
-              <summary>Ver tabla consolidada de direcciones y bloques</summary>
-              <div class="table-wrap">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Direccion / bloque</th>
-                      <th>Tipo</th>
-                      <th>Bloque</th>
-                      <th>Inicial</th>
-                      <th>Reforma</th>
-                      <th>Codificado</th>
-                    </tr>
-                  </thead>
-                  <tbody id="tableBody"></tbody>
-                </table>
+      <section class="view-panel panel" data-panel="bloque">
+        <div class="block-layout">
+          <div>
+            <article class="chart-card">
+              <div class="section-head">
+                <div>
+                  <h2 id="blockChartTitle"></h2>
+                  <p class="section-copy">Comparacion puntual con las demas direcciones del mismo bloque.</p>
+                </div>
+                <div id="blockChartBadge" class="section-badge"></div>
               </div>
-            </details>
-          </section>
-        </main>
+              <div id="blockChart" class="chart-scroll"></div>
+              <p id="blockChartFooter" class="section-footer"></p>
+            </article>
+            <div id="blockCards" class="block-card-grid"></div>
+          </div>
+          <aside>
+            <div id="blockBrief" class="block-brief"></div>
+            <article class="sidebar-card" style="margin-top: 18px;">
+              <div class="section-head">
+                <div>
+                  <h2>Top del bloque</h2>
+                  <p class="section-copy">Los registros mas pesados dentro del mismo grupo.</p>
+                </div>
+              </div>
+              <ul id="blockPeers" class="block-peer-list"></ul>
+            </article>
+          </aside>
+        </div>
+      </section>
 
-        <aside class="stack">
-          <section id="insightsCard" class="info-card panel"></section>
-
-          <section class="chart-card panel">
-            <div class="chart-head">
+      <section class="view-panel panel" data-panel="reformas">
+        <div class="reforms-layout">
+          <article class="chart-card">
+            <div class="section-head">
               <div>
-                <div class="section-kicker">Movimientos</div>
-                <h2>Reformas mas intensas</h2>
+                <h2>Reformas con mayor movimiento</h2>
+                <p class="section-copy">Barras divergentes para leer que partidas suben y cuales se recortan con mas fuerza.</p>
               </div>
-              <p class="chart-note">Barras divergentes para ver que direcciones suben y cuales retroceden con mas fuerza.</p>
+              <div id="reformBadge" class="section-badge"></div>
             </div>
-            <div class="legend">
-              <span class="legend-item"><span class="legend-dot" style="background:#2f855a;"></span> Reforma positiva</span>
-              <span class="legend-item"><span class="legend-dot" style="background:#c05621;"></span> Reforma negativa</span>
-            </div>
-            <div id="reformChart" class="chart-scroll short"></div>
-            <p id="reformFooter" class="chart-footer"></p>
-          </section>
+            <div id="reformChart" class="chart-scroll"></div>
+            <p id="reformFooter" class="section-footer"></p>
+          </article>
+          <aside class="sidebar-card reform-list">
+            <h3>Seleccion y vecinos</h3>
+            <p>La ficha actual se compara contra los mayores cambios del universo visible.</p>
+            <ul id="reformTopList" class="reform-top-list"></ul>
+          </aside>
+        </div>
+      </section>
 
-          <section class="blocks-card panel">
-            <div class="section-kicker">Bloques</div>
-            <h2>Distribucion por bloque</h2>
-            <p class="blocks-copy">Cada tarjeta resume el peso total del bloque y deja marcado donde cae la seleccion actual.</p>
-            <div id="blockGrid" class="block-grid"></div>
-          </section>
-        </aside>
-      </div>
+      <section class="view-panel panel" data-panel="detalle">
+        <article class="detail-card">
+          <div class="detail-head">
+            <div>
+              <h2>Detalle tabular</h2>
+              <p class="detail-copy">La tabla queda para consulta fina, pero solo aparece cuando la necesitas.</p>
+            </div>
+            <div id="detailBadge" class="section-badge"></div>
+          </div>
+          <div style="overflow:auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Direccion / bloque</th>
+                  <th>Tipo</th>
+                  <th>Bloque</th>
+                  <th>Inicial</th>
+                  <th>Reforma</th>
+                  <th>Codificado</th>
+                  <th>% total</th>
+                </tr>
+              </thead>
+              <tbody id="detailTable"></tbody>
+            </table>
+          </div>
+        </article>
+      </section>
     </div>
 
     <script>
       const DATA = [
-        { code: "2026.1.10", name: "Secretaria General", block: "2026.1", tone: "tone-a", kind: "direccion", initial: 1568931.5, reforma: -247924.97, codificado: 1321006.53 },
-        { code: "2026.1.1", name: "Direccion General de Gestion Administrativa", block: "2026.1", tone: "tone-a", kind: "direccion", initial: 9937557.5, reforma: 475025.7, codificado: 10412583.2 },
-        { code: "2026.1.2", name: "Direccion General de Gestion Financiera", block: "2026.1", tone: "tone-a", kind: "direccion", initial: 1363638.54, reforma: 558.16, codificado: 1364196.7 },
-        { code: "2026.1.3", name: "Direccion General de Gestion de Justicia y Control Municipal", block: "2026.1", tone: "tone-a", kind: "direccion", initial: 2226004.32, reforma: -21550.06, codificado: 2204454.26 },
-        { code: "2026.1.4", name: "Procuraduria", block: "2026.1", tone: "tone-a", kind: "direccion", initial: 460881.42, reforma: 0, codificado: 460881.42 },
-        { code: "2026.1.5", name: "Direccion de Auditoria Interna (CGE)", block: "2026.1", tone: "tone-a", kind: "direccion", initial: 95798.59, reforma: 0, codificado: 95798.59 },
-        { code: "2026.1.6", name: "Direccion General de Gestion de la Comunicacion", block: "2026.1", tone: "tone-a", kind: "direccion", initial: 1353060.33, reforma: -83787.6, codificado: 1269272.73 },
-        { code: "2026.1.7", name: "Direccion General de Gestion de Talento Humano", block: "2026.1", tone: "tone-a", kind: "direccion", initial: 1941790.59, reforma: 1159844.02, codificado: 3101634.61 },
-        { code: "2026.1.8", name: "Direccion General de Gestion de Tecnologias de la Informacion y Comunicacion", block: "2026.1", tone: "tone-a", kind: "direccion", initial: 2396456.7, reforma: -454162.46, codificado: 1942294.24 },
-        { code: "2026.1.9", name: "Concejos y Juntas", block: "2026.1", tone: "tone-a", kind: "direccion", initial: 389392.47, reforma: -49643.47, codificado: 339749 },
-        { code: "2026.2.1", name: "Direccion General de Gestion de Cultura, Deportes, Artes y Conocimiento", block: "2026.2", tone: "tone-b", kind: "direccion", initial: 3244374.89, reforma: 106199.6, codificado: 3350574.49 },
-        { code: "2026.2.4", name: "Direccion General de Gestion de Desarrollo Social e Inclusion", block: "2026.2", tone: "tone-b", kind: "direccion", initial: 3128442.31, reforma: -383413.96, codificado: 2745028.35 },
-        { code: "2026.3.1", name: "Direccion General de Gestion de Planificacion, Habitat y Desarrollo Urbanistico", block: "2026.3", tone: "tone-c", kind: "direccion", initial: 2187896.9, reforma: -381902.16, codificado: 1805994.74 },
-        { code: "2026.3.2", name: "Direccion General de Gestion Ambiental", block: "2026.3", tone: "tone-c", kind: "direccion", initial: 5895574.59, reforma: -95791.85, codificado: 5799782.74 },
-        { code: "2026.3.3", name: "Direccion General de Gestion de Movilidad", block: "2026.3", tone: "tone-c", kind: "direccion", initial: 11077758.67, reforma: -5726120.6, codificado: 5351638.07 },
-        { code: "2026.3.4", name: "Direccion General de Gestion de Desarrollo Economico y Turismo", block: "2026.3", tone: "tone-c", kind: "direccion", initial: 3675723.86, reforma: 331903.84, codificado: 4007627.7 },
-        { code: "2026.3.5", name: "Direccion General de Gestion Estrategica", block: "2026.3", tone: "tone-c", kind: "direccion", initial: 1117603.39, reforma: -203779.56, codificado: 913823.83 },
-        { code: "2026.3.6", name: "Direccion General de Gestion de Obras Publicas", block: "2026.3", tone: "tone-c", kind: "direccion", initial: 43333542.54, reforma: -263282.61, codificado: 43070259.93 },
-        { code: "2026.3.7", name: "Registro de la Propiedad", block: "2026.3", tone: "tone-c", kind: "direccion", initial: 1925091.3, reforma: -9154.54, codificado: 1915936.76 },
-        { code: "2026.3.8", name: "Direccion General de Gestion de Avaluos y Catastros y SIG", block: "2026.3", tone: "tone-c", kind: "direccion", initial: 555051.56, reforma: 255918.2, codificado: 810969.76, focus: true },
-        { code: "2026.3.9", name: "Direccion General de Gestion de Patrimonio", block: "2026.3", tone: "tone-c", kind: "direccion", initial: 1801499.8, reforma: 113531.99, codificado: 1915031.79 },
-        { code: "2026.5.1", name: "Gastos Comunes de la Entidad", block: "2026.5", tone: "tone-d", kind: "bloque", initial: 1494000, reforma: 0, codificado: 1494000 },
-        { code: "2026.5.2", name: "Servicio de la Deuda", block: "2026.5", tone: "tone-d", kind: "bloque", initial: 5701703.08, reforma: -427197.6, codificado: 5274505.48 }
+        { code: "2026.1.10", name: "Secretaria General", block: "2026.1", tone: "navy", kind: "direccion", initial: 1568931.5, reforma: -247924.97, codificado: 1321006.53 },
+        { code: "2026.1.1", name: "Direccion General de Gestion Administrativa", block: "2026.1", tone: "navy", kind: "direccion", initial: 9937557.5, reforma: 475025.7, codificado: 10412583.2 },
+        { code: "2026.1.2", name: "Direccion General de Gestion Financiera", block: "2026.1", tone: "navy", kind: "direccion", initial: 1363638.54, reforma: 558.16, codificado: 1364196.7 },
+        { code: "2026.1.3", name: "Direccion General de Gestion de Justicia y Control Municipal", block: "2026.1", tone: "navy", kind: "direccion", initial: 2226004.32, reforma: -21550.06, codificado: 2204454.26 },
+        { code: "2026.1.4", name: "Procuraduria", block: "2026.1", tone: "navy", kind: "direccion", initial: 460881.42, reforma: 0, codificado: 460881.42 },
+        { code: "2026.1.5", name: "Direccion de Auditoria Interna (CGE)", block: "2026.1", tone: "navy", kind: "direccion", initial: 95798.59, reforma: 0, codificado: 95798.59 },
+        { code: "2026.1.6", name: "Direccion General de Gestion de la Comunicacion", block: "2026.1", tone: "navy", kind: "direccion", initial: 1353060.33, reforma: -83787.6, codificado: 1269272.73 },
+        { code: "2026.1.7", name: "Direccion General de Gestion de Talento Humano", block: "2026.1", tone: "navy", kind: "direccion", initial: 1941790.59, reforma: 1159844.02, codificado: 3101634.61 },
+        { code: "2026.1.8", name: "Direccion General de Gestion de Tecnologias de la Informacion y Comunicacion", block: "2026.1", tone: "navy", kind: "direccion", initial: 2396456.7, reforma: -454162.46, codificado: 1942294.24 },
+        { code: "2026.1.9", name: "Concejos y Juntas", block: "2026.1", tone: "navy", kind: "direccion", initial: 389392.47, reforma: -49643.47, codificado: 339749 },
+        { code: "2026.2.1", name: "Direccion General de Gestion de Cultura, Deportes, Artes y Conocimiento", block: "2026.2", tone: "teal", kind: "direccion", initial: 3244374.89, reforma: 106199.6, codificado: 3350574.49 },
+        { code: "2026.2.4", name: "Direccion General de Gestion de Desarrollo Social e Inclusion", block: "2026.2", tone: "teal", kind: "direccion", initial: 3128442.31, reforma: -383413.96, codificado: 2745028.35 },
+        { code: "2026.3.1", name: "Direccion General de Gestion de Planificacion, Habitat y Desarrollo Urbanistico", block: "2026.3", tone: "amber", kind: "direccion", initial: 2187896.9, reforma: -381902.16, codificado: 1805994.74 },
+        { code: "2026.3.2", name: "Direccion General de Gestion Ambiental", block: "2026.3", tone: "amber", kind: "direccion", initial: 5895574.59, reforma: -95791.85, codificado: 5799782.74 },
+        { code: "2026.3.3", name: "Direccion General de Gestion de Movilidad", block: "2026.3", tone: "amber", kind: "direccion", initial: 11077758.67, reforma: -5726120.6, codificado: 5351638.07 },
+        { code: "2026.3.4", name: "Direccion General de Gestion de Desarrollo Economico y Turismo", block: "2026.3", tone: "amber", kind: "direccion", initial: 3675723.86, reforma: 331903.84, codificado: 4007627.7 },
+        { code: "2026.3.5", name: "Direccion General de Gestion Estrategica", block: "2026.3", tone: "amber", kind: "direccion", initial: 1117603.39, reforma: -203779.56, codificado: 913823.83 },
+        { code: "2026.3.6", name: "Direccion General de Gestion de Obras Publicas", block: "2026.3", tone: "amber", kind: "direccion", initial: 43333542.54, reforma: -263282.61, codificado: 43070259.93 },
+        { code: "2026.3.7", name: "Registro de la Propiedad", block: "2026.3", tone: "amber", kind: "direccion", initial: 1925091.3, reforma: -9154.54, codificado: 1915936.76 },
+        { code: "2026.3.8", name: "Direccion General de Gestion de Avaluos y Catastros y SIG", block: "2026.3", tone: "amber", kind: "direccion", initial: 555051.56, reforma: 255918.2, codificado: 810969.76, focus: true },
+        { code: "2026.3.9", name: "Direccion General de Gestion de Patrimonio", block: "2026.3", tone: "amber", kind: "direccion", initial: 1801499.8, reforma: 113531.99, codificado: 1915031.79 },
+        { code: "2026.5.1", name: "Gastos Comunes de la Entidad", block: "2026.5", tone: "rose", kind: "bloque", initial: 1494000, reforma: 0, codificado: 1494000 },
+        { code: "2026.5.2", name: "Servicio de la Deuda", block: "2026.5", tone: "rose", kind: "bloque", initial: 5701703.08, reforma: -427197.6, codificado: 5274505.48 }
       ];
 
       const BLOCK_META = {
-        "2026.1": { label: "Bloque 2026.1", note: "Gestion institucional y soporte.", tone: "tone-a" },
-        "2026.2": { label: "Bloque 2026.2", note: "Cultura y desarrollo social.", tone: "tone-b" },
-        "2026.3": { label: "Bloque 2026.3", note: "Territorio, ambiente, movilidad y patrimonio.", tone: "tone-c" },
-        "2026.5": { label: "Bloque 2026.5", note: "Gastos comunes y deuda.", tone: "tone-d" }
+        "2026.1": { label: "Bloque 2026.1", note: "Gestion institucional y soporte.", accent: "#18345e", soft: "#dde7f5" },
+        "2026.2": { label: "Bloque 2026.2", note: "Cultura y desarrollo social.", accent: "#0f766e", soft: "#d6f2ee" },
+        "2026.3": { label: "Bloque 2026.3", note: "Territorio, ambiente, movilidad y patrimonio.", accent: "#c97317", soft: "#f8e4cc" },
+        "2026.5": { label: "Bloque 2026.5", note: "Gastos comunes y deuda.", accent: "#be4d44", soft: "#f6ddd9" }
       };
 
-      const TONES = {
-        "tone-a": { strong: "#1e6f85", soft: "#d9edf3", muted: "#78a7b7", text: "#114758" },
-        "tone-b": { strong: "#2f855a", soft: "#dff2e5", muted: "#86b99c", text: "#1f5c3d" },
-        "tone-c": { strong: "#c97020", soft: "#f8e4d0", muted: "#dea070", text: "#8a4c13" },
-        "tone-d": { strong: "#9c542d", soft: "#f5e0d4", muted: "#c69073", text: "#6d371a" }
+      const ACCENTS = {
+        navy: { strong: "#18345e", soft: "#dde7f5", text: "#142d4f" },
+        teal: { strong: "#0f766e", soft: "#d6f2ee", text: "#0d5f58" },
+        amber: { strong: "#c97317", soft: "#f8e4cc", text: "#8f5513" },
+        rose: { strong: "#be4d44", soft: "#f6ddd9", text: "#8b372f" }
+      };
+
+      const HASH_DEFAULTS = {
+        tab: "resumen",
+        block: "all",
+        kind: "all",
+        item: DATA.find((item) => item.focus)?.code || DATA[0].code
       };
 
       const formatter = new Intl.NumberFormat("es-EC", {
@@ -855,48 +997,74 @@
         maximumFractionDigits: 1
       });
 
-      const totalCodificado = DATA.reduce((sum, item) => sum + item.codificado, 0);
-      const totalInicial = DATA.reduce((sum, item) => sum + item.initial, 0);
-      const totalReforma = DATA.reduce((sum, item) => sum + item.reforma, 0);
-      const maxCodificado = Math.max(...DATA.map((item) => item.codificado));
-      const maxReformaAbs = Math.max(...DATA.map((item) => Math.abs(item.reforma)));
+      const totalMunicipal = DATA.reduce((sum, item) => sum + item.codificado, 0);
+      const totalInicialMunicipal = DATA.reduce((sum, item) => sum + item.initial, 0);
+      const totalReformaMunicipal = DATA.reduce((sum, item) => sum + item.reforma, 0);
+      const overallRanking = DATA.slice().sort((a, b) => b.codificado - a.codificado);
+      const maxCodificado = overallRanking[0].codificado;
+      const maxRatio = Math.max(...DATA.map((item) => (item.initial ? item.codificado / item.initial : 0) * 100));
+      const ratioGaugeMax = Math.max(140, Math.ceil(maxRatio / 20) * 20);
 
-      const blockStats = Object.fromEntries(
-        Object.entries(
-          DATA.reduce((acc, item) => {
-            const current = acc[item.block] || { initial: 0, reforma: 0, codificado: 0, count: 0 };
-            current.initial += item.initial;
-            current.reforma += item.reforma;
-            current.codificado += item.codificado;
-            current.count += 1;
-            acc[item.block] = current;
-            return acc;
-          }, {})
-        )
-      );
+      const blockStats = DATA.reduce((acc, item) => {
+        if (!acc[item.block]) {
+          acc[item.block] = { codificado: 0, initial: 0, reforma: 0, count: 0 };
+        }
+        acc[item.block].codificado += item.codificado;
+        acc[item.block].initial += item.initial;
+        acc[item.block].reforma += item.reforma;
+        acc[item.block].count += 1;
+        return acc;
+      }, {});
 
+      const scopePill = document.getElementById("scopePill");
+      const ribbonStats = document.getElementById("ribbonStats");
+      const blockFilter = document.getElementById("blockFilter");
+      const kindFilter = document.getElementById("kindFilter");
       const directionSelect = document.getElementById("directionSelect");
-      const selectorMeta = document.getElementById("selectorMeta");
-      const summaryGrid = document.getElementById("summaryGrid");
-      const focusCard = document.getElementById("focusCard");
+      const tabStrip = document.getElementById("tabStrip");
+      const summaryTitle = document.getElementById("summaryTitle");
+      const summaryCopy = document.getElementById("summaryCopy");
+      const summaryTag = document.getElementById("summaryTag");
+      const leftMetrics = document.getElementById("leftMetrics");
+      const rightMetrics = document.getElementById("rightMetrics");
+      const gaugeOneTitle = document.getElementById("gaugeOneTitle");
+      const gaugeOne = document.getElementById("gaugeOne");
+      const gaugeOneCaption = document.getElementById("gaugeOneCaption");
+      const gaugeTwoTitle = document.getElementById("gaugeTwoTitle");
+      const gaugeTwo = document.getElementById("gaugeTwo");
+      const gaugeTwoCaption = document.getElementById("gaugeTwoCaption");
+      const rankingBadge = document.getElementById("rankingBadge");
       const rankingChart = document.getElementById("rankingChart");
       const rankingFooter = document.getElementById("rankingFooter");
+      const rankingInsights = document.getElementById("rankingInsights");
+      const blockChartTitle = document.getElementById("blockChartTitle");
+      const blockChartBadge = document.getElementById("blockChartBadge");
       const blockChart = document.getElementById("blockChart");
-      const blockFooter = document.getElementById("blockFooter");
-      const insightsCard = document.getElementById("insightsCard");
+      const blockChartFooter = document.getElementById("blockChartFooter");
+      const blockBrief = document.getElementById("blockBrief");
+      const blockPeers = document.getElementById("blockPeers");
+      const blockCards = document.getElementById("blockCards");
+      const reformBadge = document.getElementById("reformBadge");
       const reformChart = document.getElementById("reformChart");
       const reformFooter = document.getElementById("reformFooter");
-      const blockGrid = document.getElementById("blockGrid");
-      const tableBody = document.getElementById("tableBody");
+      const reformTopList = document.getElementById("reformTopList");
+      const detailBadge = document.getElementById("detailBadge");
+      const detailTable = document.getElementById("detailTable");
+      const panels = Array.from(document.querySelectorAll(".view-panel"));
+      const tabs = Array.from(document.querySelectorAll(".tab-button"));
 
       function currency(value) {
         return formatter.format(value);
       }
 
+      function compact(value) {
+        return compactFormatter.format(value);
+      }
+
       function signedCurrency(value) {
-        const formatted = formatter.format(Math.abs(value));
-        if (value > 0) return `+${formatted}`;
-        if (value < 0) return `-${formatted}`;
+        const amount = formatter.format(Math.abs(value));
+        if (value > 0) return `+${amount}`;
+        if (value < 0) return `-${amount}`;
         return formatter.format(0);
       }
 
@@ -904,16 +1072,12 @@
         return `${value.toFixed(digits)}%`;
       }
 
-      function compact(value) {
-        return compactFormatter.format(value);
+      function share(part, whole) {
+        return whole ? (part / whole) * 100 : 0;
       }
 
       function clamp(value, min, max) {
         return Math.min(Math.max(value, min), max);
-      }
-
-      function share(part, whole) {
-        return whole === 0 ? 0 : (part / whole) * 100;
       }
 
       function escapeHtml(value) {
@@ -924,305 +1088,499 @@
           .replaceAll('"', "&quot;");
       }
 
-      function shorten(value, max = 42) {
+      function shorten(value, max = 44) {
         return value.length <= max ? value : `${value.slice(0, max - 1)}...`;
       }
 
-      function toneFor(item) {
-        return TONES[item.tone] || TONES["tone-a"];
+      function accentFor(item) {
+        return ACCENTS[item.tone] || ACCENTS.navy;
       }
 
-      function getSelectionFromHash() {
-        const raw = decodeURIComponent(window.location.hash.replace(/^#/, ""));
-        if (!raw) return null;
-        if (raw.startsWith("item=")) return raw.slice(5);
-        return raw;
+      function parseHash() {
+        const params = new URLSearchParams(window.location.hash.replace(/^#/, ""));
+        return {
+          tab: params.get("tab") || HASH_DEFAULTS.tab,
+          block: params.get("block") || HASH_DEFAULTS.block,
+          kind: params.get("kind") || HASH_DEFAULTS.kind,
+          item: params.get("item") || HASH_DEFAULTS.item
+        };
       }
 
-      function setHash(code) {
-        const next = `#item=${encodeURIComponent(code)}`;
+      function syncHash(state) {
+        const params = new URLSearchParams();
+        params.set("tab", state.tab);
+        params.set("block", state.block);
+        params.set("kind", state.kind);
+        params.set("item", state.item);
+        const next = `#${params.toString()}`;
         if (window.location.hash !== next) {
           history.replaceState(null, "", `${window.location.pathname}${window.location.search}${next}`);
         }
       }
 
-      function buildOptions() {
-        const groups = DATA.reduce((acc, item) => {
-          if (!acc[item.block]) acc[item.block] = [];
-          acc[item.block].push(item);
-          return acc;
-        }, {});
-
-        const preferred = DATA.find((item) => item.focus)?.code || DATA[0].code;
-        const initialCode = getSelectionFromHash() || preferred;
-
-        Object.keys(BLOCK_META).forEach((block) => {
-          const meta = BLOCK_META[block];
-          const optGroup = document.createElement("optgroup");
-          optGroup.label = `${meta.label}`;
-          const items = (groups[block] || []).slice().sort((a, b) => b.codificado - a.codificado);
-          items.forEach((item) => {
-            const option = document.createElement("option");
-            option.value = item.code;
-            option.textContent = `${item.code} | ${item.name}`;
-            if (item.code === initialCode) option.selected = true;
-            optGroup.appendChild(option);
-          });
-          directionSelect.appendChild(optGroup);
+      function populateBlockFilter() {
+        blockFilter.innerHTML = `<option value="all">Todos los bloques</option>`;
+        Object.entries(BLOCK_META).forEach(([code, meta]) => {
+          const option = document.createElement("option");
+          option.value = code;
+          option.textContent = `${meta.label} | ${meta.note}`;
+          blockFilter.appendChild(option);
         });
       }
 
-      function getSelectedItem() {
-        return DATA.find((item) => item.code === directionSelect.value) || DATA.find((item) => item.focus) || DATA[0];
+      function getState() {
+        return {
+          tab: tabs.find((tab) => tab.classList.contains("active"))?.dataset.panel || HASH_DEFAULTS.tab,
+          block: blockFilter.value || HASH_DEFAULTS.block,
+          kind: kindFilter.value || HASH_DEFAULTS.kind,
+          item: directionSelect.value || HASH_DEFAULTS.item
+        };
       }
 
-      function rankItems() {
-        return DATA.slice().sort((a, b) => b.codificado - a.codificado);
+      function getFilteredData(state) {
+        return DATA.filter((item) => {
+          const matchesBlock = state.block === "all" || item.block === state.block;
+          const matchesKind = state.kind === "all" || item.kind === state.kind;
+          return matchesBlock && matchesKind;
+        });
       }
 
-      function reformItems(selectedCode) {
-        const sorted = DATA.slice().sort((a, b) => Math.abs(b.reforma) - Math.abs(a.reforma));
-        const top = sorted.slice(0, 12);
-        if (!top.some((item) => item.code === selectedCode)) {
-          const selectedItem = DATA.find((item) => item.code === selectedCode);
-          if (selectedItem) top.push(selectedItem);
+      function populateDirectionSelect(state) {
+        const filtered = getFilteredData(state).slice().sort((a, b) => b.codificado - a.codificado);
+        directionSelect.innerHTML = "";
+        filtered.forEach((item) => {
+          const option = document.createElement("option");
+          option.value = item.code;
+          option.textContent = `${item.code} | ${item.name}`;
+          directionSelect.appendChild(option);
+        });
+
+        const desired = filtered.some((item) => item.code === state.item)
+          ? state.item
+          : (filtered.find((item) => item.focus) || filtered[0] || DATA[0]).code;
+
+        directionSelect.value = desired;
+        return desired;
+      }
+
+      function polar(cx, cy, radius, angleDeg) {
+        const rad = (Math.PI / 180) * angleDeg;
+        return {
+          x: cx + radius * Math.cos(rad),
+          y: cy + radius * Math.sin(rad)
+        };
+      }
+
+      function arcPath(cx, cy, radius, startAngle, endAngle) {
+        const start = polar(cx, cy, radius, startAngle);
+        const end = polar(cx, cy, radius, endAngle);
+        const largeArc = Math.abs(endAngle - startAngle) <= 180 ? 0 : 1;
+        return `M ${start.x} ${start.y} A ${radius} ${radius} 0 ${largeArc} 1 ${end.x} ${end.y}`;
+      }
+
+      function gaugeSvg(config) {
+        const width = 420;
+        const height = 270;
+        const cx = width / 2;
+        const cy = 220;
+        const radius = 140;
+        const min = config.min;
+        const max = config.max;
+        const bounded = clamp(config.value, min, max);
+        const fraction = (bounded - min) / (max - min || 1);
+        const angle = -180 + fraction * 180;
+        const accent = config.accent;
+        const track = config.track || "#e5ebf4";
+        const tickCount = config.tickCount || 8;
+        const target = typeof config.target === "number" ? clamp(config.target, min, max) : null;
+        const targetAngle = target === null ? null : -180 + ((target - min) / (max - min || 1)) * 180;
+
+        const ticks = [];
+        for (let index = 0; index <= tickCount; index += 1) {
+          const tickValue = min + ((max - min) / tickCount) * index;
+          const tickAngle = -180 + (180 / tickCount) * index;
+          const outer = polar(cx, cy, radius + 1, tickAngle);
+          const inner = polar(cx, cy, radius - 12, tickAngle);
+          const labelPoint = polar(cx, cy, radius - 32, tickAngle);
+          ticks.push(`
+            <line x1="${outer.x}" y1="${outer.y}" x2="${inner.x}" y2="${inner.y}" stroke="#8ea0b8" stroke-width="2" stroke-linecap="round"></line>
+            <text x="${labelPoint.x}" y="${labelPoint.y + 4}" text-anchor="middle" font-size="12" fill="#53657a">${config.tickFormatter ? config.tickFormatter(tickValue) : Math.round(tickValue)}</text>
+          `);
         }
-        return top.sort((a, b) => Math.abs(b.reforma) - Math.abs(a.reforma));
-      }
 
-      function renderSelectorMeta(selected) {
-        const blockMeta = BLOCK_META[selected.block];
-        selectorMeta.innerHTML = `
-          <span class="pill"><strong>Codigo</strong> ${selected.code}</span>
-          <span class="pill"><strong>Tipo</strong> ${selected.kind === "bloque" ? "Bloque especial" : "Direccion"}</span>
-          <span class="pill"><strong>Bloque</strong> ${blockMeta.label}</span>
+        const pointerTip = polar(cx, cy, radius - 24, angle);
+        const pointerLeft = polar(cx, cy, 16, angle - 92);
+        const pointerRight = polar(cx, cy, 16, angle + 92);
+        const shadowAngle = angle - 2;
+        const shadowTip = polar(cx, cy, radius - 20, shadowAngle);
+
+        const reference = targetAngle === null
+          ? ""
+          : `
+            <line x1="${polar(cx, cy, radius - 22, targetAngle).x}" y1="${polar(cx, cy, radius - 22, targetAngle).y}"
+              x2="${polar(cx, cy, radius + 10, targetAngle).x}" y2="${polar(cx, cy, radius + 10, targetAngle).y}"
+              stroke="#18345e" stroke-width="3" stroke-linecap="round"></line>
+          `;
+
+        return `
+          <svg class="gauge-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="${escapeHtml(config.title)}">
+            <path d="${arcPath(cx, cy, radius, -180, 0)}" fill="none" stroke="${track}" stroke-width="22" stroke-linecap="round"></path>
+            <path d="${arcPath(cx, cy, radius, -180, angle)}" fill="none" stroke="${accent}" stroke-width="22" stroke-linecap="round"></path>
+            ${reference}
+            ${ticks.join("")}
+            <path d="M ${pointerLeft.x} ${pointerLeft.y} L ${shadowTip.x} ${shadowTip.y} L ${pointerRight.x} ${pointerRight.y} Z" fill="rgba(16,32,51,0.1)"></path>
+            <path d="M ${pointerLeft.x} ${pointerLeft.y} L ${pointerTip.x} ${pointerTip.y} L ${pointerRight.x} ${pointerRight.y} Z" fill="#18345e"></path>
+            <circle cx="${cx}" cy="${cy}" r="12" fill="#ffffff" stroke="#18345e" stroke-width="4"></circle>
+            <text x="${cx}" y="182" text-anchor="middle" font-size="40" font-weight="800" fill="#18345e">${escapeHtml(config.valueLabel)}</text>
+            <text x="${cx}" y="206" text-anchor="middle" font-size="13" fill="#66788c">${escapeHtml(config.subLabel)}</text>
+          </svg>
         `;
       }
 
-      function renderSummary(selected) {
-        const ranking = rankItems();
-        const rank = ranking.findIndex((item) => item.code === selected.code) + 1;
-        const shareTotal = share(selected.codificado, totalCodificado);
-        const relativeToLeader = share(selected.codificado, ranking[0].codificado);
-        const cards = [
-          {
-            label: "Monto codificado",
-            value: currency(selected.codificado),
-            foot: `${compact(selected.codificado)} del presupuesto consolidado.`
-          },
-          {
-            label: "Reforma neta",
-            value: signedCurrency(selected.reforma),
-            foot: selected.reforma >= 0 ? "Variacion al alza frente al inicial." : "Ajuste a la baja frente al inicial.",
-            className: selected.reforma > 0 ? "positive" : selected.reforma < 0 ? "negative" : ""
-          },
-          {
-            label: "Peso en el total",
-            value: percent(shareTotal),
-            foot: `${selected.kind === "bloque" ? "Este bloque" : "Esta direccion"} explica ${percent(relativeToLeader)} del lider general.`
-          },
-          {
-            label: "Posicion general",
-            value: `#${rank}`,
-            foot: `Entre ${ranking.length} registros ordenados por codificado.`
-          }
-        ];
-
-        summaryGrid.innerHTML = cards
+      function renderMetricCards(container, items, alt) {
+        container.innerHTML = items
           .map(
-            (card) => `
-              <article class="metric-card">
-                <div class="metric-label">${card.label}</div>
-                <div class="metric-value ${card.className || ""}">${card.value}</div>
-                <div class="metric-foot">${card.foot}</div>
+            (item) => `
+              <article class="metric-card ${alt ? "alt" : ""}">
+                <div class="label">${item.label}</div>
+                <div class="value ${item.className || ""}">${item.value}</div>
+                <div class="note">${item.note}</div>
               </article>
             `
           )
           .join("");
       }
 
-      function meterRow(label, value, note, color) {
-        const width = clamp(value, 0, 100);
-        return `
-          <div class="meter-row">
-            <div class="meter-copy">
-              <span>${label}</span>
-              <span>${percent(width)}</span>
-            </div>
-            <div class="meter-track">
-              <div class="meter-fill" style="width:${width}%; background:${color};"></div>
-            </div>
-            <span class="focus-stat-foot">${note}</span>
-          </div>
+      function renderRibbon(selected, filtered) {
+        const filteredTotal = filtered.reduce((sum, item) => sum + item.codificado, 0);
+        const filteredReforma = filtered.reduce((sum, item) => sum + item.reforma, 0);
+        const overallRank = overallRanking.findIndex((item) => item.code === selected.code) + 1;
+        const filteredRank = filtered.slice().sort((a, b) => b.codificado - a.codificado).findIndex((item) => item.code === selected.code) + 1;
+        const cards = [
+          {
+            label: "Universo visible",
+            value: currency(filteredTotal),
+            note: `${filtered.length} registros dentro de los filtros activos.`
+          },
+          {
+            label: "Seleccion actual",
+            value: currency(selected.codificado),
+            note: `${selected.kind === "bloque" ? "Bloque especial" : "Direccion"} ${selected.code}.`
+          },
+          {
+            label: "Posicion",
+            value: `#${filteredRank}`,
+            note: `Puesto dentro de ${filtered.length} visibles y #${overallRank} en el total municipal.`
+          },
+          {
+            label: "Reforma visible",
+            value: signedCurrency(filteredReforma),
+            note: `${percent(share(filteredTotal, totalMunicipal))} del codificado municipal queda cubierto por este recorte visual.`
+          }
+        ];
+
+        ribbonStats.innerHTML = cards
+          .map(
+            (card) => `
+              <article class="ribbon-card">
+                <div class="ribbon-label">${card.label}</div>
+                <div class="ribbon-value">${card.value}</div>
+                <div class="ribbon-note">${card.note}</div>
+              </article>
+            `
+          )
+          .join("");
+      }
+
+      function renderScope(state, filtered) {
+        const visibleTotal = filtered.reduce((sum, item) => sum + item.codificado, 0);
+        const scopeName = state.block === "all" ? "Vista consolidada" : BLOCK_META[state.block].label;
+        scopePill.innerHTML = `
+          <div class="scope-label">${scopeName}</div>
+          <div class="scope-value">${compact(visibleTotal)}</div>
+          <div class="scope-note">${filtered.length} registros visibles. ${percent(share(visibleTotal, totalMunicipal))} del total municipal.</div>
         `;
       }
 
-      function renderFocus(selected) {
-        const meta = BLOCK_META[selected.block];
-        const tones = toneFor(selected);
-        const ranking = rankItems();
-        const overallRank = ranking.findIndex((item) => item.code === selected.code) + 1;
+      function renderSummary(selected, filtered) {
+        const blockMeta = BLOCK_META[selected.block];
+        const blockTotal = blockStats[selected.block].codificado;
+        const overallRank = overallRanking.findIndex((item) => item.code === selected.code) + 1;
         const blockItems = DATA.filter((item) => item.block === selected.block).sort((a, b) => b.codificado - a.codificado);
         const blockRank = blockItems.findIndex((item) => item.code === selected.code) + 1;
-        const blockShare = share(selected.codificado, blockStats[selected.block].codificado);
-        const totalShare = share(selected.codificado, totalCodificado);
-        const relativeToMax = share(selected.codificado, maxCodificado);
-        const reformShare = share(Math.abs(selected.reforma), maxReformaAbs);
+        const accent = accentFor(selected);
+        const ratio = selected.initial ? (selected.codificado / selected.initial) * 100 : 0;
+        const totalShare = share(selected.codificado, totalMunicipal);
+        const blockShare = selected.kind === "bloque" ? share(selected.codificado, totalMunicipal) : share(selected.codificado, blockTotal);
+        const comparisonShare = selected.kind === "bloque" ? 100 / Object.keys(BLOCK_META).length : 100 / blockItems.length;
+        const leaderGap = overallRanking[0].codificado - selected.codificado;
 
-        focusCard.innerHTML = `
-          <div class="focus-head">
-            <div>
-              <div class="section-kicker">Ficha enfocada</div>
-              <h2 class="focus-title">${escapeHtml(selected.name)}</h2>
-              <p class="focus-copy">
-                ${selected.kind === "bloque" ? "El bloque" : "La direccion"} parte de un inicial de
-                <strong>${currency(selected.initial)}</strong>, registra una reforma de
-                <strong>${signedCurrency(selected.reforma)}</strong> y termina con un codificado de
-                <strong>${currency(selected.codificado)}</strong>. Pertenece a <strong>${meta.label}</strong>,
-                asociado a ${meta.note.toLowerCase()}
-              </p>
-            </div>
-            <span class="focus-badge" style="background:${tones.strong};">${selected.kind === "bloque" ? "Bloque" : "Direccion"}</span>
-          </div>
+        summaryTitle.textContent = selected.name;
+        summaryCopy.textContent = `${selected.kind === "bloque" ? "El bloque" : "La direccion"} parte de ${currency(selected.initial)}, registra una reforma de ${signedCurrency(selected.reforma)} y cierra con ${currency(selected.codificado)}.`;
+        summaryTag.textContent = `${blockMeta.label} | ${selected.code}`;
 
-          <div class="focus-grid">
-            <article class="focus-stat">
-              <div class="focus-stat-label">Inicial</div>
-              <div class="focus-stat-value">${currency(selected.initial)}</div>
-              <div class="focus-stat-foot">Base presupuestaria de partida.</div>
-            </article>
-            <article class="focus-stat">
-              <div class="focus-stat-label">Reforma</div>
-              <div class="focus-stat-value ${selected.reforma > 0 ? "positive" : selected.reforma < 0 ? "negative" : ""}">${signedCurrency(selected.reforma)}</div>
-              <div class="focus-stat-foot">${selected.reforma >= 0 ? "La asignacion crece." : "La asignacion se recorta."}</div>
-            </article>
-            <article class="focus-stat">
-              <div class="focus-stat-label">Codificado final</div>
-              <div class="focus-stat-value">${currency(selected.codificado)}</div>
-              <div class="focus-stat-foot">Puesto #${overallRank} en el ranking consolidado.</div>
-            </article>
-          </div>
+        renderMetricCards(
+          leftMetrics,
+          [
+            { label: "Monto inicial", value: currency(selected.initial), note: "Base presupuestaria con la que arranca el registro." },
+            {
+              label: "Reforma neta",
+              value: signedCurrency(selected.reforma),
+              note: selected.reforma >= 0 ? "El registro gana recursos frente al inicial." : "El registro cede recursos frente al inicial.",
+              className: selected.reforma > 0 ? "positive" : selected.reforma < 0 ? "negative" : ""
+            },
+            { label: "Monto codificado", value: currency(selected.codificado), note: "Valor final que queda activo en el tablero." },
+            {
+              label: "Variacion frente al inicial",
+              value: percent(ratio),
+              note: "100% significa que el codificado termino igual al monto de arranque."
+            }
+          ],
+          false
+        );
 
-          <div class="meter-grid">
-            ${meterRow("Participacion en el total municipal", totalShare, `${currency(selected.codificado)} de ${currency(totalCodificado)}.`, tones.strong)}
-            ${meterRow(`Peso dentro de ${meta.label}`, blockShare, `${blockRank} de ${blockItems.length} en su bloque.`, tones.strong)}
-            ${meterRow("Escala frente al mayor codificado", relativeToMax, `El lider general es ${currency(maxCodificado)}.`, tones.strong)}
-            ${meterRow("Intensidad relativa de la reforma", reformShare, `Comparado contra la reforma absoluta maxima observada.`, selected.reforma >= 0 ? "var(--positive)" : selected.reforma < 0 ? "var(--negative)" : "var(--neutral)")}
-          </div>
-        `;
+        renderMetricCards(
+          rightMetrics,
+          [
+            { label: "Participacion total", value: percent(totalShare), note: `Puesto #${overallRank} dentro del ranking general.` },
+            { label: "Bloque actual", value: blockMeta.label, note: blockMeta.note },
+            { label: "Total del bloque", value: currency(blockTotal), note: `${blockItems.length} registros componen este bloque.` },
+            {
+              label: "Peso frente al lider",
+              value: percent(share(selected.codificado, maxCodificado)),
+              note: leaderGap > 0 ? `Le faltan ${currency(leaderGap)} para igualar al primer lugar general.` : "Es el lider absoluto del conjunto."
+            }
+          ],
+          true
+        );
+
+        const firstGaugeValue = ratio;
+        gaugeOneTitle.textContent = "Codificado sobre inicial";
+        gaugeOne.innerHTML = gaugeSvg({
+          title: "Codificado sobre inicial",
+          value: firstGaugeValue,
+          min: 0,
+          max: ratioGaugeMax,
+          target: 100,
+          accent: accent.strong,
+          valueLabel: percent(firstGaugeValue),
+          subLabel: "Meta base: 100%",
+          tickCount: Math.max(4, ratioGaugeMax / 20),
+          tickFormatter: (value) => Math.round(value)
+        });
+        gaugeOneCaption.textContent = "La aguja marca cuanto termina representando el codificado frente al valor inicial del registro. La referencia oscura indica el 100%.";
+
+        gaugeTwoTitle.textContent = selected.kind === "bloque" ? "Participacion en el total municipal" : "Participacion dentro del bloque";
+        gaugeTwo.innerHTML = gaugeSvg({
+          title: gaugeTwoTitle.textContent,
+          value: blockShare,
+          min: 0,
+          max: 100,
+          target: comparisonShare,
+          accent: blockMeta.accent,
+          valueLabel: percent(blockShare),
+          subLabel: selected.kind === "bloque" ? "Referencia: reparto equilibrado entre bloques" : "Referencia: promedio simple del bloque",
+          tickCount: 5,
+          tickFormatter: (value) => Math.round(value)
+        });
+        gaugeTwoCaption.textContent = selected.kind === "bloque"
+          ? "Muestra que parte del codificado municipal total concentra este bloque especial."
+          : `Mide el peso de la direccion en ${blockMeta.label}. La marca oscura refleja un reparto plano de ${percent(comparisonShare)}.`;
       }
 
-      function svgRanking(selectedCode) {
-        const items = rankItems();
+      function rankingSvg(items, selectedCode) {
         const width = 980;
-        const labelX = 26;
-        const barX = 348;
-        const barW = 410;
-        const valueX = 790;
-        const rowH = 44;
-        const top = 26;
+        const barX = 360;
+        const barW = 400;
+        const valueX = 792;
+        const labelX = 24;
+        const top = 30;
+        const rowH = 46;
+        const max = Math.max(...items.map((item) => item.codificado));
         const height = top + items.length * rowH + 24;
 
         const rows = items
           .map((item, index) => {
             const y = top + index * rowH;
-            const tones = toneFor(item);
+            const accent = accentFor(item);
             const isSelected = item.code === selectedCode;
-            const fill = isSelected ? tones.strong : "#cbd5e1";
-            const rowBg = isSelected ? `<rect x="8" y="${y - 18}" width="${width - 16}" height="36" rx="18" fill="${tones.soft}" />` : "";
-            const widthScale = (item.codificado / maxCodificado) * barW;
-            const label = escapeHtml(shorten(item.name, 46));
-
+            const fill = isSelected ? accent.strong : "#c8d5e5";
+            const rowFill = isSelected ? `<rect x="8" y="${y - 18}" width="${width - 16}" height="38" rx="18" fill="${accent.soft}" />` : "";
+            const barWidth = (item.codificado / max) * barW;
             return `
               <g>
-                ${rowBg}
-                <text x="${labelX}" y="${y - 4}" font-size="13" font-weight="${isSelected ? 700 : 600}" fill="${isSelected ? tones.text : "#1f2937"}">${label}</text>
-                <text x="${labelX}" y="${y + 12}" font-size="11" fill="#64748b">${item.code} | ${BLOCK_META[item.block].label}</text>
-                <rect x="${barX}" y="${y - 12}" width="${barW}" height="16" rx="8" fill="#e8edf2"></rect>
-                <rect x="${barX}" y="${y - 12}" width="${Math.max(10, widthScale)}" height="16" rx="8" fill="${fill}"></rect>
-                <text x="${valueX}" y="${y + 2}" font-size="13" font-weight="700" fill="#172432">${escapeHtml(currency(item.codificado))}</text>
-                <text x="${valueX}" y="${y + 16}" font-size="11" fill="#64748b">${percent(share(item.codificado, totalCodificado))} del total</text>
+                ${rowFill}
+                <text x="${labelX}" y="${y - 3}" font-size="13" font-weight="${isSelected ? 800 : 700}" fill="${isSelected ? accent.text : "#1a2f49"}">${escapeHtml(shorten(item.name, 44))}</text>
+                <text x="${labelX}" y="${y + 13}" font-size="11" fill="#6b7b8e">${item.code} | ${BLOCK_META[item.block].label}</text>
+                <rect x="${barX}" y="${y - 12}" width="${barW}" height="16" rx="8" fill="#e5ebf4"></rect>
+                <rect x="${barX}" y="${y - 12}" width="${Math.max(10, barWidth)}" height="16" rx="8" fill="${fill}"></rect>
+                <text x="${valueX}" y="${y + 2}" font-size="13" font-weight="800" fill="#12263d">${escapeHtml(currency(item.codificado))}</text>
+                <text x="${valueX}" y="${y + 16}" font-size="11" fill="#6b7b8e">${percent(share(item.codificado, totalMunicipal))} del total municipal</text>
               </g>
             `;
           })
           .join("");
 
-        return `
-          <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Ranking general por monto codificado">
-            ${rows}
-          </svg>
-        `;
+        return `<svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Ranking por monto codificado">${rows}</svg>`;
       }
 
-      function svgBlock(selected) {
+      function renderRanking(selected, filtered) {
+        const ranking = filtered.slice().sort((a, b) => b.codificado - a.codificado);
+        const rank = ranking.findIndex((item) => item.code === selected.code) + 1;
+        const visibleTotal = filtered.reduce((sum, item) => sum + item.codificado, 0);
+        const above = rank > 1 ? ranking[rank - 2] : null;
+        const below = rank < ranking.length ? ranking[rank] : null;
+        rankingBadge.textContent = `${rank} de ${ranking.length}`;
+        rankingChart.innerHTML = rankingSvg(ranking, selected.code);
+        rankingFooter.textContent = `Los filtros activos cubren ${currency(visibleTotal)} y la seleccion actual explica ${percent(share(selected.codificado, visibleTotal))} de esa bolsa visible.`;
+
+        const insights = [
+          `La seleccion queda en el puesto #${rank} del universo visible y en el #${overallRanking.findIndex((item) => item.code === selected.code) + 1} del ranking municipal completo.`,
+          above
+            ? `El registro inmediatamente superior es ${above.name} con una brecha de ${currency(above.codificado - selected.codificado)}.`
+            : "La seleccion ya ocupa el primer lugar del recorte visible.",
+          below
+            ? `El siguiente registro por debajo es ${below.name}; la ventaja actual es de ${currency(selected.codificado - below.codificado)}.`
+            : "No hay ningun registro por debajo dentro del recorte activo.",
+          `El peso municipal de la seleccion es ${percent(share(selected.codificado, totalMunicipal))}, sobre un total consolidado de ${currency(totalMunicipal)}.`
+        ];
+
+        rankingInsights.innerHTML = insights
+          .map(
+            (item, index) => `
+              <li class="sidebar-item">
+                <strong>Clave ${index + 1}</strong>
+                <span>${escapeHtml(item)}</span>
+              </li>
+            `
+          )
+          .join("");
+      }
+
+      function blockSvg(selected) {
         const items = DATA.filter((item) => item.block === selected.block).sort((a, b) => b.codificado - a.codificado);
-        const tones = toneFor(selected);
-        const localMax = Math.max(...items.map((item) => item.codificado));
-        const width = 900;
+        const max = Math.max(...items.map((item) => item.codificado));
+        const width = 920;
+        const barX = 338;
+        const barW = 360;
+        const valueX = 724;
         const labelX = 24;
-        const barX = 334;
-        const barW = 350;
-        const valueX = 710;
+        const top = 34;
         const rowH = 48;
-        const top = 26;
-        const height = top + items.length * rowH + 18;
+        const height = top + items.length * rowH + 20;
 
         const rows = items
           .map((item, index) => {
-            const itemTones = toneFor(item);
+            const accent = accentFor(item);
             const isSelected = item.code === selected.code;
-            const barWidth = (item.codificado / localMax) * barW;
-            const fill = isSelected ? itemTones.strong : itemTones.muted;
-            const rowBg = isSelected ? `<rect x="8" y="${top + index * rowH - 18}" width="${width - 16}" height="38" rx="18" fill="${itemTones.soft}" />` : "";
+            const fill = isSelected ? accent.strong : accent.strong;
+            const rowFill = isSelected ? `<rect x="8" y="${top + index * rowH - 18}" width="${width - 16}" height="38" rx="18" fill="${accent.soft}" />` : "";
+            const barWidth = (item.codificado / max) * barW;
             return `
-              <g>
-                ${rowBg}
-                <text x="${labelX}" y="${top + index * rowH - 2}" font-size="13" font-weight="${isSelected ? 700 : 600}" fill="${isSelected ? itemTones.text : "#1f2937"}">${escapeHtml(shorten(item.name, 44))}</text>
-                <text x="${labelX}" y="${top + index * rowH + 14}" font-size="11" fill="#64748b">${item.code}</text>
-                <rect x="${barX}" y="${top + index * rowH - 12}" width="${barW}" height="16" rx="8" fill="#e8edf2"></rect>
+              <g opacity="${isSelected ? 1 : 0.72}">
+                ${rowFill}
+                <text x="${labelX}" y="${top + index * rowH - 2}" font-size="13" font-weight="${isSelected ? 800 : 700}" fill="${isSelected ? accent.text : "#1a2f49"}">${escapeHtml(shorten(item.name, 42))}</text>
+                <text x="${labelX}" y="${top + index * rowH + 14}" font-size="11" fill="#6b7b8e">${item.code}</text>
+                <rect x="${barX}" y="${top + index * rowH - 12}" width="${barW}" height="16" rx="8" fill="#e5ebf4"></rect>
                 <rect x="${barX}" y="${top + index * rowH - 12}" width="${Math.max(10, barWidth)}" height="16" rx="8" fill="${fill}"></rect>
-                <text x="${valueX}" y="${top + index * rowH + 2}" font-size="13" font-weight="700" fill="#172432">${escapeHtml(currency(item.codificado))}</text>
-                <text x="${valueX}" y="${top + index * rowH + 16}" font-size="11" fill="#64748b">${percent(share(item.codificado, blockStats[selected.block].codificado))} del bloque</text>
+                <text x="${valueX}" y="${top + index * rowH + 2}" font-size="13" font-weight="800" fill="#12263d">${escapeHtml(currency(item.codificado))}</text>
+                <text x="${valueX}" y="${top + index * rowH + 16}" font-size="11" fill="#6b7b8e">${percent(share(item.codificado, blockStats[selected.block].codificado))} del bloque</text>
               </g>
             `;
           })
           .join("");
 
-        return `
-          <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Comparacion dentro del bloque">
-            <text x="24" y="18" font-size="12" font-weight="700" fill="${tones.text}">${BLOCK_META[selected.block].label} | ${items.length} registros</text>
-            ${rows}
-          </svg>
-        `;
+        return `<svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Comparacion dentro del bloque">${rows}</svg>`;
       }
 
-      function svgReforms(selectedCode) {
-        const items = reformItems(selectedCode);
+      function renderBlock(selected) {
+        const blockMeta = BLOCK_META[selected.block];
+        const items = DATA.filter((item) => item.block === selected.block).sort((a, b) => b.codificado - a.codificado);
+        const blockTotal = blockStats[selected.block].codificado;
+        const blockRank = items.findIndex((item) => item.code === selected.code) + 1;
+        const average = blockTotal / items.length;
+        blockChartTitle.textContent = `${blockMeta.label} | comparativo interno`;
+        blockChartBadge.textContent = `${items.length} registros`;
+        blockChart.innerHTML = blockSvg(selected);
+        blockChartFooter.textContent = `${blockMeta.note} El promedio simple del bloque es ${currency(average)} y la seleccion actual queda en la posicion #${blockRank}.`;
+
+        blockBrief.innerHTML = `
+          <h3>${blockMeta.label}</h3>
+          <p>${blockMeta.note}</p>
+          <div class="block-stat-grid">
+            <div class="block-stat">
+              <div class="label">Total del bloque</div>
+              <div class="value">${currency(blockTotal)}</div>
+            </div>
+            <div class="block-stat">
+              <div class="label">Peso municipal</div>
+              <div class="value">${percent(share(blockTotal, totalMunicipal))}</div>
+            </div>
+            <div class="block-stat">
+              <div class="label">Promedio interno</div>
+              <div class="value">${currency(average)}</div>
+            </div>
+            <div class="block-stat">
+              <div class="label">Seleccion</div>
+              <div class="value">#${blockRank}</div>
+            </div>
+          </div>
+        `;
+
+        blockPeers.innerHTML = items
+          .slice(0, 5)
+          .map(
+            (item) => `
+              <li class="peer-item" style="background:${item.code === selected.code ? accentFor(item).soft : "rgba(255,255,255,0.82)"};">
+                <strong>${escapeHtml(shorten(item.name, 38))}</strong>
+                <span>${item.code} | ${currency(item.codificado)} | ${signedCurrency(item.reforma)}</span>
+              </li>
+            `
+          )
+          .join("");
+
+        blockCards.innerHTML = Object.entries(BLOCK_META)
+          .map(([code, meta]) => {
+            const stats = blockStats[code];
+            return `
+              <article class="block-card ${code === selected.block ? "active" : ""}" style="background:linear-gradient(180deg, ${meta.soft}, rgba(255,255,255,0.88));">
+                <div class="title">${meta.label}</div>
+                <div class="value">${currency(stats.codificado)}</div>
+                <div class="note">${stats.count} registros. ${percent(share(stats.codificado, totalMunicipal))} del total municipal.</div>
+              </article>
+            `;
+          })
+          .join("");
+      }
+
+      function reformSvg(items, selectedCode) {
         const width = 980;
-        const labelX = 24;
-        const axisX = 566;
+        const axisX = 550;
         const half = 190;
-        const valueX = 790;
-        const rowH = 48;
+        const labelX = 24;
+        const valueX = 782;
         const top = 34;
-        const height = top + items.length * rowH + 18;
+        const rowH = 48;
+        const maxAbs = Math.max(...items.map((item) => Math.abs(item.reforma))) || 1;
+        const height = top + items.length * rowH + 20;
 
         const rows = items
           .map((item, index) => {
-            const tones = toneFor(item);
+            const accent = accentFor(item);
             const isSelected = item.code === selectedCode;
+            const magnitude = (Math.abs(item.reforma) / maxAbs) * half;
             const y = top + index * rowH;
-            const magnitude = (Math.abs(item.reforma) / maxReformaAbs) * half;
-            const rowBg = isSelected ? `<rect x="8" y="${y - 18}" width="${width - 16}" height="38" rx="18" fill="${tones.soft}" />` : "";
-            const fill = item.reforma > 0 ? "#2f855a" : item.reforma < 0 ? "#c05621" : "#90a0ae";
+            const rowFill = isSelected ? `<rect x="8" y="${y - 18}" width="${width - 16}" height="38" rx="18" fill="${accent.soft}" />` : "";
             const x = item.reforma >= 0 ? axisX : axisX - magnitude;
+            const fill = item.reforma >= 0 ? "#0f766e" : item.reforma < 0 ? "#be4d44" : "#91a2b9";
             return `
               <g>
-                ${rowBg}
-                <text x="${labelX}" y="${y - 2}" font-size="13" font-weight="${isSelected ? 700 : 600}" fill="${isSelected ? tones.text : "#1f2937"}">${escapeHtml(shorten(item.name, 42))}</text>
-                <text x="${labelX}" y="${y + 14}" font-size="11" fill="#64748b">${item.code}</text>
-                <rect x="${x}" y="${y - 12}" width="${Math.max(10, magnitude)}" height="16" rx="8" fill="${fill}" opacity="${isSelected ? 1 : 0.88}"></rect>
-                <text x="${valueX}" y="${y + 2}" font-size="13" font-weight="700" fill="${item.reforma >= 0 ? "#1f5c3d" : item.reforma < 0 ? "#7b341e" : "#475569"}">${escapeHtml(signedCurrency(item.reforma))}</text>
+                ${rowFill}
+                <text x="${labelX}" y="${y - 2}" font-size="13" font-weight="${isSelected ? 800 : 700}" fill="${isSelected ? accent.text : "#1a2f49"}">${escapeHtml(shorten(item.name, 42))}</text>
+                <text x="${labelX}" y="${y + 14}" font-size="11" fill="#6b7b8e">${item.code}</text>
+                <rect x="${x}" y="${y - 12}" width="${Math.max(10, magnitude)}" height="16" rx="8" fill="${fill}" opacity="${isSelected ? 1 : 0.84}"></rect>
+                <text x="${valueX}" y="${y + 2}" font-size="13" font-weight="800" fill="#12263d">${escapeHtml(signedCurrency(item.reforma))}</text>
+                <text x="${valueX}" y="${y + 16}" font-size="11" fill="#6b7b8e">${escapeHtml(currency(item.codificado))}</text>
               </g>
             `;
           })
@@ -1230,169 +1588,131 @@
 
         return `
           <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Reformas positivas y negativas">
-            <line x1="${axisX}" y1="12" x2="${axisX}" y2="${height - 12}" stroke="#94a3b8" stroke-width="2" stroke-dasharray="4 4"></line>
-            <text x="${axisX - 80}" y="20" font-size="11" fill="#7b341e">Reformas negativas</text>
-            <text x="${axisX + 18}" y="20" font-size="11" fill="#1f5c3d">Reformas positivas</text>
+            <line x1="${axisX}" y1="12" x2="${axisX}" y2="${height - 10}" stroke="#90a2b6" stroke-width="2" stroke-dasharray="4 5"></line>
+            <text x="${axisX - 94}" y="20" font-size="11" fill="#9a3f39">Reformas negativas</text>
+            <text x="${axisX + 18}" y="20" font-size="11" fill="#0c5d56">Reformas positivas</text>
             ${rows}
           </svg>
         `;
       }
 
-      function renderInsights(selected) {
-        const ranking = rankItems();
-        const overallRank = ranking.findIndex((item) => item.code === selected.code);
-        const above = overallRank > 0 ? ranking[overallRank - 1] : null;
-        const below = overallRank < ranking.length - 1 ? ranking[overallRank + 1] : null;
-        const blockItems = DATA.filter((item) => item.block === selected.block).sort((a, b) => b.codificado - a.codificado);
-        const blockLeader = blockItems[0];
-        const totalShare = share(selected.codificado, totalCodificado);
-        const blockShare = share(selected.codificado, blockStats[selected.block].codificado);
-        const tones = toneFor(selected);
-        const topThree = blockItems.slice(0, 3);
+      function renderReforms(selected, filtered) {
+        const ordered = filtered.slice().sort((a, b) => Math.abs(b.reforma) - Math.abs(a.reforma));
+        const top = ordered.slice(0, 12);
+        if (!top.some((item) => item.code === selected.code)) {
+          top.push(selected);
+        }
+        const unique = Array.from(new Map(top.map((item) => [item.code, item])).values()).sort((a, b) => Math.abs(b.reforma) - Math.abs(a.reforma));
+        reformBadge.textContent = `${unique.length} movimientos`;
+        reformChart.innerHTML = reformSvg(unique, selected.code);
+        reformFooter.textContent = `La reforma neta municipal total es ${signedCurrency(totalReformaMunicipal)} sobre un inicial consolidado de ${currency(totalInicialMunicipal)}.`;
 
-        insightsCard.innerHTML = `
-          <div class="section-kicker">Lectura guiada</div>
-          <h2>Que dice esta seleccion</h2>
-          <p class="info-copy">
-            Esta tarjeta convierte el dato en contexto: posicion, cercania con vecinos del ranking y peso dentro del bloque.
-          </p>
-
-          <ul class="info-list">
-            <li class="info-item">
-              <strong>Posicion y escala</strong>
-              <span>Ocupa el puesto <strong>#${overallRank + 1}</strong> de ${ranking.length}, con ${percent(totalShare)} del total consolidado.</span>
-            </li>
-            <li class="info-item">
-              <strong>Dentro de ${BLOCK_META[selected.block].label}</strong>
-              <span>Aporta ${percent(blockShare)} del bloque y se ubica sobre ${blockItems.length - (blockItems.findIndex((item) => item.code === selected.code) + 1)} registros del mismo grupo.</span>
-            </li>
-            <li class="info-item">
-              <strong>Brecha inmediata</strong>
-              <span>${
-                above
-                  ? `La distancia con el siguiente superior (${escapeHtml(shorten(above.name, 36))}) es de ${currency(above.codificado - selected.codificado)}.`
-                  : "Es el mayor monto codificado de todo el conjunto."
-              }</span>
-            </li>
-            <li class="info-item">
-              <strong>Lectura de reforma</strong>
-              <span>${
-                selected.reforma > 0
-                  ? `La reforma suma ${signedCurrency(selected.reforma)} y empuja el codificado al alza.`
-                  : selected.reforma < 0
-                    ? `La reforma descuenta ${signedCurrency(selected.reforma)} y reduce la base inicial.`
-                    : "No hay reforma neta registrada para este corte."
-              }</span>
-            </li>
-          </ul>
-
-          <div class="mini-head">Top del bloque seleccionado</div>
-          <ul class="mini-list">
-            ${topThree
-              .map(
-                (item) => `
-                  <li class="mini-item ${item.code === selected.code ? selected.tone : ""}">
-                    <div class="mini-main">
-                      <div>
-                        <strong>${escapeHtml(shorten(item.name, 34))}</strong>
-                        <div class="mini-code">${item.code}</div>
-                      </div>
-                      <div>
-                        <div class="mini-value">${escapeHtml(currency(item.codificado))}</div>
-                        <div class="mini-change ${item.reforma > 0 ? "positive" : item.reforma < 0 ? "negative" : ""}">${escapeHtml(signedCurrency(item.reforma))}</div>
-                      </div>
-                    </div>
-                  </li>
-                `
-              )
-              .join("")}
-          </ul>
-        `;
-      }
-
-      function renderBlocks(selected) {
-        const cards = Object.entries(BLOCK_META)
-          .map(([block, meta]) => {
-            const stats = blockStats[block];
-            const isActive = block === selected.block;
-            const tones = TONES[meta.tone];
-            return `
-              <article class="block-card ${meta.tone} ${isActive ? "active" : ""}">
-                <div class="block-card-header">
-                  <div class="block-label">${meta.label}</div>
-                  <span class="block-tag">${stats.count} registros</span>
-                </div>
-                <div class="block-total">${escapeHtml(currency(stats.codificado))}</div>
-                <div class="block-note">${meta.note} ${percent(share(stats.codificado, totalCodificado))} del total consolidado.</div>
-                <div class="block-meter">
-                  <div class="meter-track">
-                    <div class="meter-fill" style="width:${share(stats.codificado, totalCodificado)}%; background:${tones.strong};"></div>
-                  </div>
-                </div>
-              </article>
-            `;
-          })
+        reformTopList.innerHTML = unique
+          .slice(0, 6)
+          .map(
+            (item) => `
+              <li class="reform-item" style="background:${item.code === selected.code ? accentFor(item).soft : "rgba(255,255,255,0.82)"};">
+                <strong>${escapeHtml(shorten(item.name, 38))}</strong>
+                <span>${item.code} | Reforma ${escapeHtml(signedCurrency(item.reforma))}</span>
+                <span>Codificado ${escapeHtml(currency(item.codificado))}</span>
+              </li>
+            `
+          )
           .join("");
-
-        blockGrid.innerHTML = cards;
       }
 
-      function renderTable(selectedCode) {
-        const rows = DATA.slice()
+      function renderDetail(selected, filtered) {
+        detailBadge.textContent = `${filtered.length} filas visibles`;
+        detailTable.innerHTML = filtered
+          .slice()
           .sort((a, b) => {
             if (a.block === b.block) return b.codificado - a.codificado;
             return a.block.localeCompare(b.block);
           })
-          .map((item) => {
-            return `
-              <tr class="${item.code === selectedCode ? "selected" : ""}">
+          .map(
+            (item) => `
+              <tr class="${item.code === selected.code ? "selected" : ""}">
                 <td>
                   <strong>${escapeHtml(item.name)}</strong>
                   <span class="row-code">${item.code}</span>
                 </td>
                 <td>${item.kind === "bloque" ? "Bloque" : "Direccion"}</td>
                 <td>${BLOCK_META[item.block].label}</td>
-                <td class="row-money">${escapeHtml(currency(item.initial))}</td>
-                <td class="row-money ${item.reforma > 0 ? "positive" : item.reforma < 0 ? "negative" : ""}">${escapeHtml(signedCurrency(item.reforma))}</td>
-                <td class="row-money">${escapeHtml(currency(item.codificado))}</td>
+                <td class="money">${escapeHtml(currency(item.initial))}</td>
+                <td class="money ${item.reforma > 0 ? "positive" : item.reforma < 0 ? "negative" : ""}">${escapeHtml(signedCurrency(item.reforma))}</td>
+                <td class="money">${escapeHtml(currency(item.codificado))}</td>
+                <td class="money">${percent(share(item.codificado, totalMunicipal))}</td>
               </tr>
-            `;
-          })
+            `
+          )
           .join("");
+      }
 
-        tableBody.innerHTML = rows;
+      function activatePanel(tabName) {
+        tabs.forEach((tab) => tab.classList.toggle("active", tab.dataset.panel === tabName));
+        panels.forEach((panel) => panel.classList.toggle("active", panel.dataset.panel === tabName));
       }
 
       function render() {
-        const selected = getSelectedItem();
-        setHash(selected.code);
-        renderSelectorMeta(selected);
-        renderSummary(selected);
-        renderFocus(selected);
-        renderInsights(selected);
-        renderBlocks(selected);
-        renderTable(selected.code);
-        rankingChart.innerHTML = svgRanking(selected.code);
-        blockChart.innerHTML = svgBlock(selected);
-        reformChart.innerHTML = svgReforms(selected.code);
+        let state = getState();
+        let filtered = getFilteredData(state);
 
-        const ranking = rankItems();
-        const blockItems = DATA.filter((item) => item.block === selected.block);
-        rankingFooter.textContent = `Total consolidado observado: ${currency(totalCodificado)}. La seleccion actual representa ${percent(share(selected.codificado, totalCodificado))} y se compara contra un lider de ${currency(ranking[0].codificado)}.`;
-        blockFooter.textContent = `${BLOCK_META[selected.block].label} suma ${currency(blockStats[selected.block].codificado)} entre ${blockItems.length} registros. La seleccion explica ${percent(share(selected.codificado, blockStats[selected.block].codificado))} de ese subtotal.`;
-        reformFooter.textContent = `La reforma neta global del conjunto es ${signedCurrency(totalReforma)} sobre un inicial total de ${currency(totalInicial)}.`;
+        if (!filtered.length) {
+          blockFilter.value = "all";
+          state = getState();
+          filtered = getFilteredData(state);
+        }
+
+        const chosenCode = populateDirectionSelect(state);
+        const selected = filtered.find((item) => item.code === chosenCode) || filtered[0] || DATA[0];
+        const cleanState = {
+          tab: tabs.some((tab) => tab.dataset.panel === state.tab) ? state.tab : HASH_DEFAULTS.tab,
+          block: state.block,
+          kind: state.kind,
+          item: selected.code
+        };
+
+        renderScope(cleanState, filtered);
+        renderRibbon(selected, filtered);
+        renderSummary(selected, filtered);
+        renderRanking(selected, filtered);
+        renderBlock(selected);
+        renderReforms(selected, filtered);
+        renderDetail(selected, filtered);
+        activatePanel(cleanState.tab);
+        syncHash(cleanState);
       }
 
-      buildOptions();
-      directionSelect.addEventListener("change", render);
-      window.addEventListener("hashchange", () => {
-        const hashCode = getSelectionFromHash();
-        if (hashCode && DATA.some((item) => item.code === hashCode)) {
-          directionSelect.value = hashCode;
-          render();
-        }
-      });
+      populateBlockFilter();
+
+      const initialState = parseHash();
+      blockFilter.value = initialState.block;
+      kindFilter.value = initialState.kind;
+      activatePanel(initialState.tab);
+      populateDirectionSelect(initialState);
+      directionSelect.value = initialState.item;
       render();
+
+      blockFilter.addEventListener("change", () => render());
+      kindFilter.addEventListener("change", () => render());
+      directionSelect.addEventListener("change", () => render());
+
+      tabStrip.addEventListener("click", (event) => {
+        const button = event.target.closest(".tab-button");
+        if (!button) return;
+        activatePanel(button.dataset.panel);
+        render();
+      });
+
+      window.addEventListener("hashchange", () => {
+        const state = parseHash();
+        blockFilter.value = state.block;
+        kindFilter.value = state.kind;
+        activatePanel(state.tab);
+        populateDirectionSelect(state);
+        directionSelect.value = state.item;
+        render();
+      });
     </script>
   </body>
 </html>
