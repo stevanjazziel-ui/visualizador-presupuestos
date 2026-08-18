@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Avalúos · Monto codificado",
+  title: "Direcciones · Monto codificado",
   description:
-    "Visor publicado de monto codificado por partida larga para la Dirección General de Gestión de Avalúos y Catastros y SIG.",
+    "Visor publicado del monto codificado consolidado por direcciones y bloques presupuestarios del GADMR Riobamba.",
   icons: {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",
@@ -28,7 +28,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="es">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
