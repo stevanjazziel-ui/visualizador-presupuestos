@@ -636,6 +636,129 @@
         gap: 18px;
       }
 
+      .deep-top-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+        gap: 18px;
+      }
+
+      .deep-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1.14fr) 340px;
+        gap: 18px;
+        margin-top: 18px;
+      }
+
+      .deep-stack {
+        display: grid;
+        gap: 18px;
+      }
+
+      .deep-pill-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 18px;
+      }
+
+      .deep-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: rgba(16, 32, 51, 0.06);
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .deep-pill strong {
+        color: var(--ink);
+      }
+
+      .deep-summary-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 18px;
+      }
+
+      .deep-summary-card {
+        padding: 16px;
+        border-radius: 22px;
+        border: 1px solid rgba(16, 32, 51, 0.08);
+        background: rgba(255, 255, 255, 0.82);
+      }
+
+      .deep-summary-label {
+        color: var(--muted);
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .deep-summary-value {
+        margin-top: 10px;
+        font-size: clamp(1.1rem, 1.6vw, 1.5rem);
+        font-weight: 800;
+        line-height: 1.08;
+      }
+
+      .deep-summary-note {
+        margin-top: 8px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
+      .deep-focus-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 18px;
+      }
+
+      .meter-grid {
+        display: grid;
+        gap: 12px;
+        margin-top: 18px;
+      }
+
+      .meter-row {
+        display: grid;
+        gap: 8px;
+      }
+
+      .meter-copy {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        font-size: 13px;
+      }
+
+      .meter-copy span:last-child {
+        color: var(--muted);
+      }
+
+      .meter-track {
+        height: 12px;
+        border-radius: 999px;
+        background: rgba(16, 32, 51, 0.08);
+        overflow: hidden;
+      }
+
+      .meter-fill {
+        height: 100%;
+        border-radius: inherit;
+      }
+
+      .deep-block-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+        gap: 12px;
+        margin-top: 18px;
+      }
+
       .detail-card table {
         width: 100%;
         border-collapse: collapse;
@@ -698,7 +821,9 @@
         .summary-layout,
         .section-grid,
         .block-layout,
-        .reforms-layout {
+        .reforms-layout,
+        .deep-top-grid,
+        .deep-layout {
           grid-template-columns: 1fr;
         }
 
@@ -723,7 +848,9 @@
 
         .gauge-grid,
         .ribbon-grid,
-        .block-stat-grid {
+        .block-stat-grid,
+        .deep-summary-grid,
+        .deep-focus-grid {
           grid-template-columns: 1fr;
         }
 
@@ -794,6 +921,7 @@
 
       <nav id="tabStrip" class="tab-strip panel" aria-label="Secciones del dashboard">
         <button class="tab-button active" type="button" data-panel="resumen">Resumen ejecutivo</button>
+        <button class="tab-button" type="button" data-panel="completo">Visor completo</button>
         <button class="tab-button" type="button" data-panel="ranking">Ranking general</button>
         <button class="tab-button" type="button" data-panel="bloque">Vista por bloque</button>
         <button class="tab-button" type="button" data-panel="reformas">Reformas</button>
@@ -934,6 +1062,111 @@
           </div>
         </article>
       </section>
+
+      <section class="view-panel panel" data-panel="completo">
+        <div class="deep-top-grid">
+          <article class="chart-card">
+            <div class="section-head">
+              <div>
+                <h2>Contexto de la seleccion</h2>
+                <p class="section-copy">Se recupera la lectura por capas que ya teniamos: codigo, tipo, bloque y escala dentro del conjunto visible.</p>
+              </div>
+              <div class="section-badge">Visor completo</div>
+            </div>
+            <div id="deepSelectorMeta" class="deep-pill-row"></div>
+          </article>
+          <article class="chart-card">
+            <div class="section-head">
+              <div>
+                <h2>Resumen de apoyo</h2>
+                <p class="section-copy">Cuatro indicadores cortos para no perder el hilo antes de bajar al detalle.</p>
+              </div>
+            </div>
+            <div id="deepSummaryGrid" class="deep-summary-grid"></div>
+          </article>
+        </div>
+
+        <div class="deep-layout">
+          <main class="deep-stack">
+            <article id="deepFocusCard" class="chart-card"></article>
+
+            <article class="chart-card">
+              <div class="section-head">
+                <div>
+                  <h2>Ranking consolidado</h2>
+                  <p class="section-copy">La seleccion se vuelve a ver dentro del orden completo de montos codificados.</p>
+                </div>
+                <div id="deepRankingBadge" class="section-badge"></div>
+              </div>
+              <div id="deepRankingChart" class="chart-scroll"></div>
+              <p id="deepRankingFooter" class="section-footer"></p>
+            </article>
+
+            <article class="chart-card">
+              <div class="section-head">
+                <div>
+                  <h2>Comparacion en su bloque</h2>
+                  <p class="section-copy">La misma vista interna que teniamos para mirar donde cae frente a sus pares inmediatos.</p>
+                </div>
+                <div id="deepBlockBadge" class="section-badge"></div>
+              </div>
+              <div id="deepBlockChart" class="chart-scroll"></div>
+              <p id="deepBlockFooter" class="section-footer"></p>
+            </article>
+
+            <article class="detail-card">
+              <div class="detail-head">
+                <div>
+                  <h2>Tabla completa de referencia</h2>
+                  <p class="detail-copy">Se mantiene la tabla amplia para cerrar la lectura cuando quieras revisar fila por fila.</p>
+                </div>
+                <div id="deepDetailBadge" class="section-badge"></div>
+              </div>
+              <div style="overflow:auto;">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Direccion / bloque</th>
+                      <th>Tipo</th>
+                      <th>Bloque</th>
+                      <th>Inicial</th>
+                      <th>Reforma</th>
+                      <th>Codificado</th>
+                    </tr>
+                  </thead>
+                  <tbody id="deepTableBody"></tbody>
+                </table>
+              </div>
+            </article>
+          </main>
+
+          <aside class="deep-stack">
+            <article id="deepInsightsCard" class="sidebar-card"></article>
+
+            <article class="chart-card">
+              <div class="section-head">
+                <div>
+                  <h2>Reformas mas intensas</h2>
+                  <p class="section-copy">Se mantiene el comparativo de movimientos para ver quienes empujan o recortan el conjunto.</p>
+                </div>
+                <div id="deepReformBadge" class="section-badge"></div>
+              </div>
+              <div id="deepReformChart" class="chart-scroll"></div>
+              <p id="deepReformFooter" class="section-footer"></p>
+            </article>
+
+            <article class="chart-card">
+              <div class="section-head">
+                <div>
+                  <h2>Distribucion por bloque</h2>
+                  <p class="section-copy">La malla de bloques vuelve para conservar la lectura territorial del presupuesto.</p>
+                </div>
+              </div>
+              <div id="deepBlockGrid" class="deep-block-grid"></div>
+            </article>
+          </aside>
+        </div>
+      </section>
     </div>
 
     <script>
@@ -1050,6 +1283,22 @@
       const reformTopList = document.getElementById("reformTopList");
       const detailBadge = document.getElementById("detailBadge");
       const detailTable = document.getElementById("detailTable");
+      const deepSelectorMeta = document.getElementById("deepSelectorMeta");
+      const deepSummaryGrid = document.getElementById("deepSummaryGrid");
+      const deepFocusCard = document.getElementById("deepFocusCard");
+      const deepRankingBadge = document.getElementById("deepRankingBadge");
+      const deepRankingChart = document.getElementById("deepRankingChart");
+      const deepRankingFooter = document.getElementById("deepRankingFooter");
+      const deepBlockBadge = document.getElementById("deepBlockBadge");
+      const deepBlockChart = document.getElementById("deepBlockChart");
+      const deepBlockFooter = document.getElementById("deepBlockFooter");
+      const deepDetailBadge = document.getElementById("deepDetailBadge");
+      const deepTableBody = document.getElementById("deepTableBody");
+      const deepInsightsCard = document.getElementById("deepInsightsCard");
+      const deepReformBadge = document.getElementById("deepReformBadge");
+      const deepReformChart = document.getElementById("deepReformChart");
+      const deepReformFooter = document.getElementById("deepReformFooter");
+      const deepBlockGrid = document.getElementById("deepBlockGrid");
       const panels = Array.from(document.querySelectorAll(".view-panel"));
       const tabs = Array.from(document.querySelectorAll(".tab-button"));
 
@@ -1249,6 +1498,32 @@
             `
           )
           .join("");
+      }
+
+      function meterRow(label, value, note, color) {
+        const width = clamp(value, 0, 100);
+        return `
+          <div class="meter-row">
+            <div class="meter-copy">
+              <span>${label}</span>
+              <span>${percent(width)}</span>
+            </div>
+            <div class="meter-track">
+              <div class="meter-fill" style="width:${width}%; background:${color};"></div>
+            </div>
+            <span class="section-copy">${note}</span>
+          </div>
+        `;
+      }
+
+      function buildReformItems(filtered, selectedCode, limit = 12) {
+        const ordered = filtered.slice().sort((a, b) => Math.abs(b.reforma) - Math.abs(a.reforma));
+        const top = ordered.slice(0, limit);
+        if (!top.some((item) => item.code === selectedCode)) {
+          const selected = filtered.find((item) => item.code === selectedCode) || DATA.find((item) => item.code === selectedCode);
+          if (selected) top.push(selected);
+        }
+        return Array.from(new Map(top.map((item) => [item.code, item])).values()).sort((a, b) => Math.abs(b.reforma) - Math.abs(a.reforma));
       }
 
       function renderRibbon(selected, filtered) {
@@ -1597,12 +1872,7 @@
       }
 
       function renderReforms(selected, filtered) {
-        const ordered = filtered.slice().sort((a, b) => Math.abs(b.reforma) - Math.abs(a.reforma));
-        const top = ordered.slice(0, 12);
-        if (!top.some((item) => item.code === selected.code)) {
-          top.push(selected);
-        }
-        const unique = Array.from(new Map(top.map((item) => [item.code, item])).values()).sort((a, b) => Math.abs(b.reforma) - Math.abs(a.reforma));
+        const unique = buildReformItems(filtered, selected.code, 12);
         reformBadge.textContent = `${unique.length} movimientos`;
         reformChart.innerHTML = reformSvg(unique, selected.code);
         reformFooter.textContent = `La reforma neta municipal total es ${signedCurrency(totalReformaMunicipal)} sobre un inicial consolidado de ${currency(totalInicialMunicipal)}.`;
@@ -1648,6 +1918,181 @@
           .join("");
       }
 
+      function renderDeepPanel(selected, filtered) {
+        const filteredTotal = filtered.reduce((sum, item) => sum + item.codificado, 0);
+        const ranking = filtered.slice().sort((a, b) => b.codificado - a.codificado);
+        const rank = ranking.findIndex((item) => item.code === selected.code) + 1;
+        const blockMeta = BLOCK_META[selected.block];
+        const blockItems = DATA.filter((item) => item.block === selected.block).sort((a, b) => b.codificado - a.codificado);
+        const blockRank = blockItems.findIndex((item) => item.code === selected.code) + 1;
+        const blockTotal = blockStats[selected.block].codificado;
+        const totalShare = share(selected.codificado, totalMunicipal);
+        const visibleShare = share(selected.codificado, filteredTotal);
+        const blockShare = selected.kind === "bloque" ? totalShare : share(selected.codificado, blockTotal);
+        const ratio = selected.initial ? (selected.codificado / selected.initial) * 100 : 0;
+        const reformIntensityBase = Math.max(...filtered.map((item) => Math.abs(item.reforma))) || 1;
+        const reformIntensity = share(Math.abs(selected.reforma), reformIntensityBase);
+        const above = rank > 1 ? ranking[rank - 2] : null;
+        const below = rank < ranking.length ? ranking[rank] : null;
+        const topReforms = buildReformItems(filtered, selected.code, 12);
+
+        deepSelectorMeta.innerHTML = `
+          <span class="deep-pill"><strong>Codigo</strong> ${selected.code}</span>
+          <span class="deep-pill"><strong>Tipo</strong> ${selected.kind === "bloque" ? "Bloque especial" : "Direccion"}</span>
+          <span class="deep-pill"><strong>Bloque</strong> ${blockMeta.label}</span>
+          <span class="deep-pill"><strong>Universo visible</strong> ${filtered.length} registros</span>
+        `;
+
+        deepSummaryGrid.innerHTML = [
+          {
+            label: "Monto codificado",
+            value: currency(selected.codificado),
+            note: `${compact(selected.codificado)} dentro del universo visible.`
+          },
+          {
+            label: "Reforma neta",
+            value: signedCurrency(selected.reforma),
+            note: selected.reforma >= 0 ? "Ajuste al alza frente al inicial." : "Ajuste a la baja frente al inicial.",
+            className: selected.reforma > 0 ? "positive" : selected.reforma < 0 ? "negative" : ""
+          },
+          {
+            label: "Peso en lo visible",
+            value: percent(visibleShare),
+            note: `${percent(totalShare)} del total municipal completo.`
+          },
+          {
+            label: "Posicion",
+            value: `#${rank}`,
+            note: `Dentro de ${ranking.length} registros filtrados.`
+          }
+        ]
+          .map(
+            (item) => `
+              <article class="deep-summary-card">
+                <div class="deep-summary-label">${item.label}</div>
+                <div class="deep-summary-value ${item.className || ""}">${item.value}</div>
+                <div class="deep-summary-note">${item.note}</div>
+              </article>
+            `
+          )
+          .join("");
+
+        deepFocusCard.innerHTML = `
+          <div class="section-head">
+            <div>
+              <h2>${escapeHtml(selected.name)}</h2>
+              <p class="section-copy">
+                ${selected.kind === "bloque" ? "El bloque" : "La direccion"} parte de un inicial de
+                <strong>${currency(selected.initial)}</strong>, registra una reforma de
+                <strong>${signedCurrency(selected.reforma)}</strong> y cierra con un codificado de
+                <strong>${currency(selected.codificado)}</strong>.
+              </p>
+            </div>
+            <div class="section-badge">${blockMeta.label}</div>
+          </div>
+
+          <div class="deep-focus-grid">
+            <article class="block-stat">
+              <div class="label">Puesto general visible</div>
+              <div class="value">#${rank}</div>
+            </article>
+            <article class="block-stat">
+              <div class="label">Puesto en su bloque</div>
+              <div class="value">#${blockRank}</div>
+            </article>
+            <article class="block-stat">
+              <div class="label">Participacion municipal</div>
+              <div class="value">${percent(totalShare)}</div>
+            </article>
+          </div>
+
+          <div class="meter-grid">
+            ${meterRow("Participacion dentro del recorte visible", visibleShare, `${currency(selected.codificado)} sobre ${currency(filteredTotal)}.`, blockMeta.accent)}
+            ${meterRow(selected.kind === "bloque" ? "Participacion en el total municipal" : `Peso dentro de ${blockMeta.label}`, blockShare, selected.kind === "bloque" ? `Concentra ${percent(totalShare)} del total municipal.` : `${blockRank} de ${blockItems.length} en su bloque.`, blockMeta.accent)}
+            ${meterRow("Escala frente al lider general", share(selected.codificado, maxCodificado), `El mayor codificado observado es ${currency(maxCodificado)}.`, blockMeta.accent)}
+            ${meterRow("Intensidad relativa de la reforma", reformIntensity, `Comparado contra la reforma absoluta mas grande del recorte actual.`, selected.reforma >= 0 ? "#0f766e" : selected.reforma < 0 ? "#be4d44" : "#91a2b9")}
+            ${meterRow("Codificado frente al inicial", ratio, "100% significa que no hubo cambio neto frente a la base de arranque.", blockMeta.accent)}
+          </div>
+        `;
+
+        deepInsightsCard.innerHTML = `
+          <div class="section-head">
+            <div>
+              <h2>Lectura guiada</h2>
+              <p class="section-copy">La capa anterior vuelve aqui para no perder cercania, brechas y contexto de bloque.</p>
+            </div>
+          </div>
+
+          <ul class="sidebar-list">
+            <li class="sidebar-item">
+              <strong>Posicion y escala</strong>
+              <span>La seleccion ocupa el puesto #${rank} del universo visible y el #${overallRanking.findIndex((item) => item.code === selected.code) + 1} del total municipal.</span>
+            </li>
+            <li class="sidebar-item">
+              <strong>Brecha superior</strong>
+              <span>${above ? `El siguiente superior es ${escapeHtml(shorten(above.name, 36))} con una diferencia de ${currency(above.codificado - selected.codificado)}.` : "No tiene ningun registro por encima dentro del recorte actual."}</span>
+            </li>
+            <li class="sidebar-item">
+              <strong>Brecha inferior</strong>
+              <span>${below ? `El siguiente inferior es ${escapeHtml(shorten(below.name, 36))}; la ventaja actual es ${currency(selected.codificado - below.codificado)}.` : "No tiene ningun registro por debajo dentro del recorte actual."}</span>
+            </li>
+            <li class="sidebar-item">
+              <strong>Lectura de bloque</strong>
+              <span>${selected.kind === "bloque" ? `Este bloque especial concentra ${percent(totalShare)} del total municipal.` : `Aporta ${percent(blockShare)} de ${blockMeta.label} y ocupa el puesto #${blockRank} de ${blockItems.length}.`}</span>
+            </li>
+          </ul>
+        `;
+
+        deepRankingBadge.textContent = `${rank} de ${ranking.length}`;
+        deepRankingChart.innerHTML = rankingSvg(ranking, selected.code);
+        deepRankingFooter.textContent = `El recorte visible suma ${currency(filteredTotal)}. La seleccion actual aporta ${percent(visibleShare)} de esa bolsa y ${percent(totalShare)} del total municipal.`;
+
+        deepBlockBadge.textContent = `${blockItems.length} registros`;
+        deepBlockChart.innerHTML = blockSvg(selected);
+        deepBlockFooter.textContent = `${blockMeta.note} El subtotal del bloque es ${currency(blockTotal)} y la seleccion ocupa el puesto #${blockRank}.`;
+
+        deepReformBadge.textContent = `${topReforms.length} movimientos`;
+        deepReformChart.innerHTML = reformSvg(topReforms, selected.code);
+        deepReformFooter.textContent = `Dentro del recorte actual, la reforma neta acumulada es ${signedCurrency(filtered.reduce((sum, item) => sum + item.reforma, 0))}.`;
+
+        deepBlockGrid.innerHTML = Object.entries(BLOCK_META)
+          .map(([code, meta]) => {
+            const stats = blockStats[code];
+            return `
+              <article class="block-card ${code === selected.block ? "active" : ""}" style="background:linear-gradient(180deg, ${meta.soft}, rgba(255,255,255,0.88));">
+                <div class="title">${meta.label}</div>
+                <div class="value">${currency(stats.codificado)}</div>
+                <div class="note">${stats.count} registros. ${percent(share(stats.codificado, totalMunicipal))} del total municipal.</div>
+              </article>
+            `;
+          })
+          .join("");
+
+        deepDetailBadge.textContent = `${filtered.length} filas`;
+        deepTableBody.innerHTML = filtered
+          .slice()
+          .sort((a, b) => {
+            if (a.block === b.block) return b.codificado - a.codificado;
+            return a.block.localeCompare(b.block);
+          })
+          .map(
+            (item) => `
+              <tr class="${item.code === selected.code ? "selected" : ""}">
+                <td>
+                  <strong>${escapeHtml(item.name)}</strong>
+                  <span class="row-code">${item.code}</span>
+                </td>
+                <td>${item.kind === "bloque" ? "Bloque" : "Direccion"}</td>
+                <td>${BLOCK_META[item.block].label}</td>
+                <td class="money">${escapeHtml(currency(item.initial))}</td>
+                <td class="money ${item.reforma > 0 ? "positive" : item.reforma < 0 ? "negative" : ""}">${escapeHtml(signedCurrency(item.reforma))}</td>
+                <td class="money">${escapeHtml(currency(item.codificado))}</td>
+              </tr>
+            `
+          )
+          .join("");
+      }
+
       function activatePanel(tabName) {
         tabs.forEach((tab) => tab.classList.toggle("active", tab.dataset.panel === tabName));
         panels.forEach((panel) => panel.classList.toggle("active", panel.dataset.panel === tabName));
@@ -1679,6 +2124,7 @@
         renderBlock(selected);
         renderReforms(selected, filtered);
         renderDetail(selected, filtered);
+        renderDeepPanel(selected, filtered);
         activatePanel(cleanState.tab);
         syncHash(cleanState);
       }
