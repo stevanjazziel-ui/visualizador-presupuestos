@@ -306,6 +306,73 @@
         display: block;
       }
 
+      .general-band {
+        margin-top: 18px;
+        padding: 22px;
+      }
+
+      .general-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 18px;
+      }
+
+      .general-card {
+        padding: 18px;
+        border-radius: 22px;
+        border: 1px solid rgba(23, 36, 50, 0.08);
+        background: rgba(255, 255, 255, 0.76);
+      }
+
+      .general-label {
+        color: var(--muted);
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .general-value {
+        margin-top: 10px;
+        font-size: clamp(1.15rem, 1.9vw, 1.7rem);
+        font-weight: 700;
+        line-height: 1.05;
+      }
+
+      .general-note {
+        margin-top: 8px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
+      .alert-list {
+        margin: 16px 0 0;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        gap: 10px;
+      }
+
+      .alert-item {
+        padding: 14px 16px;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.72);
+        border: 1px solid rgba(23, 36, 50, 0.08);
+      }
+
+      .alert-item strong {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 14px;
+      }
+
+      .alert-item span {
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
       .metric-card {
         min-height: 122px;
         padding: 16px;
@@ -726,6 +793,7 @@
 
       @media (max-width: 1160px) {
         .hero-grid,
+        .general-grid,
         .executive-grid,
         .executive-gauges,
         .layout {
@@ -798,6 +866,17 @@
             <div id="summaryGrid" class="summary-grid"></div>
           </div>
         </div>
+      </section>
+
+      <section class="general-band panel">
+        <div class="chart-head">
+          <div>
+            <div class="section-kicker">Resumen general</div>
+            <h2>La foto completa del conjunto presupuestario</h2>
+          </div>
+          <p class="chart-note">Esta banda resume el universo total antes de entrar a una direccion en particular.</p>
+        </div>
+        <div id="generalGrid" class="general-grid"></div>
       </section>
 
       <section class="executive-band panel">
@@ -884,6 +963,8 @@
 
         <aside class="stack">
           <section id="insightsCard" class="info-card panel"></section>
+
+          <section id="alertsCard" class="info-card panel"></section>
 
           <section class="chart-card panel">
             <div class="chart-head">
@@ -990,6 +1071,7 @@
       const directionSelect = document.getElementById("directionSelect");
       const selectorMeta = document.getElementById("selectorMeta");
       const summaryGrid = document.getElementById("summaryGrid");
+      const generalGrid = document.getElementById("generalGrid");
       const executiveKpis = document.getElementById("executiveKpis");
       const executiveGaugeOne = document.getElementById("executiveGaugeOne");
       const executiveGaugeOneCopy = document.getElementById("executiveGaugeOneCopy");
@@ -1001,6 +1083,7 @@
       const blockChart = document.getElementById("blockChart");
       const blockFooter = document.getElementById("blockFooter");
       const insightsCard = document.getElementById("insightsCard");
+      const alertsCard = document.getElementById("alertsCard");
       const reformChart = document.getElementById("reformChart");
       const reformFooter = document.getElementById("reformFooter");
       const blockGrid = document.getElementById("blockGrid");
@@ -1147,6 +1230,46 @@
           });
           directionSelect.appendChild(optGroup);
         });
+      }
+
+      function renderGeneralSummary() {
+        const directionCount = DATA.filter((item) => item.kind === "direccion").length;
+        const blockCount = DATA.filter((item) => item.kind === "bloque").length;
+        const cards = [
+          {
+            label: "Codificado total",
+            value: currency(totalCodificado),
+            note: "Suma consolidada de todos los registros del tablero."
+          },
+          {
+            label: "Inicial total",
+            value: currency(totalInicial),
+            note: "Base presupuestaria antes de considerar reformas."
+          },
+          {
+            label: "Reforma neta acumulada",
+            value: signedCurrency(totalReforma),
+            note: totalReforma >= 0 ? "El conjunto gana recursos frente al inicial." : "El conjunto se reduce frente al inicial.",
+            className: totalReforma > 0 ? "positive" : totalReforma < 0 ? "negative" : ""
+          },
+          {
+            label: "Direcciones visibles",
+            value: `${directionCount}`,
+            note: `${blockCount} bloques especiales completan el universo consultado.`
+          }
+        ];
+
+        generalGrid.innerHTML = cards
+          .map(
+            (card) => `
+              <article class="general-card">
+                <div class="general-label">${card.label}</div>
+                <div class="general-value ${card.className || ""}">${card.value}</div>
+                <div class="general-note">${card.note}</div>
+              </article>
+            `
+          )
+          .join("");
       }
 
       function getSelectedItem() {
@@ -1492,12 +1615,9 @@
         const ranking = rankItems();
         const overallRank = ranking.findIndex((item) => item.code === selected.code);
         const above = overallRank > 0 ? ranking[overallRank - 1] : null;
-        const below = overallRank < ranking.length - 1 ? ranking[overallRank + 1] : null;
         const blockItems = DATA.filter((item) => item.block === selected.block).sort((a, b) => b.codificado - a.codificado);
-        const blockLeader = blockItems[0];
         const totalShare = share(selected.codificado, totalCodificado);
         const blockShare = share(selected.codificado, blockStats[selected.block].codificado);
-        const tones = toneFor(selected);
         const topThree = blockItems.slice(0, 3);
 
         insightsCard.innerHTML = `
@@ -1560,6 +1680,49 @@
         `;
       }
 
+      function renderAlerts(selected) {
+        const ranking = rankItems();
+        const topThree = ranking.slice(0, 3);
+        const topThreeTotal = topThree.reduce((sum, item) => sum + item.codificado, 0);
+        const biggestIncrease = DATA.filter((item) => item.reforma > 0).sort((a, b) => b.reforma - a.reforma)[0];
+        const biggestDrop = DATA.filter((item) => item.reforma < 0).sort((a, b) => a.reforma - b.reforma)[0];
+        const blockItems = DATA.filter((item) => item.block === selected.block);
+        const blockAverage = blockStats[selected.block].codificado / blockItems.length;
+        const ratio = selected.initial ? (selected.codificado / selected.initial) * 100 : 0;
+        const deviation = selected.codificado - blockAverage;
+        const deviationAbs = Math.abs(deviation);
+        const ratioMessage = ratio >= 130
+          ? `La seleccion crece con fuerza frente a su inicial y termina en ${percent(ratio)} de su base de arranque.`
+          : ratio <= 85
+            ? `La seleccion se contrae frente a su inicial y termina en ${percent(ratio)} de su base de arranque.`
+            : `La seleccion se mueve cerca de su base inicial y termina en ${percent(ratio)} de esa referencia.`;
+
+        alertsCard.innerHTML = `
+          <div class="section-kicker">Alertas</div>
+          <h2>Concentracion y focos de atencion</h2>
+          <p class="info-copy">Aqui quedan los mensajes que ayudan a detectar donde mirar primero antes de revisar fila por fila.</p>
+
+          <ul class="alert-list">
+            <li class="alert-item">
+              <strong>Concentracion presupuestaria</strong>
+              <span>Los tres registros mas altos concentran ${percent(share(topThreeTotal, totalCodificado))} del total consolidado: ${escapeHtml(shorten(topThree[0].name, 24))}, ${escapeHtml(shorten(topThree[1].name, 24))} y ${escapeHtml(shorten(topThree[2].name, 24))}.</span>
+            </li>
+            <li class="alert-item">
+              <strong>Mayor aumento y mayor recorte</strong>
+              <span>La mayor subida la tiene ${escapeHtml(shorten(biggestIncrease.name, 30))} con ${signedCurrency(biggestIncrease.reforma)}. El mayor recorte corresponde a ${escapeHtml(shorten(biggestDrop.name, 30))} con ${signedCurrency(biggestDrop.reforma)}.</span>
+            </li>
+            <li class="alert-item">
+              <strong>Promedio del bloque</strong>
+              <span>${selected.kind === "bloque" ? "Al tratarse de un bloque especial, la comparacion mas util sigue siendo contra el total municipal." : deviation >= 0 ? `La seleccion esta por encima del promedio de ${BLOCK_META[selected.block].label} por ${currency(deviationAbs)}.` : `La seleccion esta por debajo del promedio de ${BLOCK_META[selected.block].label} por ${currency(deviationAbs)}.`}</span>
+            </li>
+            <li class="alert-item">
+              <strong>Variacion frente al inicial</strong>
+              <span>${ratioMessage}</span>
+            </li>
+          </ul>
+        `;
+      }
+
       function renderBlocks(selected) {
         const cards = Object.entries(BLOCK_META)
           .map(([block, meta]) => {
@@ -1616,11 +1779,13 @@
       function render() {
         const selected = getSelectedItem();
         setHash(selected.code);
+        renderGeneralSummary();
         renderSelectorMeta(selected);
         renderSummary(selected);
         renderExecutive(selected);
         renderFocus(selected);
         renderInsights(selected);
+        renderAlerts(selected);
         renderBlocks(selected);
         renderTable(selected.code);
         rankingChart.innerHTML = svgRanking(selected.code);
