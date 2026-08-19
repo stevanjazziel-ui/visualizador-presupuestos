@@ -275,35 +275,122 @@
         line-height: 1.45;
       }
 
-      .executive-gauges {
+      .executive-visuals {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 16px;
       }
 
-      .executive-gauge-card {
+      .executive-visual-card {
         padding: 18px;
         border-radius: 24px;
         border: 1px solid rgba(23, 36, 50, 0.08);
         background: rgba(255, 255, 255, 0.76);
       }
 
-      .executive-gauge-card h3 {
+      .executive-visual-card h3 {
         margin: 0;
         font-size: 1rem;
       }
 
-      .executive-gauge-card p {
+      .executive-visual-copy {
         margin: 8px 0 0;
         color: var(--muted);
         font-size: 12px;
         line-height: 1.45;
       }
 
-      .executive-gauge-svg {
-        width: 100%;
-        height: auto;
+      .compare-stack {
+        margin-top: 16px;
+        display: grid;
+        gap: 14px;
+      }
+
+      .compare-row {
+        display: grid;
+        gap: 8px;
+      }
+
+      .compare-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 10px;
+      }
+
+      .compare-label {
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .compare-value {
+        font-size: 13px;
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .compare-track {
+        position: relative;
+        height: 14px;
+        border-radius: 999px;
+        background: #e3eaf1;
+        overflow: hidden;
+      }
+
+      .compare-fill {
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        border-radius: 999px;
+      }
+
+      .compare-marker {
+        position: absolute;
+        top: -2px;
+        bottom: -2px;
+        width: 2px;
+        border-radius: 999px;
+        background: #22344d;
+        opacity: 0.72;
+        z-index: 2;
+      }
+
+      .compare-note {
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
+      .compare-badges {
+        margin-top: 16px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .compare-badge {
+        min-width: 128px;
+        padding: 10px 12px;
+        border-radius: 16px;
+        background: rgba(23, 36, 50, 0.05);
+        border: 1px solid rgba(23, 36, 50, 0.06);
+      }
+
+      .compare-badge strong {
         display: block;
+        color: var(--muted);
+        font-size: 10px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .compare-badge span {
+        display: block;
+        margin-top: 6px;
+        font-size: 13px;
+        font-weight: 700;
+        line-height: 1.3;
       }
 
       .general-band {
@@ -795,7 +882,7 @@
         .hero-grid,
         .general-grid,
         .executive-grid,
-        .executive-gauges,
+        .executive-visuals,
         .layout {
           grid-template-columns: 1fr;
         }
@@ -883,24 +970,13 @@
         <div class="executive-head">
           <div>
             <div class="section-kicker">Lectura ejecutiva</div>
-            <h2>Una capa visual rapida, montada sobre la interfaz clasica.</h2>
+            <h2>Comparaciones directas, sin perder la interfaz clasica.</h2>
           </div>
-          <p class="chart-note">Mantiene la estructura anterior y solo suma una vista inmediata para interpretar la seleccion.</p>
+          <p class="chart-note">La misma informacion ahora se lee con comparaciones claras en lugar de medidores.</p>
         </div>
         <div class="executive-grid">
           <div id="executiveKpis" class="executive-kpis"></div>
-          <div class="executive-gauges">
-            <article class="executive-gauge-card">
-              <h3>Codificado sobre inicial</h3>
-              <div id="executiveGaugeOne"></div>
-              <p id="executiveGaugeOneCopy"></p>
-            </article>
-            <article class="executive-gauge-card">
-              <h3>Peso relativo de la seleccion</h3>
-              <div id="executiveGaugeTwo"></div>
-              <p id="executiveGaugeTwoCopy"></p>
-            </article>
-          </div>
+          <div id="executiveVisuals" class="executive-visuals"></div>
         </div>
       </section>
 
@@ -1051,8 +1127,6 @@
       const totalReforma = DATA.reduce((sum, item) => sum + item.reforma, 0);
       const maxCodificado = Math.max(...DATA.map((item) => item.codificado));
       const maxReformaAbs = Math.max(...DATA.map((item) => Math.abs(item.reforma)));
-      const maxRatio = Math.max(...DATA.map((item) => (item.initial ? (item.codificado / item.initial) * 100 : 0)));
-      const ratioGaugeMax = Math.max(140, Math.ceil(maxRatio / 20) * 20);
 
       const blockStats = Object.fromEntries(
         Object.entries(
@@ -1073,10 +1147,7 @@
       const summaryGrid = document.getElementById("summaryGrid");
       const generalGrid = document.getElementById("generalGrid");
       const executiveKpis = document.getElementById("executiveKpis");
-      const executiveGaugeOne = document.getElementById("executiveGaugeOne");
-      const executiveGaugeOneCopy = document.getElementById("executiveGaugeOneCopy");
-      const executiveGaugeTwo = document.getElementById("executiveGaugeTwo");
-      const executiveGaugeTwoCopy = document.getElementById("executiveGaugeTwoCopy");
+      const executiveVisuals = document.getElementById("executiveVisuals");
       const focusCard = document.getElementById("focusCard");
       const rankingChart = document.getElementById("rankingChart");
       const rankingFooter = document.getElementById("rankingFooter");
@@ -1146,63 +1217,32 @@
         }
       }
 
-      function polar(cx, cy, radius, angleDeg) {
-        const rad = (Math.PI / 180) * angleDeg;
-        return {
-          x: cx + radius * Math.cos(rad),
-          y: cy + radius * Math.sin(rad)
-        };
-      }
-
-      function arcPath(cx, cy, radius, startAngle, endAngle) {
-        const start = polar(cx, cy, radius, startAngle);
-        const end = polar(cx, cy, radius, endAngle);
-        const largeArc = Math.abs(endAngle - startAngle) <= 180 ? 0 : 1;
-        return `M ${start.x} ${start.y} A ${radius} ${radius} 0 ${largeArc} 1 ${end.x} ${end.y}`;
-      }
-
-      function executiveGaugeSvg({ title, value, min, max, target, accent, valueLabel, subLabel, tickCount = 5, tickFormatter }) {
-        const width = 360;
-        const height = 228;
-        const cx = width / 2;
-        const cy = 190;
-        const radius = 118;
-        const bounded = clamp(value, min, max);
-        const fraction = (bounded - min) / (max - min || 1);
-        const angle = -180 + fraction * 180;
-        const targetAngle = typeof target === "number" ? -180 + ((clamp(target, min, max) - min) / (max - min || 1)) * 180 : null;
-
-        const ticks = [];
-        for (let index = 0; index <= tickCount; index += 1) {
-          const tickValue = min + ((max - min) / tickCount) * index;
-          const tickAngle = -180 + (180 / tickCount) * index;
-          const outer = polar(cx, cy, radius + 1, tickAngle);
-          const inner = polar(cx, cy, radius - 11, tickAngle);
-          const labelPoint = polar(cx, cy, radius - 29, tickAngle);
-          ticks.push(`
-            <line x1="${outer.x}" y1="${outer.y}" x2="${inner.x}" y2="${inner.y}" stroke="#8fa0b0" stroke-width="2" stroke-linecap="round"></line>
-            <text x="${labelPoint.x}" y="${labelPoint.y + 4}" text-anchor="middle" font-size="11" fill="#5e6f80">${tickFormatter ? tickFormatter(tickValue) : Math.round(tickValue)}</text>
-          `);
-        }
-
-        const pointerTip = polar(cx, cy, radius - 21, angle);
-        const pointerLeft = polar(cx, cy, 13, angle - 92);
-        const pointerRight = polar(cx, cy, 13, angle + 92);
-        const targetLine = targetAngle === null
-          ? ""
-          : `<line x1="${polar(cx, cy, radius - 18, targetAngle).x}" y1="${polar(cx, cy, radius - 18, targetAngle).y}" x2="${polar(cx, cy, radius + 10, targetAngle).x}" y2="${polar(cx, cy, radius + 10, targetAngle).y}" stroke="#22344d" stroke-width="3" stroke-linecap="round"></line>`;
+      function comparisonRow({ label, valueLabel, fillPercent, markerPercent = null, note, fill }) {
+        const marker = typeof markerPercent === "number"
+          ? `<span class="compare-marker" style="left: calc(${clamp(markerPercent, 0, 100)}% - 1px);"></span>`
+          : "";
 
         return `
-          <svg class="executive-gauge-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="${escapeHtml(title)}">
-            <path d="${arcPath(cx, cy, radius, -180, 0)}" fill="none" stroke="#e5ebf2" stroke-width="20" stroke-linecap="round"></path>
-            <path d="${arcPath(cx, cy, radius, -180, angle)}" fill="none" stroke="${accent}" stroke-width="20" stroke-linecap="round"></path>
-            ${targetLine}
-            ${ticks.join("")}
-            <path d="M ${pointerLeft.x} ${pointerLeft.y} L ${pointerTip.x} ${pointerTip.y} L ${pointerRight.x} ${pointerRight.y} Z" fill="#1d314f"></path>
-            <circle cx="${cx}" cy="${cy}" r="10" fill="#ffffff" stroke="#1d314f" stroke-width="4"></circle>
-            <text x="${cx}" y="157" text-anchor="middle" font-size="33" font-weight="700" fill="#1d314f">${escapeHtml(valueLabel)}</text>
-            <text x="${cx}" y="179" text-anchor="middle" font-size="12" fill="#617185">${escapeHtml(subLabel)}</text>
-          </svg>
+          <div class="compare-row">
+            <div class="compare-top">
+              <span class="compare-label">${escapeHtml(label)}</span>
+              <span class="compare-value">${escapeHtml(valueLabel)}</span>
+            </div>
+            <div class="compare-track">
+              ${marker}
+              <span class="compare-fill" style="width:${clamp(fillPercent, 0, 100)}%; background:${fill};"></span>
+            </div>
+            <div class="compare-note">${escapeHtml(note)}</div>
+          </div>
+        `;
+      }
+
+      function comparisonBadge(label, value, className = "") {
+        return `
+          <div class="compare-badge">
+            <strong>${escapeHtml(label)}</strong>
+            <span class="${className}">${escapeHtml(value)}</span>
+          </div>
         `;
       }
 
@@ -1347,29 +1387,38 @@
         const meta = BLOCK_META[selected.block];
         const blockItems = DATA.filter((item) => item.block === selected.block).sort((a, b) => b.codificado - a.codificado);
         const blockRank = blockItems.findIndex((item) => item.code === selected.code) + 1;
-        const blockShare = selected.kind === "bloque"
-          ? share(selected.codificado, totalCodificado)
-          : share(selected.codificado, blockStats[selected.block].codificado);
+        const blockShare = share(selected.codificado, blockStats[selected.block].codificado);
+        const totalShare = share(selected.codificado, totalCodificado);
         const ratio = selected.initial ? (selected.codificado / selected.initial) * 100 : 0;
         const tones = toneFor(selected);
-        const equalShare = selected.kind === "bloque" ? 100 / Object.keys(BLOCK_META).length : 100 / blockItems.length;
+        const equalBlockShare = 100 / blockItems.length;
+        const equalTotalShare = 100 / DATA.length;
+        const blockLeader = blockItems[0];
+        const leaderProximity = share(selected.codificado, blockLeader.codificado);
+        const referenceAmount = Math.max(selected.initial, selected.codificado, 1);
+        const reformClass = selected.reforma > 0 ? "positive" : selected.reforma < 0 ? "negative" : "";
+        const reformCopy = selected.reforma > 0
+          ? `El cierre queda por encima del inicial en ${signedCurrency(selected.reforma)}.`
+          : selected.reforma < 0
+            ? `El cierre queda por debajo del inicial en ${signedCurrency(selected.reforma)}.`
+            : "El cierre coincide con la base inicial.";
 
         executiveKpis.innerHTML = [
           {
-            label: "Seleccion actual",
-            value: currency(selected.codificado),
-            note: `${selected.kind === "bloque" ? "Bloque especial" : "Direccion"} ${selected.code}.`
+            label: "Puesto general",
+            value: `#${rank}`,
+            note: `Se ordena frente a ${ranking.length} registros por monto codificado.`
           },
           {
-            label: "Posicion general",
-            value: `#${rank}`,
-            note: `Tambien queda #${blockRank} dentro de ${meta.label}.`
+            label: "Puesto en bloque",
+            value: `#${blockRank}`,
+            note: `${selected.kind === "bloque" ? "Comparado dentro del bloque especial." : `Ubicacion interna dentro de ${meta.label}.`}`
           },
           {
             label: "Reforma neta",
             value: signedCurrency(selected.reforma),
-            note: selected.reforma >= 0 ? "El ajuste empuja al alza el codificado." : "El ajuste recorta recursos frente al inicial.",
-            className: selected.reforma > 0 ? "positive" : selected.reforma < 0 ? "negative" : ""
+            note: selected.reforma > 0 ? "El ajuste mueve el cierre al alza." : selected.reforma < 0 ? "El ajuste reduce la base de cierre." : "No hay variacion neta en este corte.",
+            className: reformClass
           }
         ]
           .map(
@@ -1383,35 +1432,68 @@
           )
           .join("");
 
-        executiveGaugeOne.innerHTML = executiveGaugeSvg({
-          title: "Codificado sobre inicial",
-          value: ratio,
-          min: 0,
-          max: ratioGaugeMax,
-          target: 100,
-          accent: tones.strong,
-          valueLabel: percent(ratio),
-          subLabel: "Referencia base: 100%",
-          tickCount: Math.max(4, ratioGaugeMax / 20),
-          tickFormatter: (value) => Math.round(value)
-        });
-        executiveGaugeOneCopy.textContent = "La aguja muestra cuanto representa el codificado final frente al monto inicial del registro.";
+        executiveVisuals.innerHTML = `
+          <article class="executive-visual-card">
+            <h3>Inicial frente al codificado</h3>
+            <p class="executive-visual-copy">La comparacion directa deja ver si el cierre termina arriba, igual o por debajo de la base inicial.</p>
+            <div class="compare-stack">
+              ${comparisonRow({
+                label: "Monto inicial",
+                valueLabel: currency(selected.initial),
+                fillPercent: share(selected.initial, referenceAmount),
+                note: "Base presupuestaria de partida para esta seleccion.",
+                fill: "linear-gradient(90deg, rgba(143,160,176,0.9), rgba(179,191,203,0.72))"
+              })}
+              ${comparisonRow({
+                label: "Monto codificado",
+                valueLabel: currency(selected.codificado),
+                fillPercent: share(selected.codificado, referenceAmount),
+                markerPercent: share(selected.initial, referenceAmount),
+                note: reformCopy,
+                fill: `linear-gradient(90deg, ${tones.strong}, ${tones.muted})`
+              })}
+            </div>
+            <div class="compare-badges">
+              ${comparisonBadge("Cierre vs inicial", percent(ratio), ratio >= 100 ? "positive" : "negative")}
+              ${comparisonBadge("Reforma neta", signedCurrency(selected.reforma), reformClass)}
+            </div>
+          </article>
 
-        executiveGaugeTwo.innerHTML = executiveGaugeSvg({
-          title: "Peso relativo de la seleccion",
-          value: blockShare,
-          min: 0,
-          max: 100,
-          target: equalShare,
-          accent: tones.strong,
-          valueLabel: percent(blockShare),
-          subLabel: selected.kind === "bloque" ? "Referencia: reparto equilibrado por bloque" : "Referencia: promedio plano del bloque",
-          tickCount: 5,
-          tickFormatter: (value) => Math.round(value)
-        });
-        executiveGaugeTwoCopy.textContent = selected.kind === "bloque"
-          ? `El bloque concentra ${percent(blockShare)} del total municipal.`
-          : `La direccion aporta ${percent(blockShare)} de ${meta.label}; la marca oscura indica un reparto plano de ${percent(equalShare)}.`;
+          <article class="executive-visual-card">
+            <h3>Peso y contexto</h3>
+            <p class="executive-visual-copy">Estas barras muestran cuanto pesa la seleccion y contra que referencia conviene leerla.</p>
+            <div class="compare-stack">
+              ${comparisonRow({
+                label: "Participacion en el bloque",
+                valueLabel: percent(blockShare),
+                fillPercent: blockShare,
+                markerPercent: equalBlockShare,
+                note: `La marca indica un reparto plano de ${percent(equalBlockShare)} dentro de ${meta.label}.`,
+                fill: `linear-gradient(90deg, ${tones.strong}, ${tones.muted})`
+              })}
+              ${comparisonRow({
+                label: "Participacion en el total",
+                valueLabel: percent(totalShare),
+                fillPercent: totalShare,
+                markerPercent: equalTotalShare,
+                note: `La referencia plana del universo completo es ${percent(equalTotalShare)} por registro.`,
+                fill: "linear-gradient(90deg, #24415f, #4c6d8c)"
+              })}
+              ${comparisonRow({
+                label: "Cercania con el lider del bloque",
+                valueLabel: percent(leaderProximity),
+                fillPercent: leaderProximity,
+                markerPercent: 100,
+                note: `El lider de ${meta.label} es ${shorten(blockLeader.name, 36)}.`,
+                fill: "linear-gradient(90deg, #b36a1f, #dca06a)"
+              })}
+            </div>
+            <div class="compare-badges">
+              ${comparisonBadge("Referencia del bloque", meta.label)}
+              ${comparisonBadge("Lider interno", currency(blockLeader.codificado))}
+            </div>
+          </article>
+        `;
       }
 
       function meterRow(label, value, note, color) {
