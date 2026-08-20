@@ -969,12 +969,16 @@
     <div class="shell">
       <section class="hero panel">
         <div class="eyebrow">Presupuesto 2026 | monto codificado consolidado</div>
-        <h1>Un visor para leer una direccion a la vez, sin perder el contexto general.</h1>
+        <h1>El presupuesto general primero, y luego el detalle por direccion.</h1>
         <p class="intro">
-          El tablero ahora arranca con un selector desplegable, luego enfoca una sola direccion o bloque y
-          deja las comparaciones fuertes en graficos. La tabla completa sigue disponible, pero ya no invade la lectura.
+          La vista inicial prioriza el panorama global del presupuesto, incluyendo los montos generales mas importantes.
+          Despues, el selector permite bajar al detalle de una direccion o bloque sin perder el contexto completo.
         </p>
         <div class="hero-grid">
+          <div class="summary-card panel">
+            <div class="section-kicker">Presupuesto general</div>
+            <div id="summaryGrid" class="summary-grid"></div>
+          </div>
           <div class="selector-card panel">
             <div class="selector-head">
               <div>
@@ -991,10 +995,6 @@
             </div>
             <div id="refreshStatus" class="refresh-status" aria-live="polite"></div>
             <div id="selectorMeta" class="selector-meta"></div>
-          </div>
-          <div class="summary-card panel">
-            <div class="section-kicker">Resumen rapido</div>
-            <div id="summaryGrid" class="summary-grid"></div>
           </div>
         </div>
       </section>
