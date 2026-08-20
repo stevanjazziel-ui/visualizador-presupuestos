@@ -1146,6 +1146,7 @@
       });
 
       let totalCodificado = 0;
+      let totalCertificado = 0;
       let totalInicial = 0;
       let totalReforma = 0;
       let maxCodificado = 0;
@@ -1217,6 +1218,7 @@
 
       function recomputeState() {
         totalCodificado = DATA.reduce((sum, item) => sum + item.codificado, 0);
+        totalCertificado = DATA.reduce((sum, item) => sum + (item.certificado || 0), 0);
         totalInicial = DATA.reduce((sum, item) => sum + item.initial, 0);
         totalReforma = DATA.reduce((sum, item) => sum + item.reforma, 0);
         maxCodificado = Math.max(...DATA.map((item) => item.codificado), 0);
@@ -1316,6 +1318,11 @@
             label: "Codificado total",
             value: currency(totalCodificado),
             note: "Suma consolidada de todos los registros del tablero."
+          },
+          {
+            label: "Certificado total",
+            value: currency(totalCertificado),
+            note: "Monto certificado acumulado del conjunto consultado."
           },
           {
             label: "Inicial total",

@@ -57,6 +57,7 @@ function Find-HeaderMap {
         "MONTO INICIAL" { $headers.initial = $col }
         "CANTIDA REFORMA" { $headers.reforma = $col }
         "MONTO CODIFICADO" { $headers.codificado = $col }
+        "MONTO CERTIFICADO" { $headers.certificado = $col }
       }
     }
 
@@ -64,7 +65,8 @@ function Find-HeaderMap {
       $headers.Contains("partida") -and
       $headers.Contains("initial") -and
       $headers.Contains("reforma") -and
-      $headers.Contains("codificado")
+      $headers.Contains("codificado") -and
+      $headers.Contains("certificado")
     ) {
       $headers.row = $row
       return $headers
@@ -98,12 +100,14 @@ function Update-PayloadFromRecords {
         Initial = [decimal]::Zero
         Reforma = [decimal]::Zero
         Codificado = [decimal]::Zero
+        Certificado = [decimal]::Zero
       }
     }
 
     $totalsByDirection[$directionCode].Initial += $record.Initial
     $totalsByDirection[$directionCode].Reforma += $record.Reforma
     $totalsByDirection[$directionCode].Codificado += $record.Codificado
+    $totalsByDirection[$directionCode].Certificado += $record.Certificado
   }
 
   $changed = $false
@@ -112,11 +116,17 @@ function Update-PayloadFromRecords {
     $nextInitial = [double]([math]::Round($entry.Value.Initial, 2))
     $nextReforma = [double]([math]::Round($entry.Value.Reforma, 2))
     $nextCodificado = [double]([math]::Round($entry.Value.Codificado, 2))
+    $nextCertificado = [double]([math]::Round($entry.Value.Certificado, 2))
+    $currentCertificado = 0
+    if ($null -ne $item.PSObject.Properties["certificado"]) {
+      $currentCertificado = [double]$item.certificado
+    }
 
     if (
       ($item.initial -ne $nextInitial) -or
       ($item.reforma -ne $nextReforma) -or
-      ($item.codificado -ne $nextCodificado)
+      ($item.codificado -ne $nextCodificado) -or
+      ($currentCertificado -ne $nextCertificado)
     ) {
       $changed = $true
     }
@@ -124,6 +134,7 @@ function Update-PayloadFromRecords {
     $item.initial = $nextInitial
     $item.reforma = $nextReforma
     $item.codificado = $nextCodificado
+    $item | Add-Member -NotePropertyName certificado -NotePropertyValue $nextCertificado -Force
   }
 
   if ($changed) {
@@ -181,6 +192,7 @@ try {
           Initial = Convert-ToDecimal ([string]$worksheet.Cells.Item($row, $headerMap.initial).Text)
           Reforma = Convert-ToDecimal ([string]$worksheet.Cells.Item($row, $headerMap.reforma).Text)
           Codificado = Convert-ToDecimal ([string]$worksheet.Cells.Item($row, $headerMap.codificado).Text)
+          Certificado = Convert-ToDecimal ([string]$worksheet.Cells.Item($row, $headerMap.certificado).Text)
         }
 
         if (

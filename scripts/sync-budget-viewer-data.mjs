@@ -94,6 +94,13 @@ function parseCsv(text) {
 }
 
 function toNumber(value, field) {
+  if (typeof value === "number") {
+    if (Number.isNaN(value)) {
+      throw new Error(`Unable to parse ${field} as number: ${value}`);
+    }
+    return value;
+  }
+
   const normalized = value.replaceAll(".", "").replace(",", ".");
   const parsed = Number.parseFloat(normalized);
   if (Number.isNaN(parsed)) {
@@ -148,6 +155,7 @@ function payloadFromCsvRecords(records, fallbackPayload) {
     initial: toNumber(record.initial, "initial"),
     reforma: toNumber(record.reforma, "reforma"),
     codificado: toNumber(record.codificado, "codificado"),
+    certificado: toNumber(record.certificado || "0", "certificado"),
     ...(record.focus ? { focus: /^(1|true|si|yes)$/i.test(record.focus) } : {})
   }));
 
@@ -187,6 +195,10 @@ function validatePayload(payload) {
       if (typeof item[field] !== "number" || Number.isNaN(item[field])) {
         throw new Error(`Item ${item.code} has invalid ${field}.`);
       }
+    }
+
+    if (typeof item.certificado !== "number" || Number.isNaN(item.certificado)) {
+      throw new Error(`Item ${item.code} has invalid certificado.`);
     }
 
     if (!payload.blockMeta[item.block]) {
@@ -243,6 +255,13 @@ if (detectedFormat === "csv") {
 } else {
   payload = normalizePayload(JSON.parse(text), fallbackPayload);
 }
+
+payload.items = payload.items.map((item) => ({
+  ...item,
+  certificado: item.certificado === undefined || item.certificado === null
+    ? 0
+    : toNumber(item.certificado, "certificado"),
+}));
 
 validatePayload(payload);
 await writeFile(outputPath, `${JSON.stringify(payload, null, 2)}\n`, "utf8");

@@ -2,7 +2,7 @@ window.BUDGET_VIEWER_PAYLOAD = {
   "meta": {
     "title": "Direcciones - Monto codificado 2026",
     "year": 2026,
-    "updatedAt": "2026-08-20T16:52:55.1927104Z"
+    "updatedAt": "2026-08-20T22:22:29.486Z"
   },
   "items": [
     {
@@ -13,7 +13,8 @@ window.BUDGET_VIEWER_PAYLOAD = {
       "kind": "direccion",
       "initial": 1568931.5,
       "reforma": -247924.97,
-      "codificado": 1321006.53
+      "codificado": 1321006.53,
+      "certificado": 0
     },
     {
       "code": "2026.1.1",
@@ -23,7 +24,8 @@ window.BUDGET_VIEWER_PAYLOAD = {
       "kind": "direccion",
       "initial": 9937557.5,
       "reforma": 475025.7,
-      "codificado": 10412583.2
+      "codificado": 10412583.2,
+      "certificado": 0
     },
     {
       "code": "2026.1.2",
@@ -33,7 +35,8 @@ window.BUDGET_VIEWER_PAYLOAD = {
       "kind": "direccion",
       "initial": 1363638.54,
       "reforma": 558.16,
-      "codificado": 1364196.7
+      "codificado": 1364196.7,
+      "certificado": 0
     },
     {
       "code": "2026.1.3",
@@ -43,7 +46,8 @@ window.BUDGET_VIEWER_PAYLOAD = {
       "kind": "direccion",
       "initial": 2226004.32,
       "reforma": -21550.06,
-      "codificado": 2204454.26
+      "codificado": 2204454.26,
+      "certificado": 0
     },
     {
       "code": "2026.1.4",
@@ -53,7 +57,8 @@ window.BUDGET_VIEWER_PAYLOAD = {
       "kind": "direccion",
       "initial": 460.88,
       "reforma": 0,
-      "codificado": 460.88
+      "codificado": 460.88,
+      "certificado": 85838.98
     },
     {
       "code": "2026.1.5",
@@ -63,7 +68,8 @@ window.BUDGET_VIEWER_PAYLOAD = {
       "kind": "direccion",
       "initial": 95798.59,
       "reforma": 0,
-      "codificado": 95798.59
+      "codificado": 95798.59,
+      "certificado": 0
     },
     {
       "code": "2026.1.6",
@@ -73,7 +79,8 @@ window.BUDGET_VIEWER_PAYLOAD = {
       "kind": "direccion",
       "initial": 1353060.33,
       "reforma": -83787.6,
-      "codificado": 1269272.73
+      "codificado": 1269272.73,
+      "certificado": 0
     },
     {
       "code": "2026.1.7",
@@ -83,7 +90,8 @@ window.BUDGET_VIEWER_PAYLOAD = {
       "kind": "direccion",
       "initial": 1941790.59,
       "reforma": 1159844.02,
-      "codificado": 3101634.61
+      "codificado": 3101634.61,
+      "certificado": 0
     },
     {
       "code": "2026.1.8",
@@ -93,7 +101,8 @@ window.BUDGET_VIEWER_PAYLOAD = {
       "kind": "direccion",
       "initial": 2396456.7,
       "reforma": -454162.46,
-      "codificado": 1942294.24
+      "codificado": 1942294.24,
+      "certificado": 0
     },
     {
       "code": "2026.1.9",
@@ -103,7 +112,8 @@ window.BUDGET_VIEWER_PAYLOAD = {
       "kind": "direccion",
       "initial": 389392.47,
       "reforma": -49643.47,
-      "codificado": 339749
+      "codificado": 339749,
+      "certificado": 0
     },
     {
       "code": "2026.2.1",
@@ -113,7 +123,8 @@ window.BUDGET_VIEWER_PAYLOAD = {
       "kind": "direccion",
       "initial": 3244374.89,
       "reforma": 106199.6,
-      "codificado": 3350574.49
+      "codificado": 3350574.49,
+      "certificado": 0
     },
     {
       "code": "2026.2.4",
@@ -123,7 +134,8 @@ window.BUDGET_VIEWER_PAYLOAD = {
       "kind": "direccion",
       "initial": 3128442.31,
       "reforma": -383413.96,
-      "codificado": 2745028.35
+      "codificado": 2745028.35,
+      "certificado": 0
     },
     {
       "code": "2026.3.1",
@@ -133,7 +145,8 @@ window.BUDGET_VIEWER_PAYLOAD = {
       "kind": "direccion",
       "initial": 2187896.9,
       "reforma": -381902.16,
-      "codificado": 1805994.74
+      "codificado": 1805994.74,
+      "certificado": 0
     },
     {
       "code": "2026.3.2",
@@ -143,7 +156,8 @@ window.BUDGET_VIEWER_PAYLOAD = {
       "kind": "direccion",
       "initial": 5895574.59,
       "reforma": -95791.85,
-      "codificado": 5799782.74
+      "codificado": 5799782.74,
+      "certificado": 0
     },
     {
       "code": "2026.3.3",
@@ -153,7 +167,8 @@ window.BUDGET_VIEWER_PAYLOAD = {
       "kind": "direccion",
       "initial": 11077758.67,
       "reforma": -5726120.6,
-      "codificado": 5351638.07
+      "codificado": 5351638.07,
+      "certificado": 0
     },
     {
       "code": "2026.3.4",
@@ -163,7 +178,8 @@ window.BUDGET_VIEWER_PAYLOAD = {
       "kind": "direccion",
       "initial": 3675723.86,
       "reforma": 331903.84,
-      "codificado": 4007627.7
+      "codificado": 4007627.7,
+      "certificado": 0
     },
     {
       "code": "2026.3.5",
@@ -173,7 +189,8 @@ window.BUDGET_VIEWER_PAYLOAD = {
       "kind": "direccion",
       "initial": 1117603.39,
       "reforma": -203779.56,
-      "codificado": 913823.83
+      "codificado": 913823.83,
+      "certificado": 0
     },
     {
       "code": "2026.3.6",
@@ -183,7 +200,8 @@ window.BUDGET_VIEWER_PAYLOAD = {
       "kind": "direccion",
       "initial": 43333542.54,
       "reforma": -263282.61,
-      "codificado": 43070259.93
+      "codificado": 43070259.93,
+      "certificado": 0
     },
     {
       "code": "2026.3.7",
@@ -193,7 +211,8 @@ window.BUDGET_VIEWER_PAYLOAD = {
       "kind": "direccion",
       "initial": 1925091.3,
       "reforma": -9154.54,
-      "codificado": 1915936.76
+      "codificado": 1915936.76,
+      "certificado": 0
     },
     {
       "code": "2026.3.8",
@@ -204,7 +223,8 @@ window.BUDGET_VIEWER_PAYLOAD = {
       "initial": 555051.56,
       "reforma": 255918.2,
       "codificado": 810969.76,
-      "focus": true
+      "focus": true,
+      "certificado": 0
     },
     {
       "code": "2026.3.9",
@@ -214,7 +234,8 @@ window.BUDGET_VIEWER_PAYLOAD = {
       "kind": "direccion",
       "initial": 1801499.8,
       "reforma": 113531.99,
-      "codificado": 1915031.79
+      "codificado": 1915031.79,
+      "certificado": 0
     },
     {
       "code": "2026.5.1",
@@ -224,7 +245,8 @@ window.BUDGET_VIEWER_PAYLOAD = {
       "kind": "bloque",
       "initial": 1494000,
       "reforma": 0,
-      "codificado": 1494000
+      "codificado": 1494000,
+      "certificado": 0
     },
     {
       "code": "2026.5.2",
@@ -234,7 +256,8 @@ window.BUDGET_VIEWER_PAYLOAD = {
       "kind": "bloque",
       "initial": 5701703.08,
       "reforma": -427197.6,
-      "codificado": 5274505.48
+      "codificado": 5274505.48,
+      "certificado": 0
     }
   ],
   "blockMeta": {

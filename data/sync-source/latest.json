@@ -2,7 +2,7 @@
     "meta":  {
                  "title":  "Direcciones - Monto codificado 2026",
                  "year":  2026,
-                 "updatedAt":  "2026-08-20T16:52:55.1927104Z"
+                 "updatedAt":  "2026-08-20T22:21:09.6082420Z"
              },
     "items":  [
                   {
@@ -53,7 +53,8 @@
                       "kind":  "direccion",
                       "initial":  460.88,
                       "reforma":  0,
-                      "codificado":  460.88
+                      "codificado":  460.88,
+                      "certificado":  85838.98
                   },
                   {
                       "code":  "2026.1.5",

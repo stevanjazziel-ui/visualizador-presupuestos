@@ -44,6 +44,10 @@ function validatePayload(payload) {
       }
     }
 
+    if (item.certificado !== undefined && (typeof item.certificado !== "number" || Number.isNaN(item.certificado))) {
+      throw new Error(`Item ${item.code} has invalid certificado.`);
+    }
+
     if (seenCodes.has(item.code)) {
       throw new Error(`Duplicate item code detected: ${item.code}.`);
     }
