@@ -19,10 +19,12 @@ npm run build
 ## Flujo de datos del visor
 
 - `data/budget-viewer-data.json` es la fuente canonica del visor.
+- `data/sync-source/latest.json` es la ruta fuente simple para publicar datos.
 - `public/published-viewer.html` contiene solo la interfaz.
 - `scripts/build-published-viewer.mjs` genera:
   - `public/budget-viewer-data.js`
   - `public/budget-viewer-data.json`
+  - `public/sync-source/latest.json`
   - `dist/server/index.js`
 - `scripts/sync-budget-viewer-data.mjs` actualiza el archivo canonico desde una
   fuente JSON o CSV.
@@ -31,21 +33,29 @@ npm run build
 
 ## Sincronizacion automatica con GitHub
 
+Ruta simple recomendada:
+
+- actualiza `data/sync-source/latest.json`
+- el workflow de sincronizacion toma esa ruta por defecto
+- el build la publica tambien en:
+  - `/sync-source/latest.json`
+
 El repositorio incluye tres workflows:
 
 - `.github/workflows/validate-viewer.yml`
   - valida el visor en cada `push` y `pull_request`
 - `.github/workflows/sync-budget-viewer.yml`
   - ejecuta sincronizacion diaria y manual
+  - si no hay variable externa, usa `data/sync-source/latest.json`
   - reconstruye los archivos publicos
   - hace commit automatico solo si detecta cambios
 - `.github/workflows/deploy-pages.yml`
   - publica el visor en GitHub Pages cuando haya `push` a `main`
 
-### Variables esperadas en GitHub
+### Variables opcionales en GitHub
 
 - `BUDGET_SYNC_SOURCE`
-  - URL o ruta de la fuente automatica
+  - URL o ruta externa si luego quieres reemplazar la ruta simple interna
 - `BUDGET_SYNC_FORMAT`
   - opcional, por ejemplo `json` o `csv`
 - `BUDGET_SYNC_TOKEN`

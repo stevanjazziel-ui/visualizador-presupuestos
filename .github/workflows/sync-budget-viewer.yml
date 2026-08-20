@@ -21,21 +21,12 @@ jobs:
         with:
           node-version: 22
 
-      - name: Ensure sync source is configured
-        env:
-          BUDGET_SYNC_SOURCE: ${{ vars.BUDGET_SYNC_SOURCE }}
-        run: |
-          if [ -z "$BUDGET_SYNC_SOURCE" ]; then
-            echo "Missing repository variable BUDGET_SYNC_SOURCE."
-            exit 1
-          fi
-
       - name: Synchronize canonical data
         env:
           BUDGET_SYNC_SOURCE: ${{ vars.BUDGET_SYNC_SOURCE }}
           BUDGET_SYNC_FORMAT: ${{ vars.BUDGET_SYNC_FORMAT }}
           BUDGET_SYNC_TOKEN: ${{ secrets.BUDGET_SYNC_TOKEN }}
-        run: node scripts/sync-budget-viewer-data.mjs
+        run: node scripts/sync-budget-viewer-data.mjs --source "${BUDGET_SYNC_SOURCE:-data/sync-source/latest.json}"
 
       - name: Rebuild viewer assets
         run: node scripts/build-published-viewer.mjs

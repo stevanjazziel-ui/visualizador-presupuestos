@@ -41,10 +41,12 @@ jobs:
       - name: Prepare Pages artifact
         run: |
           mkdir -p site
+          mkdir -p site/sync-source
           cp public/published-viewer.html site/index.html
           cp public/published-viewer.html site/published-viewer.html
           cp public/budget-viewer-data.js site/budget-viewer-data.js
           cp public/budget-viewer-data.json site/budget-viewer-data.json
+          cp public/sync-source/latest.json site/sync-source/latest.json
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5

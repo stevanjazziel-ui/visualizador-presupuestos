@@ -8,8 +8,11 @@ const publicDir = path.join(root, "public");
 const distServerDir = path.join(root, "dist", "server");
 const htmlPath = path.join(publicDir, "published-viewer.html");
 const dataPath = path.join(root, "data", "budget-viewer-data.json");
+const syncSourcePath = path.join(root, "data", "sync-source", "latest.json");
 const publicDataJsPath = path.join(publicDir, "budget-viewer-data.js");
 const publicDataJsonPath = path.join(publicDir, "budget-viewer-data.json");
+const publicSyncSourceDir = path.join(publicDir, "sync-source");
+const publicSyncSourceJsonPath = path.join(publicSyncSourceDir, "latest.json");
 const workerPath = path.join(distServerDir, "index.js");
 
 function validatePayload(payload) {
@@ -58,24 +61,30 @@ function toBrowserScript(payload) {
 
 const html = await readFile(htmlPath, "utf8");
 const payload = JSON.parse(await readFile(dataPath, "utf8"));
+const syncSourcePayload = JSON.parse(await readFile(syncSourcePath, "utf8"));
 validatePayload(payload);
+validatePayload(syncSourcePayload);
 
 const browserScript = toBrowserScript(payload);
 const escapedHtml = JSON.stringify(html);
 const escapedBrowserScript = JSON.stringify(browserScript);
 const escapedPublicJson = JSON.stringify(JSON.stringify(payload, null, 2));
+const escapedSyncSourceJson = JSON.stringify(JSON.stringify(syncSourcePayload, null, 2));
 
 await mkdir(publicDir, { recursive: true });
+await mkdir(publicSyncSourceDir, { recursive: true });
 await mkdir(distServerDir, { recursive: true });
 await rm(path.join(root, "dist", "static"), { recursive: true, force: true });
 
 await writeFile(publicDataJsPath, browserScript, "utf8");
 await writeFile(publicDataJsonPath, JSON.stringify(payload, null, 2), "utf8");
+await writeFile(publicSyncSourceJsonPath, JSON.stringify(syncSourcePayload, null, 2), "utf8");
 await writeFile(
   workerPath,
   `const html = ${escapedHtml};
 const browserScript = ${escapedBrowserScript};
 const rawJson = ${escapedPublicJson};
+const syncSourceJson = ${escapedSyncSourceJson};
 
 function withHeaders(body, contentType, status = 200) {
   return new Response(body, {
@@ -99,6 +108,10 @@ export default {
       return withHeaders(rawJson, "application/json; charset=utf-8");
     }
 
+    if (url.pathname === "/sync-source/latest.json") {
+      return withHeaders(syncSourceJson, "application/json; charset=utf-8");
+    }
+
     if (url.pathname === "/" || url.pathname === "/index.html" || url.pathname === "/published-viewer.html") {
       return withHeaders(html, "text/html; charset=utf-8");
     }
@@ -114,6 +127,7 @@ console.log(
   JSON.stringify({
     publicDataJsPath,
     publicDataJsonPath,
+    publicSyncSourceJsonPath,
     workerPath,
   }),
 );
