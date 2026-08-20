@@ -1379,6 +1379,7 @@
           <span class="pill"><strong>Codigo</strong> ${selected.code}</span>
           <span class="pill"><strong>Tipo</strong> ${selected.kind === "bloque" ? "Bloque especial" : "Direccion"}</span>
           <span class="pill"><strong>Bloque</strong> ${blockMeta.label}</span>
+          <span class="pill"><strong>Certificado</strong> ${currency(selected.certificado || 0)}</span>
         `;
       }
 
@@ -1390,14 +1391,14 @@
         const certifiedShare = share(selected.certificado || 0, selected.codificado || 0);
         const cards = [
           {
-            label: "Monto codificado",
-            value: currency(selected.codificado),
-            foot: `${compact(selected.codificado)} del presupuesto consolidado.`
-          },
-          {
             label: "Monto certificado",
             value: currency(selected.certificado || 0),
             foot: `${percent(certifiedShare)} del codificado actual.`
+          },
+          {
+            label: "Monto codificado",
+            value: currency(selected.codificado),
+            foot: `${compact(selected.codificado)} del presupuesto consolidado.`
           },
           {
             label: "Reforma neta",
@@ -1589,7 +1590,8 @@
                 ${selected.kind === "bloque" ? "El bloque" : "La direccion"} parte de un inicial de
                 <strong>${currency(selected.initial)}</strong>, registra una reforma de
                 <strong>${signedCurrency(selected.reforma)}</strong> y termina con un codificado de
-                <strong>${currency(selected.codificado)}</strong>. Pertenece a <strong>${meta.label}</strong>,
+                <strong>${currency(selected.codificado)}</strong>. El monto certificado visible es
+                <strong>${currency(selected.certificado || 0)}</strong>. Pertenece a <strong>${meta.label}</strong>,
                 asociado a ${meta.note.toLowerCase()}
               </p>
             </div>
