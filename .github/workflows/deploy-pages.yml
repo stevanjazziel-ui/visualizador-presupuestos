@@ -1,0 +1,58 @@
+name: Deploy Viewer to GitHub Pages
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Build viewer assets
+        run: node scripts/build-published-viewer.mjs
+
+      - name: Validate generated viewer assets
+        run: node scripts/validate-published-viewer.mjs
+
+      - name: Prepare Pages artifact
+        run: |
+          mkdir -p site
+          cp public/published-viewer.html site/index.html
+          cp public/published-viewer.html site/published-viewer.html
+          cp public/budget-viewer-data.js site/budget-viewer-data.js
+          cp public/budget-viewer-data.json site/budget-viewer-data.json
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

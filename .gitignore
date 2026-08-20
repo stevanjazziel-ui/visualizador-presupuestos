@@ -38,3 +38,7 @@ yarn-error.log*
 /.wrangler/
 /outputs/
 /work/
+
+# local Codex runtime state
+/.codex-browser-runtime/
+/.pnpm-store/

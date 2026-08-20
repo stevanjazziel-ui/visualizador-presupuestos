@@ -1068,39 +1068,17 @@
       </div>
     </div>
 
+    <script src="./budget-viewer-data.js"></script>
     <script>
-      const DATA = [
-        { code: "2026.1.10", name: "Secretaria General", block: "2026.1", tone: "tone-a", kind: "direccion", initial: 1568931.5, reforma: -247924.97, codificado: 1321006.53 },
-        { code: "2026.1.1", name: "Direccion General de Gestion Administrativa", block: "2026.1", tone: "tone-a", kind: "direccion", initial: 9937557.5, reforma: 475025.7, codificado: 10412583.2 },
-        { code: "2026.1.2", name: "Direccion General de Gestion Financiera", block: "2026.1", tone: "tone-a", kind: "direccion", initial: 1363638.54, reforma: 558.16, codificado: 1364196.7 },
-        { code: "2026.1.3", name: "Direccion General de Gestion de Justicia y Control Municipal", block: "2026.1", tone: "tone-a", kind: "direccion", initial: 2226004.32, reforma: -21550.06, codificado: 2204454.26 },
-        { code: "2026.1.4", name: "Procuraduria", block: "2026.1", tone: "tone-a", kind: "direccion", initial: 460881.42, reforma: 0, codificado: 460881.42 },
-        { code: "2026.1.5", name: "Direccion de Auditoria Interna (CGE)", block: "2026.1", tone: "tone-a", kind: "direccion", initial: 95798.59, reforma: 0, codificado: 95798.59 },
-        { code: "2026.1.6", name: "Direccion General de Gestion de la Comunicacion", block: "2026.1", tone: "tone-a", kind: "direccion", initial: 1353060.33, reforma: -83787.6, codificado: 1269272.73 },
-        { code: "2026.1.7", name: "Direccion General de Gestion de Talento Humano", block: "2026.1", tone: "tone-a", kind: "direccion", initial: 1941790.59, reforma: 1159844.02, codificado: 3101634.61 },
-        { code: "2026.1.8", name: "Direccion General de Gestion de Tecnologias de la Informacion y Comunicacion", block: "2026.1", tone: "tone-a", kind: "direccion", initial: 2396456.7, reforma: -454162.46, codificado: 1942294.24 },
-        { code: "2026.1.9", name: "Concejos y Juntas", block: "2026.1", tone: "tone-a", kind: "direccion", initial: 389392.47, reforma: -49643.47, codificado: 339749 },
-        { code: "2026.2.1", name: "Direccion General de Gestion de Cultura, Deportes, Artes y Conocimiento", block: "2026.2", tone: "tone-b", kind: "direccion", initial: 3244374.89, reforma: 106199.6, codificado: 3350574.49 },
-        { code: "2026.2.4", name: "Direccion General de Gestion de Desarrollo Social e Inclusion", block: "2026.2", tone: "tone-b", kind: "direccion", initial: 3128442.31, reforma: -383413.96, codificado: 2745028.35 },
-        { code: "2026.3.1", name: "Direccion General de Gestion de Planificacion, Habitat y Desarrollo Urbanistico", block: "2026.3", tone: "tone-c", kind: "direccion", initial: 2187896.9, reforma: -381902.16, codificado: 1805994.74 },
-        { code: "2026.3.2", name: "Direccion General de Gestion Ambiental", block: "2026.3", tone: "tone-c", kind: "direccion", initial: 5895574.59, reforma: -95791.85, codificado: 5799782.74 },
-        { code: "2026.3.3", name: "Direccion General de Gestion de Movilidad", block: "2026.3", tone: "tone-c", kind: "direccion", initial: 11077758.67, reforma: -5726120.6, codificado: 5351638.07 },
-        { code: "2026.3.4", name: "Direccion General de Gestion de Desarrollo Economico y Turismo", block: "2026.3", tone: "tone-c", kind: "direccion", initial: 3675723.86, reforma: 331903.84, codificado: 4007627.7 },
-        { code: "2026.3.5", name: "Direccion General de Gestion Estrategica", block: "2026.3", tone: "tone-c", kind: "direccion", initial: 1117603.39, reforma: -203779.56, codificado: 913823.83 },
-        { code: "2026.3.6", name: "Direccion General de Gestion de Obras Publicas", block: "2026.3", tone: "tone-c", kind: "direccion", initial: 43333542.54, reforma: -263282.61, codificado: 43070259.93 },
-        { code: "2026.3.7", name: "Registro de la Propiedad", block: "2026.3", tone: "tone-c", kind: "direccion", initial: 1925091.3, reforma: -9154.54, codificado: 1915936.76 },
-        { code: "2026.3.8", name: "Direccion General de Gestion de Avaluos y Catastros y SIG", block: "2026.3", tone: "tone-c", kind: "direccion", initial: 555051.56, reforma: 255918.2, codificado: 810969.76, focus: true },
-        { code: "2026.3.9", name: "Direccion General de Gestion de Patrimonio", block: "2026.3", tone: "tone-c", kind: "direccion", initial: 1801499.8, reforma: 113531.99, codificado: 1915031.79 },
-        { code: "2026.5.1", name: "Gastos Comunes de la Entidad", block: "2026.5", tone: "tone-d", kind: "bloque", initial: 1494000, reforma: 0, codificado: 1494000 },
-        { code: "2026.5.2", name: "Servicio de la Deuda", block: "2026.5", tone: "tone-d", kind: "bloque", initial: 5701703.08, reforma: -427197.6, codificado: 5274505.48 }
-      ];
+      const VIEWER_PAYLOAD = window.BUDGET_VIEWER_PAYLOAD || {};
+      const DATA = Array.isArray(VIEWER_PAYLOAD.items) ? VIEWER_PAYLOAD.items : [];
+      const BLOCK_META = VIEWER_PAYLOAD.blockMeta && typeof VIEWER_PAYLOAD.blockMeta === "object"
+        ? VIEWER_PAYLOAD.blockMeta
+        : {};
 
-      const BLOCK_META = {
-        "2026.1": { label: "Bloque 2026.1", note: "Gestion institucional y soporte.", tone: "tone-a" },
-        "2026.2": { label: "Bloque 2026.2", note: "Cultura y desarrollo social.", tone: "tone-b" },
-        "2026.3": { label: "Bloque 2026.3", note: "Territorio, ambiente, movilidad y patrimonio.", tone: "tone-c" },
-        "2026.5": { label: "Bloque 2026.5", note: "Gastos comunes y deuda.", tone: "tone-d" }
-      };
+      if (VIEWER_PAYLOAD.meta?.title) {
+        document.title = VIEWER_PAYLOAD.meta.title;
+      }
 
       const TONES = {
         "tone-a": { strong: "#1e6f85", soft: "#d9edf3", muted: "#78a7b7", text: "#114758" },

@@ -1,8 +1,8 @@
-# vinext-starter
+# Visualizador presupuestario
 
-A clean full-stack starter running on
-[vinext](https://github.com/cloudflare/vinext), with optional Cloudflare D1 and
-Drizzle support.
+Visor estatico para presentar montos presupuestarios por direccion y bloque,
+construido sobre [vinext](https://github.com/cloudflare/vinext) para publicarse
+facilmente tanto en Sites como en GitHub Pages.
 
 ## Prerequisites
 
@@ -14,6 +14,49 @@ Drizzle support.
 npm install
 npm run dev
 npm run build
+```
+
+## Flujo de datos del visor
+
+- `data/budget-viewer-data.json` es la fuente canonica del visor.
+- `public/published-viewer.html` contiene solo la interfaz.
+- `scripts/build-published-viewer.mjs` genera:
+  - `public/budget-viewer-data.js`
+  - `public/budget-viewer-data.json`
+  - `dist/server/index.js`
+- `scripts/sync-budget-viewer-data.mjs` actualiza el archivo canonico desde una
+  fuente JSON o CSV.
+- `scripts/validate-published-viewer.mjs` valida que el visor generado quede
+  consistente.
+
+## Sincronizacion automatica con GitHub
+
+El repositorio incluye tres workflows:
+
+- `.github/workflows/validate-viewer.yml`
+  - valida el visor en cada `push` y `pull_request`
+- `.github/workflows/sync-budget-viewer.yml`
+  - ejecuta sincronizacion diaria y manual
+  - reconstruye los archivos publicos
+  - hace commit automatico solo si detecta cambios
+- `.github/workflows/deploy-pages.yml`
+  - publica el visor en GitHub Pages cuando haya `push` a `main`
+
+### Variables esperadas en GitHub
+
+- `BUDGET_SYNC_SOURCE`
+  - URL o ruta de la fuente automatica
+- `BUDGET_SYNC_FORMAT`
+  - opcional, por ejemplo `json` o `csv`
+- `BUDGET_SYNC_TOKEN`
+  - secreto opcional si la fuente necesita autenticacion Bearer
+
+## Ejemplos de sincronizacion local
+
+```bash
+node scripts/sync-budget-viewer-data.mjs --source data/budget-viewer-data.json
+node scripts/build-published-viewer.mjs
+node scripts/validate-published-viewer.mjs
 ```
 
 This starter does not use `wrangler.jsonc`.

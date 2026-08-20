@@ -1,0 +1,56 @@
+name: Sync Budget Viewer Data
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 11 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Ensure sync source is configured
+        env:
+          BUDGET_SYNC_SOURCE: ${{ vars.BUDGET_SYNC_SOURCE }}
+        run: |
+          if [ -z "$BUDGET_SYNC_SOURCE" ]; then
+            echo "Missing repository variable BUDGET_SYNC_SOURCE."
+            exit 1
+          fi
+
+      - name: Synchronize canonical data
+        env:
+          BUDGET_SYNC_SOURCE: ${{ vars.BUDGET_SYNC_SOURCE }}
+          BUDGET_SYNC_FORMAT: ${{ vars.BUDGET_SYNC_FORMAT }}
+          BUDGET_SYNC_TOKEN: ${{ secrets.BUDGET_SYNC_TOKEN }}
+        run: node scripts/sync-budget-viewer-data.mjs
+
+      - name: Rebuild viewer assets
+        run: node scripts/build-published-viewer.mjs
+
+      - name: Validate generated viewer assets
+        run: node scripts/validate-published-viewer.mjs
+
+      - name: Commit synchronized changes
+        run: |
+          if git diff --quiet; then
+            echo "No synchronized changes detected."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/budget-viewer-data.json public/budget-viewer-data.js public/budget-viewer-data.json
+          git commit -m "chore: sync budget viewer data"
+          git push
