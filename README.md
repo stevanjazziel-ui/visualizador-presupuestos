@@ -39,6 +39,12 @@ Ruta simple recomendada:
 - el workflow de sincronizacion toma esa ruta por defecto
 - el build la publica tambien en:
   - `/sync-source/latest.json`
+- para traer datos reales desde exportes del financiero en Windows:
+  - `powershell -ExecutionPolicy Bypass -File .\scripts\import-financiero-exports.ps1`
+  - `powershell -ExecutionPolicy Bypass -File .\scripts\import-financiero-exports.ps1 -Publish`
+  - automatizacion local diaria:
+    - `powershell -ExecutionPolicy Bypass -File .\scripts\run-financiero-sync.ps1`
+    - logs en `logs/financiero-sync-*.log`
 
 El repositorio incluye tres workflows:
 

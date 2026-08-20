@@ -42,3 +42,4 @@ yarn-error.log*
 # local Codex runtime state
 /.codex-browser-runtime/
 /.pnpm-store/
+/logs/

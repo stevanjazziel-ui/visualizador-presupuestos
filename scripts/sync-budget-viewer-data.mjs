@@ -115,11 +115,23 @@ function normalizePayload(payload, fallbackPayload) {
     throw new Error("The synchronized payload returned no items.");
   }
 
+  const previousComparable = JSON.stringify({
+    items: fallbackPayload?.items || [],
+    blockMeta: fallbackPayload?.blockMeta || {},
+  });
+  const nextComparable = JSON.stringify({
+    items,
+    blockMeta,
+  });
+  const dataChanged = previousComparable !== nextComparable;
+
   return {
     meta: {
       title: normalized.meta?.title || baseMeta.title || "Direcciones - Monto codificado",
       year: normalized.meta?.year || baseMeta.year || new Date().getUTCFullYear(),
-      updatedAt: new Date().toISOString()
+      updatedAt: dataChanged
+        ? new Date().toISOString()
+        : (normalized.meta?.updatedAt || baseMeta.updatedAt || new Date().toISOString())
     },
     items,
     blockMeta
