@@ -2,7 +2,7 @@ window.BUDGET_VIEWER_PAYLOAD = {
   "meta": {
     "title": "Direcciones - Monto codificado 2026",
     "year": 2026,
-    "updatedAt": "2026-08-20T16:35:10.465Z"
+    "updatedAt": "2026-08-20T16:44:54.661Z"
   },
   "items": [
     {
@@ -51,9 +51,9 @@ window.BUDGET_VIEWER_PAYLOAD = {
       "block": "2026.1",
       "tone": "tone-a",
       "kind": "direccion",
-      "initial": 460881.42,
+      "initial": 460.88,
       "reforma": 0,
-      "codificado": 460881.42
+      "codificado": 460.88
     },
     {
       "code": "2026.1.5",
