@@ -1387,11 +1387,17 @@
         const rank = ranking.findIndex((item) => item.code === selected.code) + 1;
         const shareTotal = share(selected.codificado, totalCodificado);
         const relativeToLeader = share(selected.codificado, ranking[0].codificado);
+        const certifiedShare = share(selected.certificado || 0, selected.codificado || 0);
         const cards = [
           {
             label: "Monto codificado",
             value: currency(selected.codificado),
             foot: `${compact(selected.codificado)} del presupuesto consolidado.`
+          },
+          {
+            label: "Monto certificado",
+            value: currency(selected.certificado || 0),
+            foot: `${percent(certifiedShare)} del codificado actual.`
           },
           {
             label: "Reforma neta",
@@ -1432,6 +1438,7 @@
         const blockRank = blockItems.findIndex((item) => item.code === selected.code) + 1;
         const blockShare = share(selected.codificado, blockStats[selected.block].codificado);
         const totalShare = share(selected.codificado, totalCodificado);
+        const certifiedShare = share(selected.certificado || 0, selected.codificado || 0);
         const ratio = selected.initial ? (selected.codificado / selected.initial) * 100 : 0;
         const tones = toneFor(selected);
         const equalBlockShare = 100 / blockItems.length;
@@ -1462,6 +1469,11 @@
             value: signedCurrency(selected.reforma),
             note: selected.reforma > 0 ? "El ajuste mueve el cierre al alza." : selected.reforma < 0 ? "El ajuste reduce la base de cierre." : "No hay variacion neta en este corte.",
             className: reformClass
+          },
+          {
+            label: "Monto certificado",
+            value: currency(selected.certificado || 0),
+            note: `${percent(certifiedShare)} del codificado ya fue certificado.`
           }
         ]
           .map(
@@ -1566,6 +1578,7 @@
         const totalShare = share(selected.codificado, totalCodificado);
         const relativeToMax = share(selected.codificado, maxCodificado);
         const reformShare = share(Math.abs(selected.reforma), maxReformaAbs);
+        const certifiedShare = share(selected.certificado || 0, selected.codificado || 0);
 
         focusCard.innerHTML = `
           <div class="focus-head">
@@ -1588,6 +1601,11 @@
               <div class="focus-stat-label">Inicial</div>
               <div class="focus-stat-value">${currency(selected.initial)}</div>
               <div class="focus-stat-foot">Base presupuestaria de partida.</div>
+            </article>
+            <article class="focus-stat">
+              <div class="focus-stat-label">Certificado</div>
+              <div class="focus-stat-value">${currency(selected.certificado || 0)}</div>
+              <div class="focus-stat-foot">${percent(certifiedShare)} del codificado actual.</div>
             </article>
             <article class="focus-stat">
               <div class="focus-stat-label">Reforma</div>
