@@ -1217,10 +1217,11 @@
       }
 
       function recomputeState() {
-        totalCodificado = DATA.reduce((sum, item) => sum + item.codificado, 0);
-        totalCertificado = DATA.reduce((sum, item) => sum + (item.certificado || 0), 0);
-        totalInicial = DATA.reduce((sum, item) => sum + item.initial, 0);
-        totalReforma = DATA.reduce((sum, item) => sum + item.reforma, 0);
+        const budgetUniverse = DATA.filter((item) => item.kind === "direccion");
+        totalCodificado = budgetUniverse.reduce((sum, item) => sum + item.codificado, 0);
+        totalCertificado = budgetUniverse.reduce((sum, item) => sum + (item.certificado || 0), 0);
+        totalInicial = budgetUniverse.reduce((sum, item) => sum + item.initial, 0);
+        totalReforma = budgetUniverse.reduce((sum, item) => sum + item.reforma, 0);
         maxCodificado = Math.max(...DATA.map((item) => item.codificado), 0);
         maxReformaAbs = Math.max(...DATA.map((item) => Math.abs(item.reforma)), 0);
         blockStats = Object.fromEntries(
