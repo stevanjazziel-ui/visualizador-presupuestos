@@ -144,7 +144,7 @@ $rowsResponse = Invoke-RestMethod `
   -Body $searchPayload
 
 $rows = @($rowsResponse.result) | Where-Object {
-  $_.type -eq "expense" -and $_.code -match '^\d{2}\.\d{2}\.\d{2}\.\d{4}\.\d+\.\d+(?:\.\d+){5}$'
+  $_.type -eq "expense" -and $_.code -match '^\d{2}\.\d{2}\.\d{2}\.\d{4}\.\d+\.\d+(?:\.\d+){4,5}$'
 } | ForEach-Object {
   [ordered]@{
     code = [string]$_.code

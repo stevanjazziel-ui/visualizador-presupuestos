@@ -26,7 +26,7 @@ function parseArgs(argv) {
 }
 
 function isLongCode(code) {
-  return /^\d{2}\.\d{2}\.\d{2}\.\d{4}\.\d+\.\d+(?:\.\d+){5}$/.test(code);
+  return /^\d{2}\.\d{2}\.\d{2}\.\d{4}\.\d+\.\d+(?:\.\d+){4,5}$/.test(code);
 }
 
 function parseNumber(value) {
@@ -98,7 +98,7 @@ async function readVisibleState(tab) {
         accrued_pending: cells[18] ?? "",
         executed_pending: cells[19] ?? "",
       }))
-      .filter((row) => /^\d{2}\.\d{2}\.\d{2}\.\d{4}\.\d+\.\d+(?:\.\d+){5}$/.test(row.code));
+      .filter((row) => /^\d{2}\.\d{2}\.\d{2}\.\d{4}\.\d+\.\d+(?:\.\d+){4,5}$/.test(row.code));
 
     return { badge, rows };
   });
