@@ -1012,8 +1012,7 @@
               <div class="select-wrap">
                 <select id="directionSelect" aria-label="Escoger direccion o bloque"></select>
               </div>
-              <button id="refreshButton" class="refresh-button" type="button">Recargar publicacion</button>
-              <button id="syncButton" class="refresh-button" type="button">Sincronizar fuente</button>
+              <button id="refreshButton" class="refresh-button" type="button">Actualizar informacion</button>
             </div>
             <div id="refreshStatus" class="refresh-status" aria-live="polite"></div>
             <div id="selectorMeta" class="selector-meta"></div>
@@ -1185,9 +1184,7 @@
       const directionSelect = document.getElementById("directionSelect");
       const selectorMeta = document.getElementById("selectorMeta");
       const refreshButton = document.getElementById("refreshButton");
-      const syncButton = document.getElementById("syncButton");
       const refreshStatus = document.getElementById("refreshStatus");
-      const SYNC_WORKFLOW_URL = "https://github.com/stevanjazziel-ui/visualizador-presupuestos/actions/workflows/sync-budget-viewer.yml";
       const summaryGrid = document.getElementById("summaryGrid");
       const generalGrid = document.getElementById("generalGrid");
       const executiveKpis = document.getElementById("executiveKpis");
@@ -2042,7 +2039,7 @@
       async function refreshPublishedData() {
         const selectedCode = directionSelect.value || getSelectedItem()?.code || null;
         refreshButton.disabled = true;
-        refreshButton.textContent = "Recargando...";
+        refreshButton.textContent = "Actualizando...";
         setRefreshStatus("Consultando la publicacion mas reciente...");
 
         try {
@@ -2071,13 +2068,8 @@
           setRefreshStatus(error.message || "No se pudo actualizar la informacion.", "error");
         } finally {
           refreshButton.disabled = false;
-          refreshButton.textContent = "Recargar publicacion";
+          refreshButton.textContent = "Actualizar informacion";
         }
-      }
-
-      function openSyncWorkflow() {
-        window.open(SYNC_WORKFLOW_URL, "_blank", "noopener,noreferrer");
-        setRefreshStatus("Se abrio la pagina de sincronizacion manual. Cuando termine, usa 'Recargar publicacion'.", "success");
       }
 
       function render() {
@@ -2106,7 +2098,6 @@
       buildOptions();
       directionSelect.addEventListener("change", render);
       refreshButton.addEventListener("click", refreshPublishedData);
-      syncButton.addEventListener("click", openSyncWorkflow);
       window.addEventListener("hashchange", () => {
         const hashCode = getSelectionFromHash();
         if (hashCode && DATA.some((item) => item.code === hashCode)) {
