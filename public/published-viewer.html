@@ -1193,7 +1193,7 @@
             </div>
             <div class="selector-controls">
               <div class="select-wrap">
-                <select id="directionSelect" aria-label="Escoger direccion o bloque"></select>
+                <select id="directionSelect" aria-label="Escoger direccion o funcion"></select>
               </div>
               <button id="refreshButton" class="refresh-button" type="button">Actualizar informacion</button>
             </div>
@@ -1224,7 +1224,7 @@
                 <div class="section-kicker">Comparacion general</div>
                 <h2>Ranking por monto codificado</h2>
               </div>
-              <p class="chart-note">Todas las direcciones y bloques ordenados de mayor a menor, con la seleccion resaltada.</p>
+              <p class="chart-note">Todas las direcciones y funciones ordenadas de mayor a menor, con la seleccion resaltada.</p>
             </div>
             <div class="legend">
               <span class="legend-item"><span class="legend-dot" style="background:#334155;"></span> Seleccion actual</span>
@@ -1237,10 +1237,10 @@
           <section class="chart-card panel">
             <div class="chart-head">
               <div>
-                <div class="section-kicker">Dentro del bloque</div>
+                <div class="section-kicker">Dentro de la función</div>
                 <h2>Comparacion con su mismo entorno</h2>
               </div>
-              <p class="chart-note">Asi se ubica la seleccion frente a las otras direcciones del mismo bloque programatico.</p>
+              <p class="chart-note">Asi se ubica la seleccion frente a las otras direcciones de la misma función programatica.</p>
             </div>
             <div id="blockChart" class="chart-scroll short"></div>
             <p id="blockFooter" class="chart-footer"></p>
@@ -1493,17 +1493,17 @@
           {
             label: "Codificado total",
             value: currency(totalCodificado),
-            note: "Suma de direcciones mas el bloque especial 2026.5."
+            note: "Suma de direcciones mas la función especial 2026.5."
           },
           {
             label: "Certificado total",
             value: currency(totalCertificado),
-            note: "Monto certificado de direcciones mas el bloque especial 2026.5."
+            note: "Monto certificado de direcciones mas la función especial 2026.5."
           },
           {
             label: "Inicial total",
             value: currency(totalInicial),
-            note: "Base presupuestaria de direcciones mas el bloque especial 2026.5."
+            note: "Base presupuestaria de direcciones mas la función especial 2026.5."
           },
           {
             label: "Reforma neta acumulada",
@@ -1514,7 +1514,7 @@
           {
             label: "Direcciones visibles",
             value: `${directionCount}`,
-            note: `${specialBlockCount} registros especiales del bloque 2026.5 completan el universo consultado.`
+            note: `${specialBlockCount} registros especiales de la función 2026.5 completan el universo consultado.`
           }
         ];
 
@@ -1553,8 +1553,8 @@
         const blockMeta = BLOCK_META[selected.block];
         selectorMeta.innerHTML = `
           <span class="pill"><strong>Codigo</strong> ${selected.code}</span>
-          <span class="pill"><strong>Tipo</strong> ${selected.kind === "bloque" ? "Bloque especial" : "Direccion"}</span>
-          <span class="pill"><strong>Bloque</strong> ${blockMeta.label}</span>
+          <span class="pill"><strong>Tipo</strong> ${selected.kind === "bloque" ? "Función especial" : "Direccion"}</span>
+          <span class="pill"><strong>Función</strong> ${blockMeta.label}</span>
           <span class="pill"><strong>Certificado</strong> ${currency(selected.certificado || 0)}</span>
         `;
       }
@@ -1608,9 +1608,9 @@
             note: `Se ordena frente a ${ranking.length} registros por monto codificado.`
           },
           {
-            label: "Puesto en bloque",
+            label: "Puesto en función",
             value: `#${blockRank}`,
-            note: `${selected.kind === "bloque" ? "Comparado dentro del bloque especial." : `Ubicacion interna dentro de ${meta.label}.`}`
+            note: `${selected.kind === "bloque" ? "Comparado dentro de la función especial." : `Ubicacion interna dentro de ${meta.label}.`}`
           },
           {
             label: "Reforma neta",
@@ -1672,7 +1672,7 @@
             <p class="executive-visual-copy">Estas barras muestran cuanto pesa la seleccion y contra que referencia conviene leerla.</p>
             <div class="compare-stack">
               ${comparisonRow({
-                label: "Participacion en el bloque",
+                label: "Participacion en la función",
                 valueLabel: percent(blockShare),
                 fillPercent: blockShare,
                 markerPercent: equalBlockShare,
@@ -1688,7 +1688,7 @@
                 fill: "linear-gradient(90deg, #24415f, #4c6d8c)"
               })}
               ${comparisonRow({
-                label: "Cercania con el lider del bloque",
+                label: "Cercania con el lider de la función",
                 valueLabel: percent(leaderProximity),
                 fillPercent: leaderProximity,
                 markerPercent: 100,
@@ -1697,7 +1697,7 @@
               })}
             </div>
             <div class="compare-badges">
-              ${comparisonBadge("Referencia del bloque", meta.label)}
+              ${comparisonBadge("Referencia de la función", meta.label)}
               ${comparisonBadge("Lider interno", currency(blockLeader.codificado))}
             </div>
           </article>
@@ -1734,7 +1734,7 @@
               <div class="section-kicker">Ficha enfocada</div>
               <h2 class="focus-title">${escapeHtml(selected.name)}</h2>
               <p class="focus-copy">
-                ${selected.kind === "bloque" ? "El bloque" : "La direccion"} parte de un inicial de
+                ${selected.kind === "bloque" ? "La función" : "La direccion"} parte de un inicial de
                 <strong>${currency(financials.initial)}</strong>, registra una reforma de
                 <strong>${signedCurrency(selected.reforma)}</strong> y termina con un codificado de
                 <strong>${currency(financials.codificado)}</strong>. El monto certificado visible es
@@ -1742,7 +1742,7 @@
                 asociado a ${meta.note.toLowerCase()}
               </p>
             </div>
-            <span class="focus-badge" style="background:${tones.strong};">${selected.kind === "bloque" ? "Bloque" : "Direccion"}</span>
+            <span class="focus-badge" style="background:${tones.strong};">${selected.kind === "bloque" ? "Función" : "Direccion"}</span>
           </div>
 
           <div class="focus-grid">
@@ -1860,14 +1860,14 @@
                 <rect x="${barX}" y="${top + index * rowH - 12}" width="${barW}" height="16" rx="8" fill="#e8edf2"></rect>
                 <rect x="${barX}" y="${top + index * rowH - 12}" width="${Math.max(10, barWidth)}" height="16" rx="8" fill="${fill}"></rect>
                 <text x="${valueX}" y="${top + index * rowH + 2}" font-size="13" font-weight="700" fill="#172432">${escapeHtml(currency(item.codificado))}</text>
-                <text x="${valueX}" y="${top + index * rowH + 16}" font-size="11" fill="#64748b">${percent(share(item.codificado, blockStats[selected.block].codificado))} del bloque</text>
+                <text x="${valueX}" y="${top + index * rowH + 16}" font-size="11" fill="#64748b">${percent(share(item.codificado, blockStats[selected.block].codificado))} de la función</text>
               </g>
             `;
           })
           .join("");
 
         return `
-          <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Comparacion dentro del bloque">
+          <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Comparacion dentro de la función">
             <text x="24" y="18" font-size="12" font-weight="700" fill="${tones.text}">${BLOCK_META[selected.block].label} | ${items.length} registros</text>
             ${rows}
           </svg>
@@ -1929,7 +1929,7 @@
           <div class="section-kicker">Lectura guiada</div>
           <h2>Que dice esta seleccion</h2>
           <p class="info-copy">
-            Esta tarjeta convierte el dato en contexto: posicion, cercania con vecinos del ranking y peso dentro del bloque.
+            Esta tarjeta convierte el dato en contexto: posicion, cercania con vecinos del ranking y peso dentro de la función.
           </p>
 
           <ul class="info-list">
@@ -1939,7 +1939,7 @@
             </li>
             <li class="info-item">
               <strong>Dentro de ${BLOCK_META[selected.block].label}</strong>
-              <span>Aporta ${percent(blockShare)} del bloque y se ubica sobre ${blockItems.length - (blockItems.findIndex((item) => item.code === selected.code) + 1)} registros del mismo grupo.</span>
+              <span>Aporta ${percent(blockShare)} de la función y se ubica sobre ${blockItems.length - (blockItems.findIndex((item) => item.code === selected.code) + 1)} registros del mismo grupo.</span>
             </li>
             <li class="info-item">
               <strong>Brecha inmediata</strong>
@@ -1961,7 +1961,7 @@
             </li>
           </ul>
 
-          <div class="mini-head">Top del bloque seleccionado</div>
+          <div class="mini-head">Top de la función seleccionada</div>
           <ul class="mini-list">
             ${topThree
               .map(
@@ -2017,8 +2017,8 @@
               <span>La mayor subida la tiene ${escapeHtml(shorten(biggestIncrease.name, 30))} con ${signedCurrency(biggestIncrease.reforma)}. El mayor recorte corresponde a ${escapeHtml(shorten(biggestDrop.name, 30))} con ${signedCurrency(biggestDrop.reforma)}.</span>
             </li>
             <li class="alert-item">
-              <strong>Promedio del bloque</strong>
-              <span>${selected.kind === "bloque" ? "Al tratarse de un bloque especial, la comparacion mas util sigue siendo contra el total municipal." : deviation >= 0 ? `La seleccion esta por encima del promedio de ${BLOCK_META[selected.block].label} por ${currency(deviationAbs)}.` : `La seleccion esta por debajo del promedio de ${BLOCK_META[selected.block].label} por ${currency(deviationAbs)}.`}</span>
+              <strong>Promedio de la función</strong>
+              <span>${selected.kind === "bloque" ? "Al tratarse de una función especial, la comparacion mas util sigue siendo contra el total municipal." : deviation >= 0 ? `La seleccion esta por encima del promedio de ${BLOCK_META[selected.block].label} por ${currency(deviationAbs)}.` : `La seleccion esta por debajo del promedio de ${BLOCK_META[selected.block].label} por ${currency(deviationAbs)}.`}</span>
             </li>
             <li class="alert-item">
               <strong>Variacion frente al inicial</strong>
