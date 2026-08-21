@@ -1735,37 +1735,37 @@
 
           <div class="focus-grid">
             <article class="focus-stat">
-              <div class="focus-stat-label">Inicial</div>
+              <div class="focus-stat-label">Monto inicial</div>
               <div class="focus-stat-value">${currency(financials.initial)}</div>
               <div class="focus-stat-foot">Base presupuestaria de partida.</div>
             </article>
             <article class="focus-stat">
-              <div class="focus-stat-label">Certificado</div>
+              <div class="focus-stat-label">Monto certificado</div>
               <div class="focus-stat-value">${currency(financials.certificado)}</div>
               <div class="focus-stat-foot">${percent(certifiedShare)} del codificado actual.</div>
             </article>
             <article class="focus-stat">
-              <div class="focus-stat-label">Reforma</div>
+              <div class="focus-stat-label">Cantidad reformada</div>
               <div class="focus-stat-value ${selected.reforma > 0 ? "positive" : selected.reforma < 0 ? "negative" : ""}">${signedCurrency(selected.reforma)}</div>
               <div class="focus-stat-foot">${selected.reforma >= 0 ? "La asignacion crece." : "La asignacion se recorta."}</div>
             </article>
             <article class="focus-stat">
-              <div class="focus-stat-label">Codificado final</div>
+              <div class="focus-stat-label">Monto codificado</div>
               <div class="focus-stat-value">${currency(financials.codificado)}</div>
               <div class="focus-stat-foot">Puesto #${overallRank} en el ranking consolidado.</div>
             </article>
             <article class="focus-stat">
-              <div class="focus-stat-label">Comprometido</div>
+              <div class="focus-stat-label">Monto comprometido</div>
               <div class="focus-stat-value">${currency(financials.comprometido)}</div>
               <div class="focus-stat-foot">Valor comprometido del corte.</div>
             </article>
             <article class="focus-stat">
-              <div class="focus-stat-label">Devengado</div>
+              <div class="focus-stat-label">Monto devengado</div>
               <div class="focus-stat-value">${currency(financials.devengado)}</div>
               <div class="focus-stat-foot">Valor devengado visible.</div>
             </article>
             <article class="focus-stat">
-              <div class="focus-stat-label">Ejecutado</div>
+              <div class="focus-stat-label">Monto ejecutado</div>
               <div class="focus-stat-value">${currency(financials.ejecutado)}</div>
               <div class="focus-stat-foot">Valor ejecutado del registro.</div>
             </article>
