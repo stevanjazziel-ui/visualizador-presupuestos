@@ -38,13 +38,39 @@ $loginHtmlPath = Join-Path $env:TEMP "financiero-cas-login.html"
 $headersPath = Join-Path $env:TEMP "financiero-cas-headers.txt"
 $authHtmlPath = Join-Path $env:TEMP "financiero-cas-auth.html"
 
+function Invoke-CurlChecked {
+  param(
+    [string[]]$Arguments,
+    [string]$ExpectedOutputPath = ""
+  )
+
+  & curl.exe @Arguments
+  if ($LASTEXITCODE -ne 0) {
+    throw "curl.exe fallo con codigo $LASTEXITCODE al consultar CAS."
+  }
+
+  if (-not [string]::IsNullOrWhiteSpace($ExpectedOutputPath) -and -not (Test-Path -LiteralPath $ExpectedOutputPath)) {
+    throw "curl.exe finalizo sin generar el archivo esperado: $ExpectedOutputPath"
+  }
+}
+
 foreach ($tempPath in @($cookieJarPath, $loginHtmlPath, $headersPath, $authHtmlPath)) {
   if (Test-Path -LiteralPath $tempPath) {
     Remove-Item -LiteralPath $tempPath -Force -ErrorAction SilentlyContinue
   }
 }
 
-curl.exe -s -L -c $cookieJarPath -b $cookieJarPath $casLoginUrl -o $loginHtmlPath | Out-Null
+Invoke-CurlChecked -Arguments @(
+  "-f",
+  "-sS",
+  "-L",
+  "-A", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+  "-H", "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+  "-c", $cookieJarPath,
+  "-b", $cookieJarPath,
+  $casLoginUrl,
+  "-o", $loginHtmlPath
+) -ExpectedOutputPath $loginHtmlPath
 $loginPage = Get-Content -LiteralPath $loginHtmlPath -Raw
 $executionMatch = [regex]::Match($loginPage, 'name="execution"[^>]*value="([^"]+)"')
 if (-not $executionMatch.Success) {
@@ -52,7 +78,19 @@ if (-not $executionMatch.Success) {
 }
 
 $formBody = "username=$([uri]::EscapeDataString($Username))&password=$([uri]::EscapeDataString($Password))&execution=$([uri]::EscapeDataString($executionMatch.Groups[1].Value))&_eventId=submit&geolocation="
-curl.exe -s -D $headersPath -L -c $cookieJarPath -b $cookieJarPath -H "Content-Type: application/x-www-form-urlencoded" --data $formBody $casLoginUrl -o $authHtmlPath | Out-Null
+Invoke-CurlChecked -Arguments @(
+  "-f",
+  "-sS",
+  "-D", $headersPath,
+  "-L",
+  "-A", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+  "-c", $cookieJarPath,
+  "-b", $cookieJarPath,
+  "-H", "Content-Type: application/x-www-form-urlencoded",
+  "--data", $formBody,
+  $casLoginUrl,
+  "-o", $authHtmlPath
+) -ExpectedOutputPath $authHtmlPath
 
 $headersRaw = Get-Content -LiteralPath $headersPath -Raw
 $ticketMatch = [regex]::Match($headersRaw, 'Location:\s+https://egobfinanciero\.gadmriobamba\.gob\.ec:8000/\?ticket=([^ \r\n]+)')

@@ -79,6 +79,21 @@ async function runLocalCasSync() {
   ]);
 }
 
+async function runBrowserScrapeSync({ publish }) {
+  const args = [
+    "-ExecutionPolicy",
+    "Bypass",
+    "-File",
+    path.join(root, "scripts", "scrape-financiero-direct.ps1"),
+  ];
+
+  if (publish) {
+    args.push("-Publish");
+  }
+
+  await runCommand("powershell", args);
+}
+
 async function publishGitHubChanges() {
   await runCommand("git", ["add", ...trackedPaths]);
 
@@ -107,21 +122,32 @@ async function readPayload() {
 let activeSync = null;
 
 async function runSyncFlow({ publish }) {
-  await runLocalCasSync();
-  const publishResult = publish
-    ? await publishGitHubChanges()
-    : { changed: false, pushed: false };
+  let mode = "cas";
+  let publishResult = { changed: false, pushed: false };
+
+  try {
+    await runLocalCasSync();
+    if (publish) {
+      publishResult = await publishGitHubChanges();
+    }
+  } catch (casError) {
+    mode = "browser";
+    await runBrowserScrapeSync({ publish });
+    publishResult = { changed: publish, pushed: publish };
+  }
+
   const payload = await readPayload();
 
   return {
     ok: true,
     payload,
     local: true,
+    mode,
     published: publishResult.pushed,
     changed: publishResult.changed,
     message: publishResult.pushed
-      ? "Sincronizado desde eGOB local y publicado a GitHub."
-      : "Sincronizado desde eGOB local.",
+      ? `Sincronizado desde eGOB local (${mode}) y publicado a GitHub.`
+      : `Sincronizado desde eGOB local (${mode}).`,
   };
 }
 

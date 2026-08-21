@@ -1,4 +1,4 @@
-import { writeFile } from "node:fs/promises";
+import { readdir, writeFile } from "node:fs/promises";
 import { spawnSync } from "node:child_process";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -6,7 +6,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, "..");
 const defaultOutput = path.join(root, "data", "sync-source", "financiero-direct-scrape.json");
-const browserClientPath = "C:/Users/PC/.codex/plugins/cache/openai-bundled/browser/26.814.41957/scripts/browser-client.mjs";
+const browserPluginRoot = "C:/Users/PC/.codex/plugins/cache/openai-bundled/browser";
 
 function parseArgs(argv) {
   const args = { publish: false, output: defaultOutput };
@@ -37,6 +37,17 @@ function parseNumber(value) {
 
 async function getRuntime() {
   try {
+    const versions = await readdir(browserPluginRoot, { withFileTypes: true });
+    const candidates = versions
+      .filter((entry) => entry.isDirectory())
+      .map((entry) => entry.name)
+      .sort((left, right) => right.localeCompare(left, undefined, { numeric: true }));
+
+    if (candidates.length === 0) {
+      throw new Error("No encontre una version instalada del plugin browser.");
+    }
+
+    const browserClientPath = path.join(browserPluginRoot, candidates[0], "scripts", "browser-client.mjs");
     const { setupBrowserRuntime } = await import(pathToFileURL(browserClientPath).href);
     return setupBrowserRuntime();
   } catch (error) {
