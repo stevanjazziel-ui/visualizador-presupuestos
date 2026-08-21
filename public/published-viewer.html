@@ -1353,6 +1353,10 @@
         return `${value.toFixed(digits)}%`;
       }
 
+      function dateTimeLabel(value = new Date()) {
+        return value.toLocaleString("es-EC");
+      }
+
       function compact(value) {
         return compactFormatter.format(value);
       }
@@ -2141,9 +2145,10 @@
 
       async function refreshPublishedData() {
         const selectedCode = directionSelect.value || getSelectedItem()?.code || null;
+        const refreshStartedAt = new Date();
         refreshButton.disabled = true;
         refreshButton.textContent = "Actualizando...";
-        setRefreshStatus("Consultando la publicacion mas reciente...");
+        setRefreshStatus(`Consultando la publicacion mas reciente a las ${dateTimeLabel(refreshStartedAt)}...`);
 
         try {
           const response = await fetch(`./budget-viewer-data.json?ts=${Date.now()}`, { cache: "no-store" });
@@ -2163,10 +2168,11 @@
           buildOptions(selectedCode);
           render();
 
-          const updatedAt = VIEWER_META.updatedAt
-            ? new Date(VIEWER_META.updatedAt).toLocaleString("es-EC")
+          const refreshedAt = dateTimeLabel(new Date());
+          const sourceUpdatedAt = VIEWER_META.updatedAt
+            ? dateTimeLabel(new Date(VIEWER_META.updatedAt))
             : "sin fecha";
-          setRefreshStatus(`Datos recargados. Ultima actualizacion: ${updatedAt}.`, "success");
+          setRefreshStatus(`Datos refrescados a las ${refreshedAt}. Fuente publicada: ${sourceUpdatedAt}.`, "success");
         } catch (error) {
           setRefreshStatus(error.message || "No se pudo actualizar la informacion.", "error");
         } finally {
