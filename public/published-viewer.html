@@ -1280,6 +1280,10 @@
         ? VIEWER_PAYLOAD.blockMeta
         : {};
       let VIEWER_META = VIEWER_PAYLOAD.meta || {};
+      const LIVE_SYNC_ORIGIN = "https://avaluos-codificado-rio.efsolis.chatgpt.site";
+      const LIVE_SYNC_ENDPOINT = window.location.origin === LIVE_SYNC_ORIGIN
+        ? `${window.location.origin}/api/sync-live`
+        : `${LIVE_SYNC_ORIGIN}/api/sync-live`;
 
       if (VIEWER_PAYLOAD.meta?.title) {
         document.title = VIEWER_PAYLOAD.meta.title;
@@ -2074,42 +2078,64 @@
         refreshMeta.textContent = `Ultimo corte publicado: ${sourceLabel}. Publicado en el visor: ${publishedLabel}.`;
       }
 
+      async function loadPublishedPayload() {
+        const response = await fetch(`./budget-viewer-data.json?ts=${Date.now()}`, { cache: "no-store" });
+        if (!response.ok) {
+          throw new Error(`No se pudo leer la publicacion (${response.status}).`);
+        }
+
+        const payload = await response.json();
+        if (!Array.isArray(payload.items) || payload.items.length === 0) {
+          throw new Error("La publicacion no devolvio datos validos.");
+        }
+
+        return payload;
+      }
+
+      async function loadLiveSyncPayload() {
+        const response = await fetch(`${LIVE_SYNC_ENDPOINT}?ts=${Date.now()}`, {
+          method: "GET",
+          cache: "no-store",
+        });
+
+        if (!response.ok) {
+          throw new Error(`No se pudo sincronizar con eGOB (${response.status}).`);
+        }
+
+        const result = await response.json();
+        if (!result?.ok || !result?.payload || !Array.isArray(result.payload.items) || result.payload.items.length === 0) {
+          throw new Error(result?.error || "La sincronizacion en vivo no devolvio datos validos.");
+        }
+
+        return result.payload;
+      }
+
       async function refreshPublishedData() {
         const selectedCode = directionSelect.value || getSelectedItem()?.code || null;
         const refreshStartedAt = new Date();
         const previousPublishedAt = resolvePublishedAt();
         refreshButton.disabled = true;
-        refreshButton.textContent = "Actualizando...";
-        setRefreshStatus(`Consultando la publicacion mas reciente a las ${dateTimeLabel(refreshStartedAt)}...`);
+        refreshButton.textContent = "Sincronizando eGOB...";
+        setRefreshStatus(`Consultando eGOB a las ${dateTimeLabel(refreshStartedAt)}...`);
 
         try {
-          const [dataResponse, syncResponse] = await Promise.all([
-            fetch(`./budget-viewer-data.json?ts=${Date.now()}`, { cache: "no-store" }),
-            fetch(`./sync-source/latest.json?ts=${Date.now()}`, { cache: "no-store" }).catch(() => null),
-          ]);
+          let payload;
+          let syncedFromEgob = false;
 
-          if (!dataResponse.ok) {
-            throw new Error(`No se pudo leer la publicacion (${dataResponse.status}).`);
-          }
-
-          const payload = await dataResponse.json();
-          if (!Array.isArray(payload.items) || payload.items.length === 0) {
-            throw new Error("La publicacion no devolvio datos validos.");
-          }
-
-          let syncPayload = null;
-          if (syncResponse && syncResponse.ok) {
-            try {
-              syncPayload = await syncResponse.json();
-            } catch {}
+          try {
+            payload = await loadLiveSyncPayload();
+            syncedFromEgob = true;
+          } catch (liveError) {
+            payload = await loadPublishedPayload();
+            setRefreshStatus(`${liveError.message} Se cargo la ultima publicacion disponible.`, "error");
           }
 
           DATA = payload.items;
           BLOCK_META = payload.blockMeta && typeof payload.blockMeta === "object" ? payload.blockMeta : {};
           VIEWER_META = {
             ...(payload.meta || {}),
-            sourceUpdatedAt: payload.meta?.sourceUpdatedAt || syncPayload?.meta?.updatedAt || null,
-            sourceCapturedAt: payload.meta?.sourceCapturedAt || syncPayload?.meta?.capturedAt || null,
+            sourceUpdatedAt: payload.meta?.sourceUpdatedAt || payload.meta?.updatedAt || null,
+            sourceCapturedAt: payload.meta?.sourceCapturedAt || null,
             publishedAt: payload.meta?.publishedAt || payload.meta?.updatedAt || null,
           };
           recomputeState();
@@ -2123,7 +2149,9 @@
             : "sin fecha";
           const nextPublishedAt = resolvePublishedAt();
           const hasNewPublication = Boolean(previousPublishedAt && nextPublishedAt && previousPublishedAt !== nextPublishedAt);
-          if (hasNewPublication) {
+          if (syncedFromEgob) {
+            setRefreshStatus(`Sincronizado con eGOB a las ${refreshedAt}. Ultimo corte disponible: ${sourceUpdatedAt}.`, "success");
+          } else if (hasNewPublication) {
             setRefreshStatus(`Se cargo una publicacion mas reciente a las ${refreshedAt}. Ultimo corte disponible: ${sourceUpdatedAt}.`, "success");
           } else {
             setRefreshStatus(`No habia una publicacion mas nueva a las ${refreshedAt}. Ultimo corte disponible: ${sourceUpdatedAt}.`, "success");

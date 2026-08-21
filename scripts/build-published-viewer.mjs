@@ -14,6 +14,7 @@ const publicDataJsonPath = path.join(publicDir, "budget-viewer-data.json");
 const publicSyncSourceDir = path.join(publicDir, "sync-source");
 const publicSyncSourceJsonPath = path.join(publicSyncSourceDir, "latest.json");
 const workerPath = path.join(distServerDir, "index.js");
+const workerTemplatePath = path.join(root, "scripts", "live-sync-worker-template.js");
 
 function validatePayload(payload) {
   if (!payload || typeof payload !== "object") {
@@ -68,6 +69,7 @@ function toBrowserScript(payload) {
 const html = await readFile(htmlPath, "utf8");
 const payload = JSON.parse(await readFile(dataPath, "utf8"));
 const syncSourcePayload = JSON.parse(await readFile(syncSourcePath, "utf8"));
+const workerTemplate = await readFile(workerTemplatePath, "utf8");
 validatePayload(payload);
 validatePayload(syncSourcePayload);
 
@@ -85,49 +87,13 @@ await rm(path.join(root, "dist", "static"), { recursive: true, force: true });
 await writeFile(publicDataJsPath, browserScript, "utf8");
 await writeFile(publicDataJsonPath, JSON.stringify(payload, null, 2), "utf8");
 await writeFile(publicSyncSourceJsonPath, JSON.stringify(syncSourcePayload, null, 2), "utf8");
-await writeFile(
-  workerPath,
-  `const html = ${escapedHtml};
-const browserScript = ${escapedBrowserScript};
-const rawJson = ${escapedPublicJson};
-const syncSourceJson = ${escapedSyncSourceJson};
+const workerSource = workerTemplate
+  .replace("__HTML__", escapedHtml)
+  .replace("__BROWSER_SCRIPT__", escapedBrowserScript)
+  .replace("__RAW_JSON__", escapedPublicJson)
+  .replace("__SYNC_SOURCE_JSON__", escapedSyncSourceJson);
 
-function withHeaders(body, contentType, status = 200) {
-  return new Response(body, {
-    status,
-    headers: {
-      "content-type": contentType,
-      "cache-control": "public, max-age=300"
-    }
-  });
-}
-
-export default {
-  async fetch(request) {
-    const url = new URL(request.url);
-
-    if (url.pathname === "/budget-viewer-data.js") {
-      return withHeaders(browserScript, "application/javascript; charset=utf-8");
-    }
-
-    if (url.pathname === "/budget-viewer-data.json") {
-      return withHeaders(rawJson, "application/json; charset=utf-8");
-    }
-
-    if (url.pathname === "/sync-source/latest.json") {
-      return withHeaders(syncSourceJson, "application/json; charset=utf-8");
-    }
-
-    if (url.pathname === "/" || url.pathname === "/index.html" || url.pathname === "/published-viewer.html") {
-      return withHeaders(html, "text/html; charset=utf-8");
-    }
-
-    return withHeaders(html, "text/html; charset=utf-8", 200);
-  }
-};
-`,
-  "utf8",
-);
+await writeFile(workerPath, workerSource, "utf8");
 
 console.log(
   JSON.stringify({
