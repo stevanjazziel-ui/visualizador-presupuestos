@@ -1280,6 +1280,10 @@
         ? VIEWER_PAYLOAD.blockMeta
         : {};
       let VIEWER_META = VIEWER_PAYLOAD.meta || {};
+      const LOCAL_SYNC_ENDPOINTS = [
+        "http://127.0.0.1:8765/api/sync-live",
+        "http://localhost:8765/api/sync-live"
+      ];
       const LIVE_SYNC_ORIGIN = "https://avaluos-codificado-rio.efsolis.chatgpt.site";
       const LIVE_SYNC_ENDPOINT = window.location.origin === LIVE_SYNC_ORIGIN
         ? `${window.location.origin}/api/sync-live`
@@ -2092,7 +2096,7 @@
         return payload;
       }
 
-      async function loadLiveSyncPayload() {
+      async function loadRemoteSyncPayload() {
         const response = await fetch(`${LIVE_SYNC_ENDPOINT}?ts=${Date.now()}`, {
           method: "GET",
           cache: "no-store",
@@ -2107,7 +2111,41 @@
           throw new Error(result?.error || "La sincronizacion en vivo no devolvio datos validos.");
         }
 
-        return result.payload;
+        return {
+          payload: result.payload,
+          source: "remote"
+        };
+      }
+
+      async function loadLocalSyncPayload() {
+        let lastError = null;
+
+        for (const endpoint of LOCAL_SYNC_ENDPOINTS) {
+          try {
+            const response = await fetch(`${endpoint}?publish=1&ts=${Date.now()}`, {
+              method: "GET",
+              cache: "no-store",
+            });
+
+            if (!response.ok) {
+              throw new Error(`El helper local devolvio ${response.status}.`);
+            }
+
+            const result = await response.json();
+            if (!result?.ok || !result?.payload || !Array.isArray(result.payload.items) || result.payload.items.length === 0) {
+              throw new Error(result?.error || "La sincronizacion local no devolvio datos validos.");
+            }
+
+            return {
+              payload: result.payload,
+              source: result?.published ? "local-published" : "local"
+            };
+          } catch (error) {
+            lastError = error;
+          }
+        }
+
+        throw lastError || new Error("No se encontro el helper local.");
       }
 
       async function refreshPublishedData() {
@@ -2120,14 +2158,22 @@
 
         try {
           let payload;
-          let syncedFromEgob = false;
+          let syncSource = "publication";
 
           try {
-            payload = await loadLiveSyncPayload();
-            syncedFromEgob = true;
+            const liveResult = await loadLocalSyncPayload();
+            payload = liveResult.payload;
+            syncSource = liveResult.source;
           } catch (liveError) {
-            payload = await loadPublishedPayload();
-            setRefreshStatus(`${liveError.message} Se cargo la ultima publicacion disponible.`, "error");
+            try {
+              const remoteResult = await loadRemoteSyncPayload();
+              payload = remoteResult.payload;
+              syncSource = remoteResult.source;
+            } catch (remoteError) {
+              payload = await loadPublishedPayload();
+              syncSource = "publication";
+              setRefreshStatus(`${liveError.message} ${remoteError.message} Se cargo la ultima publicacion disponible.`, "error");
+            }
           }
 
           DATA = payload.items;
@@ -2149,7 +2195,11 @@
             : "sin fecha";
           const nextPublishedAt = resolvePublishedAt();
           const hasNewPublication = Boolean(previousPublishedAt && nextPublishedAt && previousPublishedAt !== nextPublishedAt);
-          if (syncedFromEgob) {
+          if (syncSource === "local-published") {
+            setRefreshStatus(`Sincronizado desde tu PC a las ${refreshedAt} y publicado a GitHub. Ultimo corte disponible: ${sourceUpdatedAt}.`, "success");
+          } else if (syncSource === "local") {
+            setRefreshStatus(`Sincronizado desde tu PC a las ${refreshedAt}. Ultimo corte disponible: ${sourceUpdatedAt}.`, "success");
+          } else if (syncSource === "remote") {
             setRefreshStatus(`Sincronizado con eGOB a las ${refreshedAt}. Ultimo corte disponible: ${sourceUpdatedAt}.`, "success");
           } else if (hasNewPublication) {
             setRefreshStatus(`Se cargo una publicacion mas reciente a las ${refreshedAt}. Ultimo corte disponible: ${sourceUpdatedAt}.`, "success");
