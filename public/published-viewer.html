@@ -1487,7 +1487,6 @@
       }
 
       function renderGeneralSummary() {
-        const directionCount = DATA.filter((item) => item.kind === "direccion").length;
         const cards = [
           {
             label: "Codificado total",
@@ -1505,10 +1504,6 @@
             label: "Reforma neta acumulada",
             value: signedCurrency(totalReforma),
             className: totalReforma > 0 ? "positive" : totalReforma < 0 ? "negative" : ""
-          },
-          {
-            label: "Direcciones visibles",
-            value: `${directionCount}`
           }
         ];
 
