@@ -58,6 +58,12 @@ function Find-HeaderMap {
         "CANTIDA REFORMA" { $headers.reforma = $col }
         "MONTO CODIFICADO" { $headers.codificado = $col }
         "MONTO CERTIFICADO" { $headers.certificado = $col }
+        "MONTO COMPROMETIDO" { $headers.comprometido = $col }
+        "MONTO DEVENGADO" { $headers.devengado = $col }
+        "MONTO EJECUTADO" { $headers.ejecutado = $col }
+        "PENDIENTE POR CERTIFICAR" { $headers.pendienteCertificar = $col }
+        "PENDIENTE POR DEVENGAR" { $headers.pendienteDevengar = $col }
+        "PENDIENTE POR EJECUTAR" { $headers.pendienteEjecutar = $col }
       }
     }
 
@@ -101,6 +107,12 @@ function Update-PayloadFromRecords {
         Reforma = [decimal]::Zero
         Codificado = [decimal]::Zero
         Certificado = [decimal]::Zero
+        Comprometido = [decimal]::Zero
+        Devengado = [decimal]::Zero
+        Ejecutado = [decimal]::Zero
+        PendienteCertificar = [decimal]::Zero
+        PendienteDevengar = [decimal]::Zero
+        PendienteEjecutar = [decimal]::Zero
       }
     }
 
@@ -108,6 +120,12 @@ function Update-PayloadFromRecords {
     $totalsByDirection[$directionCode].Reforma += $record.Reforma
     $totalsByDirection[$directionCode].Codificado += $record.Codificado
     $totalsByDirection[$directionCode].Certificado += $record.Certificado
+    $totalsByDirection[$directionCode].Comprometido += $record.Comprometido
+    $totalsByDirection[$directionCode].Devengado += $record.Devengado
+    $totalsByDirection[$directionCode].Ejecutado += $record.Ejecutado
+    $totalsByDirection[$directionCode].PendienteCertificar += $record.PendienteCertificar
+    $totalsByDirection[$directionCode].PendienteDevengar += $record.PendienteDevengar
+    $totalsByDirection[$directionCode].PendienteEjecutar += $record.PendienteEjecutar
   }
 
   $changed = $false
@@ -117,16 +135,31 @@ function Update-PayloadFromRecords {
     $nextReforma = [double]([math]::Round($entry.Value.Reforma, 2))
     $nextCodificado = [double]([math]::Round($entry.Value.Codificado, 2))
     $nextCertificado = [double]([math]::Round($entry.Value.Certificado, 2))
-    $currentCertificado = 0
-    if ($null -ne $item.PSObject.Properties["certificado"]) {
-      $currentCertificado = [double]$item.certificado
-    }
+    $nextComprometido = [double]([math]::Round($entry.Value.Comprometido, 2))
+    $nextDevengado = [double]([math]::Round($entry.Value.Devengado, 2))
+    $nextEjecutado = [double]([math]::Round($entry.Value.Ejecutado, 2))
+    $nextPendienteCertificar = [double]([math]::Round($entry.Value.PendienteCertificar, 2))
+    $nextPendienteDevengar = [double]([math]::Round($entry.Value.PendienteDevengar, 2))
+    $nextPendienteEjecutar = [double]([math]::Round($entry.Value.PendienteEjecutar, 2))
+    $currentCertificado = if ($null -ne $item.PSObject.Properties["certificado"]) { [double]$item.certificado } else { 0 }
+    $currentComprometido = if ($null -ne $item.PSObject.Properties["comprometido"]) { [double]$item.comprometido } else { 0 }
+    $currentDevengado = if ($null -ne $item.PSObject.Properties["devengado"]) { [double]$item.devengado } else { 0 }
+    $currentEjecutado = if ($null -ne $item.PSObject.Properties["ejecutado"]) { [double]$item.ejecutado } else { 0 }
+    $currentPendienteCertificar = if ($null -ne $item.PSObject.Properties["pendienteCertificar"]) { [double]$item.pendienteCertificar } else { 0 }
+    $currentPendienteDevengar = if ($null -ne $item.PSObject.Properties["pendienteDevengar"]) { [double]$item.pendienteDevengar } else { 0 }
+    $currentPendienteEjecutar = if ($null -ne $item.PSObject.Properties["pendienteEjecutar"]) { [double]$item.pendienteEjecutar } else { 0 }
 
     if (
       ($item.initial -ne $nextInitial) -or
       ($item.reforma -ne $nextReforma) -or
       ($item.codificado -ne $nextCodificado) -or
-      ($currentCertificado -ne $nextCertificado)
+      ($currentCertificado -ne $nextCertificado) -or
+      ($currentComprometido -ne $nextComprometido) -or
+      ($currentDevengado -ne $nextDevengado) -or
+      ($currentEjecutado -ne $nextEjecutado) -or
+      ($currentPendienteCertificar -ne $nextPendienteCertificar) -or
+      ($currentPendienteDevengar -ne $nextPendienteDevengar) -or
+      ($currentPendienteEjecutar -ne $nextPendienteEjecutar)
     ) {
       $changed = $true
     }
@@ -135,6 +168,12 @@ function Update-PayloadFromRecords {
     $item.reforma = $nextReforma
     $item.codificado = $nextCodificado
     $item | Add-Member -NotePropertyName certificado -NotePropertyValue $nextCertificado -Force
+    $item | Add-Member -NotePropertyName comprometido -NotePropertyValue $nextComprometido -Force
+    $item | Add-Member -NotePropertyName devengado -NotePropertyValue $nextDevengado -Force
+    $item | Add-Member -NotePropertyName ejecutado -NotePropertyValue $nextEjecutado -Force
+    $item | Add-Member -NotePropertyName pendienteCertificar -NotePropertyValue $nextPendienteCertificar -Force
+    $item | Add-Member -NotePropertyName pendienteDevengar -NotePropertyValue $nextPendienteDevengar -Force
+    $item | Add-Member -NotePropertyName pendienteEjecutar -NotePropertyValue $nextPendienteEjecutar -Force
   }
 
   if ($changed) {
@@ -193,6 +232,12 @@ try {
           Reforma = Convert-ToDecimal ([string]$worksheet.Cells.Item($row, $headerMap.reforma).Text)
           Codificado = Convert-ToDecimal ([string]$worksheet.Cells.Item($row, $headerMap.codificado).Text)
           Certificado = Convert-ToDecimal ([string]$worksheet.Cells.Item($row, $headerMap.certificado).Text)
+          Comprometido = if ($headerMap.Contains("comprometido")) { Convert-ToDecimal ([string]$worksheet.Cells.Item($row, $headerMap.comprometido).Text) } else { [decimal]::Zero }
+          Devengado = if ($headerMap.Contains("devengado")) { Convert-ToDecimal ([string]$worksheet.Cells.Item($row, $headerMap.devengado).Text) } else { [decimal]::Zero }
+          Ejecutado = if ($headerMap.Contains("ejecutado")) { Convert-ToDecimal ([string]$worksheet.Cells.Item($row, $headerMap.ejecutado).Text) } else { [decimal]::Zero }
+          PendienteCertificar = if ($headerMap.Contains("pendienteCertificar")) { Convert-ToDecimal ([string]$worksheet.Cells.Item($row, $headerMap.pendienteCertificar).Text) } else { [decimal]::Zero }
+          PendienteDevengar = if ($headerMap.Contains("pendienteDevengar")) { Convert-ToDecimal ([string]$worksheet.Cells.Item($row, $headerMap.pendienteDevengar).Text) } else { [decimal]::Zero }
+          PendienteEjecutar = if ($headerMap.Contains("pendienteEjecutar")) { Convert-ToDecimal ([string]$worksheet.Cells.Item($row, $headerMap.pendienteEjecutar).Text) } else { [decimal]::Zero }
         }
 
         if (
