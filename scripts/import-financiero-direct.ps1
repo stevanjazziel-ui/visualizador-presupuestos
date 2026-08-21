@@ -181,7 +181,7 @@ if ($Publish) {
 
   Push-Location $repoRoot
   try {
-    git -c core.safecrlf=false add data/sync-source/latest.json data/budget-viewer-data.json public/budget-viewer-data.js public/budget-viewer-data.json public/sync-source/latest.json scripts/import-financiero-direct.ps1 package.json
+    git -c core.safecrlf=false add data/sync-source/financiero-direct-scrape.json data/sync-source/latest.json data/budget-viewer-data.json public/budget-viewer-data.js public/budget-viewer-data.json public/sync-source/latest.json
     git diff --cached --quiet
     if ($LASTEXITCODE -ne 0) {
       git commit -m "chore: sync financiero direct scrape"
