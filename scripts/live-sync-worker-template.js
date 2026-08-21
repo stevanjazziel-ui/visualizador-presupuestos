@@ -44,6 +44,22 @@ function parseCookieHeader(setCookieValue) {
     .join("; ");
 }
 
+function extractCasExecutionToken(html) {
+  const patterns = [
+    /name=["']execution["'][^>]*value=["']([^"']+)["']/i,
+    /value=["']([^"']+)["'][^>]*name=["']execution["']/i,
+  ];
+
+  for (const pattern of patterns) {
+    const match = html.match(pattern);
+    if (match?.[1]) {
+      return match[1];
+    }
+  }
+
+  return null;
+}
+
 function getNumberValue(value) {
   if (value === null || value === undefined) return 0;
   if (typeof value === "number") return Number.isFinite(value) ? value : 0;
@@ -153,19 +169,24 @@ async function fetchBudgetRows(env) {
 
   const loginResponse = await fetch(EGOB_CAS_LOGIN_URL, {
     method: "GET",
-    redirect: "manual",
+    headers: {
+      accept: "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+      "accept-language": "es-EC,es;q=0.9,en;q=0.8",
+      "user-agent":
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+    },
   });
   const loginHtml = await loginResponse.text();
   const casCookie = parseCookieHeader(loginResponse.headers.get("set-cookie"));
-  const executionMatch = loginHtml.match(/name="execution"[^>]*value="([^"]+)"/i);
-  if (!executionMatch) {
+  const executionToken = extractCasExecutionToken(loginHtml);
+  if (!executionToken) {
     throw new Error("No se encontró el token execution del CAS.");
   }
 
   const formBody = new URLSearchParams({
     username,
     password,
-    execution: executionMatch[1],
+    execution: executionToken,
     _eventId: "submit",
     geolocation: "",
   }).toString();
