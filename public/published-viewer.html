@@ -1295,6 +1295,7 @@
       let maxCodificado = 0;
       let maxReformaAbs = 0;
       let blockStats = {};
+      const SUMMARY_BLOCK_CODES = new Set(["2026.5"]);
 
       const directionSelect = document.getElementById("directionSelect");
       const selectorMeta = document.getElementById("selectorMeta");
@@ -1360,11 +1361,16 @@
         return TONES[item.tone] || TONES["tone-a"];
       }
 
+      function isSummaryUniverseItem(item) {
+        return item.kind === "direccion" || SUMMARY_BLOCK_CODES.has(item.block);
+      }
+
       function recomputeState() {
-        totalCodificado = DATA.reduce((sum, item) => sum + item.codificado, 0);
-        totalCertificado = DATA.reduce((sum, item) => sum + (item.certificado || 0), 0);
-        totalInicial = DATA.reduce((sum, item) => sum + item.initial, 0);
-        totalReforma = DATA.reduce((sum, item) => sum + item.reforma, 0);
+        const summaryItems = DATA.filter(isSummaryUniverseItem);
+        totalCodificado = summaryItems.reduce((sum, item) => sum + item.codificado, 0);
+        totalCertificado = summaryItems.reduce((sum, item) => sum + (item.certificado || 0), 0);
+        totalInicial = summaryItems.reduce((sum, item) => sum + item.initial, 0);
+        totalReforma = summaryItems.reduce((sum, item) => sum + item.reforma, 0);
         maxCodificado = Math.max(...DATA.map((item) => item.codificado), 0);
         maxReformaAbs = Math.max(...DATA.map((item) => Math.abs(item.reforma)), 0);
         blockStats = Object.fromEntries(
@@ -1456,22 +1462,22 @@
 
       function renderGeneralSummary() {
         const directionCount = DATA.filter((item) => item.kind === "direccion").length;
-        const blockCount = DATA.filter((item) => item.kind === "bloque").length;
+        const specialBlockCount = DATA.filter((item) => item.kind === "bloque" && SUMMARY_BLOCK_CODES.has(item.block)).length;
         const cards = [
           {
             label: "Codificado total",
             value: currency(totalCodificado),
-            note: "Suma consolidada de direcciones y bloques, incluido el 2026.5."
+            note: "Suma de direcciones mas el bloque especial 2026.5."
           },
           {
             label: "Certificado total",
             value: currency(totalCertificado),
-            note: "Monto certificado acumulado de direcciones y bloques, incluido el 2026.5."
+            note: "Monto certificado de direcciones mas el bloque especial 2026.5."
           },
           {
             label: "Inicial total",
             value: currency(totalInicial),
-            note: "Base presupuestaria antes de considerar reformas."
+            note: "Base presupuestaria de direcciones mas el bloque especial 2026.5."
           },
           {
             label: "Reforma neta acumulada",
@@ -1482,7 +1488,7 @@
           {
             label: "Direcciones visibles",
             value: `${directionCount}`,
-            note: `${blockCount} bloques especiales completan el universo consultado.`
+            note: `${specialBlockCount} registros especiales del bloque 2026.5 completan el universo consultado.`
           }
         ];
 
