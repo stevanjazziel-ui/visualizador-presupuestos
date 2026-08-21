@@ -1144,7 +1144,6 @@
           <a class="side-link active" href="#generalGrid">Vista General</a>
           <a class="side-link" href="#focusCard">Direccion actual</a>
           <a class="side-link" href="#rankingChart">Ranking</a>
-          <a class="side-link" href="#blockChart">Bloques</a>
           <a class="side-link" href="#reformChart">Reformas</a>
         </nav>
       </aside>
@@ -1252,12 +1251,6 @@
             <p id="reformFooter" class="chart-footer"></p>
           </section>
 
-          <section class="blocks-card panel">
-            <div class="section-kicker">Bloques</div>
-            <h2>Distribucion por bloque</h2>
-            <p class="blocks-copy">Cada tarjeta resume el peso total del bloque y deja marcado donde cae la seleccion actual.</p>
-            <div id="blockGrid" class="block-grid"></div>
-          </section>
         </aside>
       </div>
     </div>
@@ -1319,7 +1312,6 @@
       const alertsCard = document.getElementById("alertsCard");
       const reformChart = document.getElementById("reformChart");
       const reformFooter = document.getElementById("reformFooter");
-      const blockGrid = document.getElementById("blockGrid");
 
       function currency(value) {
         return formatter.format(value);
@@ -2004,33 +1996,6 @@
         `;
       }
 
-      function renderBlocks(selected) {
-        const cards = Object.entries(BLOCK_META)
-          .map(([block, meta]) => {
-            const stats = blockStats[block];
-            const isActive = block === selected.block;
-            const tones = TONES[meta.tone];
-            return `
-              <article class="block-card ${meta.tone} ${isActive ? "active" : ""}">
-                <div class="block-card-header">
-                  <div class="block-label">${meta.label}</div>
-                  <span class="block-tag">${stats.count} registros</span>
-                </div>
-                <div class="block-total">${escapeHtml(currency(stats.codificado))}</div>
-                <div class="block-note">${meta.note} ${percent(share(stats.codificado, totalCodificado))} del total consolidado.</div>
-                <div class="block-meter">
-                  <div class="meter-track">
-                    <div class="meter-fill" style="width:${share(stats.codificado, totalCodificado)}%; background:${tones.strong};"></div>
-                  </div>
-                </div>
-              </article>
-            `;
-          })
-          .join("");
-
-        blockGrid.innerHTML = cards;
-      }
-
       function setRefreshStatus(message, tone = "muted") {
         refreshStatus.textContent = message;
         refreshStatus.style.color = tone === "error"
@@ -2087,7 +2052,6 @@
         renderFocus(selected);
         renderInsights(selected);
         renderAlerts(selected);
-        renderBlocks(selected);
         rankingChart.innerHTML = svgRanking(selected.code);
         blockChart.innerHTML = svgBlock(selected);
         reformChart.innerHTML = svgReforms(selected.code);
