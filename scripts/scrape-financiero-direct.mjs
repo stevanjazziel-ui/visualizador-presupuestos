@@ -29,19 +29,10 @@ function isLongCode(code) {
   return /^\d{2}\.\d{2}\.\d{2}\.\d{4}\.\d+\.\d+(?:\.\d+){5}$/.test(code);
 }
 
-function rowsFromPage(page) {
-  const rows = [];
-  const keys = Object.keys(page.series);
-  for (let index = 0; index < page.xTicks.length; index += 1) {
-    const code = page.xTicks[index];
-    if (!isLongCode(code)) continue;
-    const row = { code };
-    for (const key of keys) {
-      row[key] = page.series[key][index] ?? 0;
-    }
-    rows.push(row);
-  }
-  return rows;
+function parseNumber(value) {
+  const text = String(value ?? "").replaceAll(",", "").trim();
+  const parsed = Number(text || "0");
+  return Number.isFinite(parsed) ? Math.round(parsed * 100) / 100 : 0;
 }
 
 async function getRuntime() {
@@ -60,57 +51,52 @@ async function getRuntime() {
 async function openFinancialTab(iab) {
   const openTabs = await iab.user.openTabs();
   const target = openTabs.find((tab) => /egobfinanciero\.gadmriobamba\.gob\.ec:8000/i.test(tab.url || ""));
-  if (!target) {
+  if (target) {
+    return iab.user.claimTab(target);
+  }
+
+  const listedTabs = await iab.tabs.list();
+  const listedTarget = listedTabs.find((tab) => /egobfinanciero\.gadmriobamba\.gob\.ec:8000/i.test(tab.url || ""));
+  if (!listedTarget) {
     throw new Error("No encontre una pestana abierta de Financiero en el navegador integrado.");
   }
-  return iab.user.claimTab(target);
+
+  return iab.tabs.get(listedTarget.id);
 }
 
 async function readVisibleState(tab) {
   return tab.playwright.evaluate(() => {
-    function parseY(pathD) {
-      const match = /L\s*[-0-9.]+,([-0-9.]+)/.exec(pathD || "");
-      return match ? Number(match[1]) : null;
+    function cleanText(value) {
+      return (value || "").replace(/\s+/g, " ").trim();
     }
 
-    function parseTickY(transform) {
-      const match = /translate\(0,([-0-9.]+)\)/.exec(transform || "");
-      return match ? Number(match[1]) : null;
+    const mainTable =
+      document.querySelectorAll("table.tree.table.table-hover.table-striped.table-condensed")[0]
+      || document.querySelectorAll("table")[6];
+
+    if (!mainTable) {
+      throw new Error("No encontre la tabla principal de la consulta presupuestaria.");
     }
 
-    const root = document.querySelector(".graph .c3");
-    if (!root) {
-      throw new Error("No encontre la grafica .graph .c3 en la consulta presupuestaria.");
-    }
-
-    const badge = [...document.querySelectorAll("span,div,button")]
-      .map((element) => (element.textContent || "").replace(/\s+/g, " ").trim())
+    const badge = [...document.querySelectorAll("span, div, button")]
+      .map((element) => cleanText(element.textContent || ""))
       .find((text) => /^\d+\s*\/\s*\d+(?:\s*de\s*\d+)?$/i.test(text)) || null;
 
-    const xTicks = [...root.querySelectorAll(".c3-axis-x .tick text")].map((element) => element.textContent.trim());
-    const yTicks = [...root.querySelectorAll(".c3-axis-y .tick")]
-      .map((element) => ({
-        value: Number(element.querySelector("text")?.textContent?.trim() || "0"),
-        y: parseTickY(element.getAttribute("transform") || ""),
+    const rows = [...mainTable.querySelectorAll("tr")]
+      .map((tr) => [...tr.querySelectorAll("td")].map((td) => cleanText(td.innerText || td.textContent || "")))
+      .filter((cells) => cells.length >= 18)
+      .map((cells) => ({
+        code: cells[3],
+        codified_amount: cells[12],
+        certified_pending: cells[13],
+        certified_amount: cells[14],
+        committed_amount: cells[15],
+        accrued_amount: cells[16],
+        executed_amount: cells[17],
       }))
-      .filter((tick) => Number.isFinite(tick.y));
+      .filter((row) => /^\d{2}\.\d{2}\.\d{2}\.\d{4}\.\d+\.\d+(?:\.\d+){5}$/.test(row.code));
 
-    const y0 = yTicks.find((tick) => tick.value === 0)?.y ?? yTicks[0]?.y;
-    const maxTick = yTicks.reduce((winner, tick) => (winner.value > tick.value ? winner : tick), yTicks[0]);
-    const valueFromY = (y) => (y0 - y) * (maxTick.value / (y0 - maxTick.y));
-
-    const series = {};
-    for (const target of root.querySelectorAll(".c3-chart-bars .c3-target")) {
-      const className = target.getAttribute("class") || "";
-      const key = (className.match(/c3-target-([a-z_]+)/) || [])[1];
-      if (!key) continue;
-      series[key] = [...target.querySelectorAll(".c3-bar")].map((element) => {
-        const value = valueFromY(parseY(element.getAttribute("d") || ""));
-        return Math.round(value * 100) / 100;
-      });
-    }
-
-    return { badge, xTicks, series };
+    return { badge, rows };
   });
 }
 
@@ -121,8 +107,15 @@ async function clickPager(tab, direction) {
   for (let index = count - 1; index >= 0; index -= 1) {
     try {
       const button = locator.nth(index);
+      const visible = await button.evaluate((element) => {
+        const rect = element.getBoundingClientRect();
+        return rect.width > 0 && rect.height > 0;
+      });
+      if (!visible) continue;
+      const disabled = await button.evaluate((element) => Boolean(element.disabled) || element.classList.contains("disabled"));
+      if (disabled) continue;
       await button.click();
-      await tab.playwright.waitForTimeout(1200);
+      await tab.playwright.waitForTimeout(1500);
       return true;
     } catch {}
   }
@@ -142,6 +135,18 @@ async function ensurePage(tab, expectedPrefix) {
   }
   const current = await readVisibleState(tab);
   throw new Error(`No pude ubicar la pagina ${expectedPrefix}. Estado actual: ${current.badge || "sin badge"}`);
+}
+
+function rowsFromPage(page) {
+  return page.rows.map((row) => ({
+    code: row.code,
+    codified_amount: parseNumber(row.codified_amount),
+    certified_amount: parseNumber(row.certified_amount),
+    committed_amount: parseNumber(row.committed_amount),
+    accrued_amount: parseNumber(row.accrued_amount),
+    executed_amount: parseNumber(row.executed_amount),
+    certified_pending: parseNumber(row.certified_pending),
+  }));
 }
 
 function runDirectPublish() {
