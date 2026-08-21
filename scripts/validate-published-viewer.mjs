@@ -28,7 +28,7 @@ if (!dataJson.blockMeta || typeof dataJson.blockMeta !== "object") {
   throw new Error("budget-viewer-data.json does not contain blockMeta.");
 }
 
-const scriptMatch = html.match(/<script>([\s\S]*)<\/script>\s*<\/body>/);
+const scriptMatch = html.match(/<script>([\s\S]*?)<\/script>/);
 if (!scriptMatch) {
   throw new Error("Unable to locate the inline application script.");
 }
