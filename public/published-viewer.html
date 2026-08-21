@@ -70,21 +70,21 @@
       }
 
       .shell {
-        width: min(1440px, calc(100% - 28px));
+        width: min(1320px, calc(100% - 20px));
         margin: 0 auto;
-        padding: 22px 0 54px;
+        padding: 14px 0 34px;
       }
 
       .panel {
         background: var(--panel);
         border: 1px solid var(--border);
-        border-radius: 28px;
-        box-shadow: var(--shadow);
+        border-radius: 22px;
+        box-shadow: 0 18px 44px rgba(76, 57, 31, 0.1);
         backdrop-filter: blur(16px);
       }
 
       .hero {
-        padding: 28px;
+        padding: 22px;
       }
 
       .eyebrow {
@@ -97,24 +97,24 @@
 
       h1 {
         margin: 0;
-        font-size: clamp(2rem, 4vw, 3.7rem);
-        line-height: 0.96;
-        max-width: 760px;
+        font-size: clamp(1.65rem, 3vw, 2.85rem);
+        line-height: 1;
+        max-width: 680px;
       }
 
       .intro {
-        max-width: 840px;
-        margin: 14px 0 0;
+        max-width: 760px;
+        margin: 10px 0 0;
         color: var(--muted);
-        line-height: 1.55;
-        font-size: 15px;
+        line-height: 1.45;
+        font-size: 14px;
       }
 
       .hero-grid {
         display: grid;
         grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.95fr);
-        gap: 18px;
-        margin-top: 22px;
+        gap: 14px;
+        margin-top: 16px;
       }
 
       .selector-card,
@@ -124,12 +124,12 @@
       .info-card,
       .blocks-card,
       .table-card {
-        padding: 22px;
+        padding: 18px;
       }
 
       .selector-card {
         display: grid;
-        gap: 12px;
+        gap: 10px;
       }
 
       .section-kicker {
@@ -153,7 +153,7 @@
       .blocks-card h2,
       .table-card h2 {
         margin: 0;
-        font-size: 1.2rem;
+        font-size: 1.05rem;
       }
 
       .selector-note,
@@ -164,8 +164,8 @@
       .table-copy {
         margin: 0;
         color: var(--muted);
-        font-size: 14px;
-        line-height: 1.5;
+        font-size: 13px;
+        line-height: 1.4;
       }
 
       .select-wrap {
@@ -174,16 +174,16 @@
 
       .selector-controls {
         display: grid;
-        grid-template-columns: minmax(0, 1fr) auto;
-        gap: 12px;
+        grid-template-columns: minmax(0, 1fr) auto auto;
+        gap: 10px;
         align-items: center;
       }
 
       select {
         width: 100%;
-        padding: 14px 46px 14px 16px;
+        padding: 12px 40px 12px 14px;
         border: 1px solid rgba(23, 36, 50, 0.14);
-        border-radius: 16px;
+        border-radius: 14px;
         appearance: none;
         font: inherit;
         color: var(--ink);
@@ -205,12 +205,13 @@
 
       .refresh-button {
         border: 1px solid rgba(23, 36, 50, 0.14);
-        border-radius: 16px;
+        border-radius: 14px;
         background: linear-gradient(180deg, rgba(30, 111, 133, 0.12), rgba(30, 111, 133, 0.04));
         color: var(--ink);
         font: inherit;
         font-weight: 600;
-        padding: 14px 18px;
+        padding: 12px 14px;
+        white-space: nowrap;
         cursor: pointer;
         transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
       }
@@ -235,14 +236,14 @@
       .selector-meta {
         display: flex;
         flex-wrap: wrap;
-        gap: 10px;
+        gap: 8px;
       }
 
       .pill {
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        padding: 8px 12px;
+        padding: 7px 11px;
         border-radius: 999px;
         background: rgba(23, 36, 50, 0.06);
         font-size: 12px;
@@ -255,13 +256,13 @@
 
       .summary-grid {
         display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 12px;
+        grid-template-columns: repeat(auto-fit, minmax(165px, 1fr));
+        gap: 10px;
       }
 
       .executive-band {
-        margin-top: 18px;
-        padding: 22px;
+        margin-top: 14px;
+        padding: 18px;
       }
 
       .executive-head {
@@ -274,8 +275,8 @@
       .executive-grid {
         display: grid;
         grid-template-columns: 280px minmax(0, 1fr);
-        gap: 18px;
-        margin-top: 18px;
+        gap: 14px;
+        margin-top: 14px;
       }
 
       .executive-kpis {
@@ -284,8 +285,8 @@
       }
 
       .executive-kpi {
-        padding: 16px;
-        border-radius: 22px;
+        padding: 14px;
+        border-radius: 18px;
         border: 1px solid rgba(23, 36, 50, 0.08);
         background: rgba(255, 255, 255, 0.76);
       }
@@ -298,14 +299,14 @@
       }
 
       .executive-kpi-value {
-        margin-top: 10px;
-        font-size: 1.45rem;
+        margin-top: 8px;
+        font-size: 1.25rem;
         font-weight: 700;
         line-height: 1.06;
       }
 
       .executive-kpi-note {
-        margin-top: 8px;
+        margin-top: 6px;
         color: var(--muted);
         font-size: 12px;
         line-height: 1.45;
@@ -314,12 +315,12 @@
       .executive-visuals {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 16px;
+        gap: 12px;
       }
 
       .executive-visual-card {
-        padding: 18px;
-        border-radius: 24px;
+        padding: 14px;
+        border-radius: 18px;
         border: 1px solid rgba(23, 36, 50, 0.08);
         background: rgba(255, 255, 255, 0.76);
       }
@@ -337,9 +338,9 @@
       }
 
       .compare-stack {
-        margin-top: 16px;
+        margin-top: 12px;
         display: grid;
-        gap: 14px;
+        gap: 12px;
       }
 
       .compare-row {
@@ -367,7 +368,7 @@
 
       .compare-track {
         position: relative;
-        height: 14px;
+        height: 12px;
         border-radius: 999px;
         background: #e3eaf1;
         overflow: hidden;
@@ -399,16 +400,16 @@
       }
 
       .compare-badges {
-        margin-top: 16px;
+        margin-top: 12px;
         display: flex;
         flex-wrap: wrap;
-        gap: 10px;
+        gap: 8px;
       }
 
       .compare-badge {
-        min-width: 128px;
-        padding: 10px 12px;
-        border-radius: 16px;
+        min-width: 118px;
+        padding: 9px 10px;
+        border-radius: 14px;
         background: rgba(23, 36, 50, 0.05);
         border: 1px solid rgba(23, 36, 50, 0.06);
       }
@@ -430,20 +431,20 @@
       }
 
       .general-band {
-        margin-top: 18px;
-        padding: 22px;
+        margin-top: 14px;
+        padding: 18px;
       }
 
       .general-grid {
         display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 12px;
-        margin-top: 18px;
+        grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+        gap: 10px;
+        margin-top: 14px;
       }
 
       .general-card {
-        padding: 18px;
-        border-radius: 22px;
+        padding: 14px;
+        border-radius: 18px;
         border: 1px solid rgba(23, 36, 50, 0.08);
         background: rgba(255, 255, 255, 0.76);
       }
@@ -456,14 +457,14 @@
       }
 
       .general-value {
-        margin-top: 10px;
-        font-size: clamp(1.15rem, 1.9vw, 1.7rem);
+        margin-top: 8px;
+        font-size: clamp(1.05rem, 1.6vw, 1.45rem);
         font-weight: 700;
         line-height: 1.05;
       }
 
       .general-note {
-        margin-top: 8px;
+        margin-top: 6px;
         color: var(--muted);
         font-size: 12px;
         line-height: 1.45;
@@ -498,8 +499,9 @@
 
       .metric-card {
         min-height: 122px;
-        padding: 16px;
-        border-radius: 20px;
+        min-height: 108px;
+        padding: 14px;
+        border-radius: 16px;
         border: 1px solid rgba(23, 36, 50, 0.08);
         background: rgba(255, 255, 255, 0.74);
       }
@@ -512,14 +514,14 @@
       }
 
       .metric-value {
-        margin-top: 10px;
+        margin-top: 8px;
         font-size: clamp(1.25rem, 2vw, 2rem);
         line-height: 1;
         font-weight: 700;
       }
 
       .metric-foot {
-        margin-top: 10px;
+        margin-top: 8px;
         color: var(--muted);
         font-size: 13px;
         line-height: 1.45;
@@ -538,29 +540,29 @@
       .layout {
         display: grid;
         grid-template-columns: minmax(0, 1.14fr) minmax(320px, 0.86fr);
-        gap: 18px;
-        margin-top: 18px;
+        gap: 14px;
+        margin-top: 14px;
       }
 
       .stack {
         display: grid;
-        gap: 18px;
+        gap: 14px;
       }
 
       .focus-card {
-        padding: 24px;
+        padding: 18px;
       }
 
       .focus-head {
         display: flex;
         justify-content: space-between;
-        gap: 18px;
+        gap: 14px;
         align-items: flex-start;
       }
 
       .focus-title {
-        margin: 6px 0 0;
-        font-size: clamp(1.45rem, 2.3vw, 2.3rem);
+        margin: 4px 0 0;
+        font-size: clamp(1.25rem, 2vw, 2rem);
         line-height: 1.1;
       }
 
@@ -575,23 +577,23 @@
       }
 
       .focus-copy {
-        margin: 14px 0 0;
+        margin: 10px 0 0;
         color: var(--muted);
-        line-height: 1.6;
-        font-size: 15px;
+        line-height: 1.45;
+        font-size: 14px;
         max-width: 760px;
       }
 
       .focus-grid {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 12px;
-        margin-top: 18px;
+        gap: 10px;
+        margin-top: 14px;
       }
 
       .focus-stat {
-        padding: 16px;
-        border-radius: 20px;
+        padding: 14px;
+        border-radius: 16px;
         background: rgba(255, 255, 255, 0.72);
         border: 1px solid rgba(23, 36, 50, 0.08);
       }
@@ -604,13 +606,13 @@
       }
 
       .focus-stat-value {
-        margin-top: 10px;
+        margin-top: 8px;
         font-size: clamp(1.05rem, 1.8vw, 1.6rem);
         font-weight: 700;
       }
 
       .focus-stat-foot {
-        margin-top: 8px;
+        margin-top: 6px;
         color: var(--muted);
         font-size: 13px;
       }
@@ -618,7 +620,7 @@
       .meter-grid {
         display: grid;
         gap: 12px;
-        margin-top: 18px;
+        margin-top: 14px;
       }
 
       .meter-row {
@@ -678,14 +680,14 @@
       }
 
       .chart-scroll {
-        margin-top: 18px;
+        margin-top: 14px;
         max-height: 560px;
         overflow: auto;
         padding-right: 6px;
       }
 
       .chart-scroll.short {
-        max-height: 420px;
+        max-height: 340px;
       }
 
       .chart-scroll svg {
@@ -703,17 +705,17 @@
 
       .info-list,
       .mini-list {
-        margin: 16px 0 0;
+        margin: 12px 0 0;
         padding: 0;
         list-style: none;
         display: grid;
-        gap: 10px;
+        gap: 8px;
       }
 
       .info-item,
       .mini-item {
-        padding: 14px 16px;
-        border-radius: 18px;
+        padding: 12px 14px;
+        border-radius: 16px;
         background: rgba(255, 255, 255, 0.72);
         border: 1px solid rgba(23, 36, 50, 0.08);
       }
@@ -733,11 +735,11 @@
       }
 
       .mini-list {
-        margin-top: 18px;
+        margin-top: 14px;
       }
 
       .mini-head {
-        margin-top: 18px;
+        margin-top: 14px;
         font-size: 13px;
         text-transform: uppercase;
         letter-spacing: 0.08em;
@@ -771,13 +773,13 @@
       .block-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-        gap: 12px;
+        gap: 10px;
         margin-top: 18px;
       }
 
       .block-card {
-        padding: 18px;
-        border-radius: 22px;
+        padding: 14px;
+        border-radius: 18px;
         border: 1px solid rgba(23, 36, 50, 0.08);
         background: rgba(255, 255, 255, 0.76);
       }
@@ -807,8 +809,8 @@
       }
 
       .block-total {
-        margin-top: 14px;
-        font-size: 1.35rem;
+        margin-top: 10px;
+        font-size: 1.15rem;
         font-weight: 700;
       }
 
@@ -824,8 +826,8 @@
       }
 
       details {
-        margin-top: 18px;
-        border-radius: 22px;
+        margin-top: 14px;
+        border-radius: 18px;
         background: rgba(255, 255, 255, 0.56);
         border: 1px solid rgba(23, 36, 50, 0.08);
       }
@@ -833,7 +835,7 @@
       summary {
         cursor: pointer;
         list-style: none;
-        padding: 18px 20px;
+        padding: 14px 16px;
         font-weight: 700;
       }
 
@@ -853,7 +855,7 @@
       }
 
       .table-wrap {
-        padding: 0 18px 18px;
+        padding: 0 14px 14px;
         overflow: auto;
       }
 
@@ -866,7 +868,7 @@
       thead th {
         position: sticky;
         top: 0;
-        padding: 14px 12px;
+        padding: 12px 10px;
         text-align: left;
         font-size: 12px;
         letter-spacing: 0.06em;
@@ -876,9 +878,9 @@
       }
 
       tbody td {
-        padding: 14px 12px;
+        padding: 12px 10px;
         border-top: 1px solid rgba(23, 36, 50, 0.08);
-        font-size: 14px;
+        font-size: 13px;
         vertical-align: top;
       }
 
@@ -926,8 +928,8 @@
 
       @media (max-width: 760px) {
         .shell {
-          width: min(100%, calc(100% - 18px));
-          padding-top: 12px;
+          width: min(100%, calc(100% - 14px));
+          padding-top: 10px;
         }
 
         .hero,
@@ -938,7 +940,7 @@
         .info-card,
         .blocks-card,
         .table-card {
-          padding: 18px;
+          padding: 16px;
         }
 
         .summary-grid,
@@ -969,10 +971,10 @@
     <div class="shell">
       <section class="hero panel">
         <div class="eyebrow">Presupuesto 2026 | monto codificado consolidado</div>
-        <h1>El presupuesto general primero, y luego el detalle por direccion.</h1>
+        <h1>Presupuesto general y detalle por direccion en una sola vista.</h1>
         <p class="intro">
-          La vista inicial prioriza el panorama global del presupuesto, incluyendo los montos generales mas importantes.
-          Despues, el selector permite bajar al detalle de una direccion o bloque sin perder el contexto completo.
+          La cabecera concentra el resumen clave y la seleccion activa. Abajo quedan las comparaciones, alertas y la
+          tabla completa para profundizar sin saturar la pantalla.
         </p>
         <div class="hero-grid">
           <div class="summary-card panel">
@@ -985,7 +987,7 @@
                 <div class="section-kicker">Seleccion</div>
                 <h2>Escoge la direccion o bloque</h2>
               </div>
-              <p class="selector-note">El cambio tambien queda guardado en la URL para compartir la vista.</p>
+              <p class="selector-note">La seleccion se conserva en la URL para compartir la misma vista.</p>
             </div>
             <div class="selector-controls">
               <div class="select-wrap">
