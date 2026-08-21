@@ -69,9 +69,134 @@
         filter: blur(24px);
       }
 
-      .shell {
-        width: min(1320px, calc(100% - 20px));
+      .app-shell {
+        width: min(1440px, calc(100% - 24px));
         margin: 0 auto;
+        padding: 14px 0 28px;
+        display: grid;
+        grid-template-columns: 240px minmax(0, 1fr);
+        gap: 16px;
+      }
+
+      .app-sidebar {
+        padding: 14px;
+        display: grid;
+        align-content: start;
+        gap: 14px;
+        position: sticky;
+        top: 14px;
+        max-height: calc(100vh - 28px);
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid rgba(23, 36, 50, 0.08);
+      }
+
+      .brand-mark {
+        width: 36px;
+        height: 36px;
+        border-radius: 12px;
+        display: grid;
+        place-items: center;
+        font-size: 18px;
+        background: linear-gradient(135deg, #f3b562, #d9802f);
+        color: #fff;
+      }
+
+      .brand-copy strong {
+        display: block;
+        font-size: 15px;
+      }
+
+      .brand-copy span {
+        display: block;
+        margin-top: 2px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .side-nav {
+        display: grid;
+        gap: 6px;
+      }
+
+      .side-link {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 12px;
+        border-radius: 14px;
+        color: var(--muted);
+        font-size: 13px;
+        text-decoration: none;
+        border: 1px solid transparent;
+      }
+
+      .side-link.active {
+        color: #1f6fd6;
+        background: rgba(31, 111, 214, 0.08);
+        border-color: rgba(31, 111, 214, 0.14);
+        font-weight: 700;
+      }
+
+      .side-link:hover {
+        background: rgba(23, 36, 50, 0.04);
+      }
+
+      .side-link::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 3px;
+        background: currentColor;
+        opacity: 0.58;
+      }
+
+      .app-main {
+        min-width: 0;
+      }
+
+      .workspace-topbar {
+        min-height: 56px;
+        padding: 0 18px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        border-radius: 18px;
+        background: linear-gradient(180deg, #3b95eb, #2f86da);
+        color: #fff;
+        border: 1px solid rgba(35, 109, 180, 0.28);
+        box-shadow: 0 16px 34px rgba(47, 134, 218, 0.22);
+      }
+
+      .workspace-title {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 600;
+      }
+
+      .workspace-title::before {
+        content: "☰";
+        font-size: 14px;
+        opacity: 0.9;
+      }
+
+      .workspace-meta {
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        opacity: 0.84;
+      }
+
+      .shell {
+        width: 100%;
+        margin: 0;
         padding: 14px 0 34px;
       }
 
@@ -932,6 +1057,15 @@
       }
 
       @media (max-width: 1160px) {
+        .app-shell {
+          grid-template-columns: 1fr;
+        }
+
+        .app-sidebar {
+          position: static;
+          max-height: none;
+        }
+
         .hero-grid,
         .general-grid,
         .executive-grid,
@@ -942,8 +1076,17 @@
       }
 
       @media (max-width: 760px) {
-        .shell {
+        .app-shell {
           width: min(100%, calc(100% - 14px));
+          padding-top: 10px;
+        }
+
+        .workspace-topbar {
+          padding: 0 14px;
+        }
+
+        .shell {
+          width: 100%;
           padding-top: 10px;
         }
 
@@ -988,6 +1131,32 @@
     </style>
   </head>
   <body>
+    <div class="app-shell">
+      <aside class="app-sidebar panel">
+        <div class="brand">
+          <div class="brand-mark">$</div>
+          <div class="brand-copy">
+            <strong>Presupuesto Rapido</strong>
+            <span>Municipio de Riobamba</span>
+          </div>
+        </div>
+
+        <nav class="side-nav" aria-label="Panel principal">
+          <a class="side-link active" href="#generalGrid">Vista General</a>
+          <a class="side-link" href="#focusCard">Direccion actual</a>
+          <a class="side-link" href="#rankingChart">Ranking</a>
+          <a class="side-link" href="#blockChart">Bloques</a>
+          <a class="side-link" href="#reformChart">Reformas</a>
+          <a class="side-link" href="#tableBody">Tabla consolidada</a>
+        </nav>
+      </aside>
+
+      <main class="app-main">
+        <div class="workspace-topbar">
+          <div class="workspace-title">Vista General</div>
+          <div class="workspace-meta">Presupuesto 2026</div>
+        </div>
+
     <div class="shell">
       <section class="general-band panel">
         <div class="eyebrow">Presupuesto 2026 | monto codificado consolidado</div>
@@ -2108,5 +2277,7 @@
       });
       render();
     </script>
+      </main>
+    </div>
   </body>
 </html>
