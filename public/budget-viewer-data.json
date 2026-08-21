@@ -403,22 +403,22 @@
   ],
   "blockMeta": {
     "2026.1": {
-      "label": "Bloque 2026.1",
+      "label": "Función 2026.1",
       "note": "Gestion institucional y soporte.",
       "tone": "tone-a"
     },
     "2026.2": {
-      "label": "Bloque 2026.2",
+      "label": "Función 2026.2",
       "note": "Cultura y desarrollo social.",
       "tone": "tone-b"
     },
     "2026.3": {
-      "label": "Bloque 2026.3",
+      "label": "Función 2026.3",
       "note": "Territorio, ambiente, movilidad y patrimonio.",
       "tone": "tone-c"
     },
     "2026.5": {
-      "label": "Bloque 2026.5",
+      "label": "Función 2026.5",
       "note": "Gastos comunes y deuda.",
       "tone": "tone-d"
     }

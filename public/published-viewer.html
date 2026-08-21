@@ -1488,33 +1488,27 @@
 
       function renderGeneralSummary() {
         const directionCount = DATA.filter((item) => item.kind === "direccion").length;
-        const specialBlockCount = DATA.filter((item) => item.kind === "bloque" && SUMMARY_BLOCK_CODES.has(item.block)).length;
         const cards = [
           {
             label: "Codificado total",
-            value: currency(totalCodificado),
-            note: "Suma de direcciones mas la función especial 2026.5."
+            value: currency(totalCodificado)
           },
           {
             label: "Certificado total",
-            value: currency(totalCertificado),
-            note: "Monto certificado de direcciones mas la función especial 2026.5."
+            value: currency(totalCertificado)
           },
           {
             label: "Inicial total",
-            value: currency(totalInicial),
-            note: "Base presupuestaria de direcciones mas la función especial 2026.5."
+            value: currency(totalInicial)
           },
           {
             label: "Reforma neta acumulada",
             value: signedCurrency(totalReforma),
-            note: totalReforma >= 0 ? "El conjunto gana recursos frente al inicial." : "El conjunto se reduce frente al inicial.",
             className: totalReforma > 0 ? "positive" : totalReforma < 0 ? "negative" : ""
           },
           {
             label: "Direcciones visibles",
-            value: `${directionCount}`,
-            note: `${specialBlockCount} registros especiales de la función 2026.5 completan el universo consultado.`
+            value: `${directionCount}`
           }
         ];
 
@@ -1524,7 +1518,6 @@
               <article class="general-card">
                 <div class="general-label">${card.label}</div>
                 <div class="general-value ${card.className || ""}">${card.value}</div>
-                <div class="general-note">${card.note}</div>
               </article>
             `
           )
