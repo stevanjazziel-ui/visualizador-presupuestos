@@ -113,6 +113,7 @@
       .hero-grid {
         display: grid;
         grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.95fr);
+        align-items: start;
         gap: 14px;
         margin-top: 16px;
       }
@@ -129,7 +130,8 @@
 
       .selector-card {
         display: grid;
-        gap: 10px;
+        gap: 12px;
+        align-content: start;
       }
 
       .section-kicker {
@@ -141,9 +143,13 @@
 
       .selector-head {
         display: flex;
-        align-items: flex-end;
+        align-items: flex-start;
         justify-content: space-between;
         gap: 14px;
+      }
+
+      .selector-head > div {
+        min-width: 0;
       }
 
       .selector-head h2,
@@ -168,6 +174,11 @@
         line-height: 1.4;
       }
 
+      .selector-note {
+        max-width: 260px;
+        padding-top: 16px;
+      }
+
       .select-wrap {
         position: relative;
       }
@@ -176,7 +187,7 @@
         display: grid;
         grid-template-columns: minmax(0, 1fr) auto auto;
         gap: 10px;
-        align-items: center;
+        align-items: stretch;
       }
 
       select {
@@ -210,6 +221,7 @@
         color: var(--ink);
         font: inherit;
         font-weight: 600;
+        min-height: 48px;
         padding: 12px 14px;
         white-space: nowrap;
         cursor: pointer;
@@ -237,15 +249,17 @@
         display: flex;
         flex-wrap: wrap;
         gap: 8px;
+        align-items: flex-start;
       }
 
       .pill {
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        padding: 7px 11px;
-        border-radius: 999px;
-        background: rgba(23, 36, 50, 0.06);
+        padding: 8px 12px;
+        border-radius: 18px;
+        border: 1px solid rgba(23, 36, 50, 0.08);
+        background: rgba(23, 36, 50, 0.04);
         font-size: 12px;
         color: var(--muted);
       }
@@ -955,6 +969,11 @@
         .meter-copy {
           flex-direction: column;
           align-items: flex-start;
+        }
+
+        .selector-note {
+          max-width: none;
+          padding-top: 0;
         }
 
         .selector-controls {
