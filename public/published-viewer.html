@@ -1175,10 +1175,7 @@
 
       <section class="hero panel">
         <div class="hero-grid">
-          <div class="summary-card panel">
-            <div class="section-kicker">Presupuesto general</div>
-            <div id="summaryGrid" class="summary-grid"></div>
-          </div>
+          <section id="focusCard" class="focus-card panel"></section>
           <div class="selector-card panel">
             <div class="selector-head">
               <div>
@@ -1215,8 +1212,6 @@
 
       <div class="layout">
         <main class="stack">
-          <section id="focusCard" class="focus-card panel"></section>
-
           <section class="chart-card panel">
             <div class="chart-head">
               <div>
@@ -1323,7 +1318,6 @@
       const selectorMeta = document.getElementById("selectorMeta");
       const refreshButton = document.getElementById("refreshButton");
       const refreshStatus = document.getElementById("refreshStatus");
-      const summaryGrid = document.getElementById("summaryGrid");
       const generalGrid = document.getElementById("generalGrid");
       const executiveKpis = document.getElementById("executiveKpis");
       const executiveVisuals = document.getElementById("executiveVisuals");
@@ -1570,79 +1564,6 @@
         };
       }
 
-      function renderSummary(selected) {
-        const ranking = rankItems();
-        const rank = ranking.findIndex((item) => item.code === selected.code) + 1;
-        const financials = getFinancialMetrics(selected);
-        const shareTotal = share(financials.codificado, totalCodificado);
-        const relativeToLeader = share(financials.codificado, ranking[0].codificado);
-        const certifiedShare = share(financials.certificado, financials.codificado || 0);
-        const cards = [
-          {
-            label: "Monto inicial",
-            value: currency(financials.initial),
-            foot: "Base presupuestaria del corte seleccionado."
-          },
-          {
-            label: "Monto codificado",
-            value: currency(financials.codificado),
-            foot: `${compact(financials.codificado)} del presupuesto consolidado.`
-          },
-          {
-            label: "Monto certificado",
-            value: currency(financials.certificado),
-            foot: `${percent(certifiedShare)} del codificado actual.`
-          },
-          {
-            label: "Monto comprometido",
-            value: currency(financials.comprometido),
-            foot: "Compromisos visibles en este corte."
-          },
-          {
-            label: "Monto devengado",
-            value: currency(financials.devengado),
-            foot: "Valor devengado visible en la consulta."
-          },
-          {
-            label: "Monto ejecutado",
-            value: currency(financials.ejecutado),
-            foot: "Valor ejecutado del registro seleccionado."
-          },
-          {
-            label: "Pendiente por certificar",
-            value: currency(financials.pendienteCertificar),
-            foot: "Saldo por certificar del corte actual."
-          },
-          {
-            label: "Pendiente por devengar",
-            value: currency(financials.pendienteDevengar),
-            foot: "Saldo entre comprometido y devengado."
-          },
-          {
-            label: "Pendiente por ejecutar",
-            value: currency(financials.pendienteEjecutar),
-            foot: "Saldo entre devengado y ejecutado."
-          },
-          {
-            label: "Peso en el total",
-            value: percent(shareTotal),
-            foot: `${selected.kind === "bloque" ? "Este bloque" : "Esta direccion"} explica ${percent(relativeToLeader)} del lider general y ocupa #${rank}.`
-          }
-        ];
-
-        summaryGrid.innerHTML = cards
-          .map(
-            (card) => `
-              <article class="metric-card">
-                <div class="metric-label">${card.label}</div>
-                <div class="metric-value ${card.className || ""}">${card.value}</div>
-                <div class="metric-foot">${card.foot}</div>
-              </article>
-            `
-          )
-          .join("");
-      }
-
       function renderExecutive(selected) {
         const ranking = rankItems();
         const rank = ranking.findIndex((item) => item.code === selected.code) + 1;
@@ -1791,13 +1712,7 @@
         const tones = toneFor(selected);
         const ranking = rankItems();
         const overallRank = ranking.findIndex((item) => item.code === selected.code) + 1;
-        const blockItems = DATA.filter((item) => item.block === selected.block).sort((a, b) => b.codificado - a.codificado);
-        const blockRank = blockItems.findIndex((item) => item.code === selected.code) + 1;
         const financials = getFinancialMetrics(selected);
-        const blockShare = share(financials.codificado, blockStats[selected.block].codificado);
-        const totalShare = share(financials.codificado, totalCodificado);
-        const relativeToMax = share(financials.codificado, maxCodificado);
-        const reformShare = share(Math.abs(selected.reforma), maxReformaAbs);
         const certifiedShare = share(financials.certificado, financials.codificado || 0);
 
         focusCard.innerHTML = `
@@ -1858,13 +1773,6 @@
               <div class="focus-stat-value">${currency(financials.pendienteCertificar)}</div>
               <div class="focus-stat-foot">Saldo restante por certificar.</div>
             </article>
-          </div>
-
-          <div class="meter-grid">
-            ${meterRow("Participacion en el total municipal", totalShare, `${currency(financials.codificado)} de ${currency(totalCodificado)}.`, tones.strong)}
-            ${meterRow(`Peso dentro de ${meta.label}`, blockShare, `${blockRank} de ${blockItems.length} en su bloque.`, tones.strong)}
-            ${meterRow("Escala frente al mayor codificado", relativeToMax, `El lider general es ${currency(maxCodificado)}.`, tones.strong)}
-            ${meterRow("Intensidad relativa de la reforma", reformShare, `Comparado contra la reforma absoluta maxima observada.`, selected.reforma >= 0 ? "var(--positive)" : selected.reforma < 0 ? "var(--negative)" : "var(--neutral)")}
           </div>
         `;
       }
@@ -2186,7 +2094,6 @@
         setHash(selected.code);
         renderGeneralSummary();
         renderSelectorMeta(selected);
-        renderSummary(selected);
         renderExecutive(selected);
         renderFocus(selected);
         renderInsights(selected);
