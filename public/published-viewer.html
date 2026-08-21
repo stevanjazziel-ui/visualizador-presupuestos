@@ -1146,7 +1146,6 @@
           <a class="side-link" href="#rankingChart">Ranking</a>
           <a class="side-link" href="#blockChart">Bloques</a>
           <a class="side-link" href="#reformChart">Reformas</a>
-          <a class="side-link" href="#tableBody">Tabla consolidada</a>
         </nav>
       </aside>
 
@@ -1246,36 +1245,6 @@
             <p id="blockFooter" class="chart-footer"></p>
           </section>
 
-          <section class="table-card panel">
-            <div class="section-kicker">Detalle completo</div>
-            <h2>Tabla de referencia</h2>
-            <p class="table-copy">La tabla queda plegada para que el visor no se sienta amontonado, pero sigue ahi cuando se necesita bajar al detalle.</p>
-            <details>
-              <summary>Ver tabla consolidada de direcciones y bloques</summary>
-              <div class="table-wrap">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Direccion / bloque</th>
-                      <th>Tipo</th>
-                      <th>Bloque</th>
-                      <th>Inicial</th>
-                      <th>Reforma</th>
-                      <th>Codificado</th>
-                      <th>Certificado</th>
-                      <th>Comprometido</th>
-                      <th>Devengado</th>
-                      <th>Ejecutado</th>
-                      <th>Pend. cert.</th>
-                      <th>Pend. dev.</th>
-                      <th>Pend. ejec.</th>
-                    </tr>
-                  </thead>
-                  <tbody id="tableBody"></tbody>
-                </table>
-              </div>
-            </details>
-          </section>
         </main>
 
         <aside class="stack">
@@ -1368,7 +1337,6 @@
       const reformChart = document.getElementById("reformChart");
       const reformFooter = document.getElementById("reformFooter");
       const blockGrid = document.getElementById("blockGrid");
-      const tableBody = document.getElementById("tableBody");
 
       function currency(value) {
         return formatter.format(value);
@@ -2162,40 +2130,6 @@
         blockGrid.innerHTML = cards;
       }
 
-      function renderTable(selectedCode) {
-        const rows = DATA.slice()
-          .sort((a, b) => {
-            if (a.block === b.block) return b.codificado - a.codificado;
-            return a.block.localeCompare(b.block);
-          })
-          .map((item) => {
-            const financials = getFinancialMetrics(item);
-            return `
-              <tr class="${item.code === selectedCode ? "selected" : ""}">
-                <td>
-                  <strong>${escapeHtml(item.name)}</strong>
-                  <span class="row-code">${item.code}</span>
-                </td>
-                <td>${item.kind === "bloque" ? "Bloque" : "Direccion"}</td>
-                <td>${BLOCK_META[item.block].label}</td>
-                <td class="row-money">${escapeHtml(currency(financials.initial))}</td>
-                <td class="row-money ${item.reforma > 0 ? "positive" : item.reforma < 0 ? "negative" : ""}">${escapeHtml(signedCurrency(item.reforma))}</td>
-                <td class="row-money">${escapeHtml(currency(financials.codificado))}</td>
-                <td class="row-money">${escapeHtml(currency(financials.certificado))}</td>
-                <td class="row-money">${escapeHtml(currency(financials.comprometido))}</td>
-                <td class="row-money">${escapeHtml(currency(financials.devengado))}</td>
-                <td class="row-money">${escapeHtml(currency(financials.ejecutado))}</td>
-                <td class="row-money">${escapeHtml(currency(financials.pendienteCertificar))}</td>
-                <td class="row-money">${escapeHtml(currency(financials.pendienteDevengar))}</td>
-                <td class="row-money">${escapeHtml(currency(financials.pendienteEjecutar))}</td>
-              </tr>
-            `;
-          })
-          .join("");
-
-        tableBody.innerHTML = rows;
-      }
-
       function setRefreshStatus(message, tone = "muted") {
         refreshStatus.textContent = message;
         refreshStatus.style.color = tone === "error"
@@ -2252,7 +2186,6 @@
         renderInsights(selected);
         renderAlerts(selected);
         renderBlocks(selected);
-        renderTable(selected.code);
         rankingChart.innerHTML = svgRanking(selected.code);
         blockChart.innerHTML = svgBlock(selected);
         reformChart.innerHTML = svgReforms(selected.code);
