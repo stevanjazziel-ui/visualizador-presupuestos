@@ -1487,23 +1487,54 @@
       }
 
       function renderGeneralSummary() {
+        const summaryItems = DATA.filter(isSummaryUniverseItem);
+        const totalComprometido = summaryItems.reduce((sum, item) => sum + (item.comprometido || 0), 0);
+        const totalDevengado = summaryItems.reduce((sum, item) => sum + (item.devengado || 0), 0);
+        const totalEjecutado = summaryItems.reduce((sum, item) => sum + (item.ejecutado || 0), 0);
+        const totalPendienteCertificar = summaryItems.reduce((sum, item) => sum + (item.pendienteCertificar || 0), 0);
+        const totalPendienteDevengar = summaryItems.reduce((sum, item) => sum + (item.pendienteDevengar || 0), 0);
+        const totalPendienteEjecutar = summaryItems.reduce((sum, item) => sum + (item.pendienteEjecutar || 0), 0);
         const cards = [
           {
-            label: "Codificado total",
-            value: currency(totalCodificado)
-          },
-          {
-            label: "Certificado total",
-            value: currency(totalCertificado)
-          },
-          {
-            label: "Inicial total",
+            label: "Monto inicial",
             value: currency(totalInicial)
           },
           {
-            label: "Reforma neta acumulada",
+            label: "Monto codificado",
+            value: currency(totalCodificado)
+          },
+          {
+            label: "Monto certificado",
+            value: currency(totalCertificado)
+          },
+          {
+            label: "Cantidad reformada",
             value: signedCurrency(totalReforma),
             className: totalReforma > 0 ? "positive" : totalReforma < 0 ? "negative" : ""
+          },
+          {
+            label: "Monto comprometido",
+            value: currency(totalComprometido)
+          },
+          {
+            label: "Monto devengado",
+            value: currency(totalDevengado)
+          },
+          {
+            label: "Monto ejecutado",
+            value: currency(totalEjecutado)
+          },
+          {
+            label: "Pendiente por certificar",
+            value: currency(totalPendienteCertificar)
+          },
+          {
+            label: "Pendiente por devengar",
+            value: currency(totalPendienteDevengar)
+          },
+          {
+            label: "Pendiente por ejecutar",
+            value: currency(totalPendienteEjecutar)
           }
         ];
 
