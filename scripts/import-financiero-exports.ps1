@@ -28,6 +28,15 @@ function Resolve-NodePath {
   throw "No se encontro Node.js."
 }
 
+function Resolve-PythonPath {
+  $python = Get-Command python -ErrorAction SilentlyContinue
+  if ($null -ne $python) {
+    return $python.Source
+  }
+
+  throw "No se encontro Python."
+}
+
 function Convert-ToDecimal {
   param([string]$Value)
 
@@ -198,68 +207,23 @@ if ($sourceFiles.Count -eq 0) {
   throw "No se encontraron archivos con el patron '$Pattern' en '$resolvedSourceDir'."
 }
 
-$excel = New-Object -ComObject Excel.Application
-$excel.Visible = $false
-$excel.DisplayAlerts = $false
-
 $recordsByLeaf = @{}
 
-try {
-  foreach ($file in $sourceFiles) {
-    $workbook = $excel.Workbooks.Open($file.FullName)
-    try {
-      $worksheet = $workbook.Worksheets.Item(1)
-      $headerMap = Find-HeaderMap -Worksheet $worksheet
-      $usedRows = $worksheet.UsedRange.Rows.Count
-
-      for ($row = ($headerMap.row + 1); $row -le $usedRows; $row++) {
-        $partida = ([string]$worksheet.Cells.Item($row, $headerMap.partida).Text).Trim()
-        if ($partida -notmatch '^\d+(?:\.\d+){8,}$') {
-          continue
-        }
-
-        if ($partida -notmatch '(\d{4}\.\d+\.\d+)') {
-          continue
-        }
-
-        $directionCode = $Matches[1]
-        $record = [pscustomobject]@{
-          File = $file.Name
-          FileTime = $file.LastWriteTimeUtc
-          Partida = $partida
-          DirectionCode = $directionCode
-          Initial = Convert-ToDecimal ([string]$worksheet.Cells.Item($row, $headerMap.initial).Text)
-          Reforma = Convert-ToDecimal ([string]$worksheet.Cells.Item($row, $headerMap.reforma).Text)
-          Codificado = Convert-ToDecimal ([string]$worksheet.Cells.Item($row, $headerMap.codificado).Text)
-          Certificado = Convert-ToDecimal ([string]$worksheet.Cells.Item($row, $headerMap.certificado).Text)
-          Comprometido = if ($headerMap.Contains("comprometido")) { Convert-ToDecimal ([string]$worksheet.Cells.Item($row, $headerMap.comprometido).Text) } else { [decimal]::Zero }
-          Devengado = if ($headerMap.Contains("devengado")) { Convert-ToDecimal ([string]$worksheet.Cells.Item($row, $headerMap.devengado).Text) } else { [decimal]::Zero }
-          Ejecutado = if ($headerMap.Contains("ejecutado")) { Convert-ToDecimal ([string]$worksheet.Cells.Item($row, $headerMap.ejecutado).Text) } else { [decimal]::Zero }
-          PendienteCertificar = if ($headerMap.Contains("pendienteCertificar")) { Convert-ToDecimal ([string]$worksheet.Cells.Item($row, $headerMap.pendienteCertificar).Text) } else { [decimal]::Zero }
-          PendienteDevengar = if ($headerMap.Contains("pendienteDevengar")) { Convert-ToDecimal ([string]$worksheet.Cells.Item($row, $headerMap.pendienteDevengar).Text) } else { [decimal]::Zero }
-          PendienteEjecutar = if ($headerMap.Contains("pendienteEjecutar")) { Convert-ToDecimal ([string]$worksheet.Cells.Item($row, $headerMap.pendienteEjecutar).Text) } else { [decimal]::Zero }
-        }
-
-        if (
-          (-not $recordsByLeaf.ContainsKey($partida)) -or
-          ($record.FileTime -gt $recordsByLeaf[$partida].FileTime)
-        ) {
-          $recordsByLeaf[$partida] = $record
-        }
-      }
-    }
-    finally {
-      $workbook.Close($false)
-      [System.Runtime.InteropServices.Marshal]::ReleaseComObject($worksheet) | Out-Null
-      [System.Runtime.InteropServices.Marshal]::ReleaseComObject($workbook) | Out-Null
-    }
-  }
+$pythonPath = Resolve-PythonPath
+$parserPath = Join-Path $PSScriptRoot "parse-financiero-exports.py"
+$fileArgs = @($sourceFiles | ForEach-Object { $_.FullName })
+$records = & $pythonPath $parserPath @fileArgs | ConvertFrom-Json
+if ($LASTEXITCODE -ne 0) {
+  throw "Fallo parse-financiero-exports.py."
 }
-finally {
-  $excel.Quit()
-  [System.Runtime.InteropServices.Marshal]::ReleaseComObject($excel) | Out-Null
-  [GC]::Collect()
-  [GC]::WaitForPendingFinalizers()
+
+foreach ($record in $records) {
+  if (
+    (-not $recordsByLeaf.ContainsKey($record.Partida)) -or
+    ([DateTime]$record.FileTime -gt [DateTime]$recordsByLeaf[$record.Partida].FileTime)
+  ) {
+    $recordsByLeaf[$record.Partida] = $record
+  }
 }
 
 $update = Update-PayloadFromRecords -RecordsByLeaf $recordsByLeaf -PayloadPath $resolvedSyncSourcePath

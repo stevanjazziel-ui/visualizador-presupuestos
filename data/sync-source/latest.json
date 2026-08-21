@@ -2,7 +2,7 @@
     "meta":  {
                  "title":  "Direcciones - Monto codificado 2026",
                  "year":  2026,
-                 "updatedAt":  "2026-08-20T22:21:09.6082420Z"
+                 "updatedAt":  "2026-08-21T14:48:57.2228735Z"
              },
     "items":  [
                   {
@@ -51,10 +51,16 @@
                       "block":  "2026.1",
                       "tone":  "tone-a",
                       "kind":  "direccion",
-                      "initial":  460.88,
+                      "initial":  460881.42,
                       "reforma":  0,
-                      "codificado":  460.88,
-                      "certificado":  85838.98
+                      "codificado":  460881.42,
+                      "certificado":  246835.58,
+                      "comprometido":  246835.58,
+                      "devengado":  217362.57,
+                      "ejecutado":  208663.8,
+                      "pendienteCertificar":  214045.84,
+                      "pendienteDevengar":  29473.01,
+                      "pendienteEjecutar":  8698.77
                   },
                   {
                       "code":  "2026.1.5",

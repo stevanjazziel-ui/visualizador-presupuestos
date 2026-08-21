@@ -2,7 +2,7 @@
   "meta": {
     "title": "Direcciones - Monto codificado 2026",
     "year": 2026,
-    "updatedAt": "2026-08-21T11:25:11.167Z"
+    "updatedAt": "2026-08-21T14:48:57.308Z"
   },
   "items": [
     {
@@ -14,7 +14,13 @@
       "initial": 1568931.5,
       "reforma": -247924.97,
       "codificado": 1321006.53,
-      "certificado": 0
+      "certificado": 0,
+      "comprometido": 0,
+      "devengado": 0,
+      "ejecutado": 0,
+      "pendienteCertificar": 0,
+      "pendienteDevengar": 0,
+      "pendienteEjecutar": 0
     },
     {
       "code": "2026.1.1",
@@ -25,7 +31,13 @@
       "initial": 9937557.5,
       "reforma": 475025.7,
       "codificado": 10412583.2,
-      "certificado": 0
+      "certificado": 0,
+      "comprometido": 0,
+      "devengado": 0,
+      "ejecutado": 0,
+      "pendienteCertificar": 0,
+      "pendienteDevengar": 0,
+      "pendienteEjecutar": 0
     },
     {
       "code": "2026.1.2",
@@ -36,7 +48,13 @@
       "initial": 1363638.54,
       "reforma": 558.16,
       "codificado": 1364196.7,
-      "certificado": 0
+      "certificado": 0,
+      "comprometido": 0,
+      "devengado": 0,
+      "ejecutado": 0,
+      "pendienteCertificar": 0,
+      "pendienteDevengar": 0,
+      "pendienteEjecutar": 0
     },
     {
       "code": "2026.1.3",
@@ -47,7 +65,13 @@
       "initial": 2226004.32,
       "reforma": -21550.06,
       "codificado": 2204454.26,
-      "certificado": 0
+      "certificado": 0,
+      "comprometido": 0,
+      "devengado": 0,
+      "ejecutado": 0,
+      "pendienteCertificar": 0,
+      "pendienteDevengar": 0,
+      "pendienteEjecutar": 0
     },
     {
       "code": "2026.1.4",
@@ -55,10 +79,16 @@
       "block": "2026.1",
       "tone": "tone-a",
       "kind": "direccion",
-      "initial": 460.88,
+      "initial": 460881.42,
       "reforma": 0,
-      "codificado": 460.88,
-      "certificado": 85838.98
+      "codificado": 460881.42,
+      "certificado": 246835.58,
+      "comprometido": 246835.58,
+      "devengado": 217362.57,
+      "ejecutado": 208663.8,
+      "pendienteCertificar": 214045.84,
+      "pendienteDevengar": 29473.01,
+      "pendienteEjecutar": 8698.77
     },
     {
       "code": "2026.1.5",
@@ -69,7 +99,13 @@
       "initial": 95798.59,
       "reforma": 0,
       "codificado": 95798.59,
-      "certificado": 0
+      "certificado": 0,
+      "comprometido": 0,
+      "devengado": 0,
+      "ejecutado": 0,
+      "pendienteCertificar": 0,
+      "pendienteDevengar": 0,
+      "pendienteEjecutar": 0
     },
     {
       "code": "2026.1.6",
@@ -80,7 +116,13 @@
       "initial": 1353060.33,
       "reforma": -83787.6,
       "codificado": 1269272.73,
-      "certificado": 0
+      "certificado": 0,
+      "comprometido": 0,
+      "devengado": 0,
+      "ejecutado": 0,
+      "pendienteCertificar": 0,
+      "pendienteDevengar": 0,
+      "pendienteEjecutar": 0
     },
     {
       "code": "2026.1.7",
@@ -91,7 +133,13 @@
       "initial": 1941790.59,
       "reforma": 1159844.02,
       "codificado": 3101634.61,
-      "certificado": 0
+      "certificado": 0,
+      "comprometido": 0,
+      "devengado": 0,
+      "ejecutado": 0,
+      "pendienteCertificar": 0,
+      "pendienteDevengar": 0,
+      "pendienteEjecutar": 0
     },
     {
       "code": "2026.1.8",
@@ -102,7 +150,13 @@
       "initial": 2396456.7,
       "reforma": -454162.46,
       "codificado": 1942294.24,
-      "certificado": 0
+      "certificado": 0,
+      "comprometido": 0,
+      "devengado": 0,
+      "ejecutado": 0,
+      "pendienteCertificar": 0,
+      "pendienteDevengar": 0,
+      "pendienteEjecutar": 0
     },
     {
       "code": "2026.1.9",
@@ -113,7 +167,13 @@
       "initial": 389392.47,
       "reforma": -49643.47,
       "codificado": 339749,
-      "certificado": 0
+      "certificado": 0,
+      "comprometido": 0,
+      "devengado": 0,
+      "ejecutado": 0,
+      "pendienteCertificar": 0,
+      "pendienteDevengar": 0,
+      "pendienteEjecutar": 0
     },
     {
       "code": "2026.2.1",
@@ -124,7 +184,13 @@
       "initial": 3244374.89,
       "reforma": 106199.6,
       "codificado": 3350574.49,
-      "certificado": 0
+      "certificado": 0,
+      "comprometido": 0,
+      "devengado": 0,
+      "ejecutado": 0,
+      "pendienteCertificar": 0,
+      "pendienteDevengar": 0,
+      "pendienteEjecutar": 0
     },
     {
       "code": "2026.2.4",
@@ -135,7 +201,13 @@
       "initial": 3128442.31,
       "reforma": -383413.96,
       "codificado": 2745028.35,
-      "certificado": 0
+      "certificado": 0,
+      "comprometido": 0,
+      "devengado": 0,
+      "ejecutado": 0,
+      "pendienteCertificar": 0,
+      "pendienteDevengar": 0,
+      "pendienteEjecutar": 0
     },
     {
       "code": "2026.3.1",
@@ -146,7 +218,13 @@
       "initial": 2187896.9,
       "reforma": -381902.16,
       "codificado": 1805994.74,
-      "certificado": 0
+      "certificado": 0,
+      "comprometido": 0,
+      "devengado": 0,
+      "ejecutado": 0,
+      "pendienteCertificar": 0,
+      "pendienteDevengar": 0,
+      "pendienteEjecutar": 0
     },
     {
       "code": "2026.3.2",
@@ -157,7 +235,13 @@
       "initial": 5895574.59,
       "reforma": -95791.85,
       "codificado": 5799782.74,
-      "certificado": 0
+      "certificado": 0,
+      "comprometido": 0,
+      "devengado": 0,
+      "ejecutado": 0,
+      "pendienteCertificar": 0,
+      "pendienteDevengar": 0,
+      "pendienteEjecutar": 0
     },
     {
       "code": "2026.3.3",
@@ -168,7 +252,13 @@
       "initial": 11077758.67,
       "reforma": -5726120.6,
       "codificado": 5351638.07,
-      "certificado": 0
+      "certificado": 0,
+      "comprometido": 0,
+      "devengado": 0,
+      "ejecutado": 0,
+      "pendienteCertificar": 0,
+      "pendienteDevengar": 0,
+      "pendienteEjecutar": 0
     },
     {
       "code": "2026.3.4",
@@ -179,7 +269,13 @@
       "initial": 3675723.86,
       "reforma": 331903.84,
       "codificado": 4007627.7,
-      "certificado": 0
+      "certificado": 0,
+      "comprometido": 0,
+      "devengado": 0,
+      "ejecutado": 0,
+      "pendienteCertificar": 0,
+      "pendienteDevengar": 0,
+      "pendienteEjecutar": 0
     },
     {
       "code": "2026.3.5",
@@ -190,7 +286,13 @@
       "initial": 1117603.39,
       "reforma": -203779.56,
       "codificado": 913823.83,
-      "certificado": 0
+      "certificado": 0,
+      "comprometido": 0,
+      "devengado": 0,
+      "ejecutado": 0,
+      "pendienteCertificar": 0,
+      "pendienteDevengar": 0,
+      "pendienteEjecutar": 0
     },
     {
       "code": "2026.3.6",
@@ -201,7 +303,13 @@
       "initial": 43333542.54,
       "reforma": -263282.61,
       "codificado": 43070259.93,
-      "certificado": 0
+      "certificado": 0,
+      "comprometido": 0,
+      "devengado": 0,
+      "ejecutado": 0,
+      "pendienteCertificar": 0,
+      "pendienteDevengar": 0,
+      "pendienteEjecutar": 0
     },
     {
       "code": "2026.3.7",
@@ -212,7 +320,13 @@
       "initial": 1925091.3,
       "reforma": -9154.54,
       "codificado": 1915936.76,
-      "certificado": 0
+      "certificado": 0,
+      "comprometido": 0,
+      "devengado": 0,
+      "ejecutado": 0,
+      "pendienteCertificar": 0,
+      "pendienteDevengar": 0,
+      "pendienteEjecutar": 0
     },
     {
       "code": "2026.3.8",
@@ -224,7 +338,13 @@
       "reforma": 255918.2,
       "codificado": 810969.76,
       "focus": true,
-      "certificado": 0
+      "certificado": 0,
+      "comprometido": 0,
+      "devengado": 0,
+      "ejecutado": 0,
+      "pendienteCertificar": 0,
+      "pendienteDevengar": 0,
+      "pendienteEjecutar": 0
     },
     {
       "code": "2026.3.9",
@@ -235,7 +355,13 @@
       "initial": 1801499.8,
       "reforma": 113531.99,
       "codificado": 1915031.79,
-      "certificado": 0
+      "certificado": 0,
+      "comprometido": 0,
+      "devengado": 0,
+      "ejecutado": 0,
+      "pendienteCertificar": 0,
+      "pendienteDevengar": 0,
+      "pendienteEjecutar": 0
     },
     {
       "code": "2026.5.1",
@@ -246,7 +372,13 @@
       "initial": 1494000,
       "reforma": 0,
       "codificado": 1494000,
-      "certificado": 0
+      "certificado": 0,
+      "comprometido": 0,
+      "devengado": 0,
+      "ejecutado": 0,
+      "pendienteCertificar": 0,
+      "pendienteDevengar": 0,
+      "pendienteEjecutar": 0
     },
     {
       "code": "2026.5.2",
@@ -257,7 +389,13 @@
       "initial": 5701703.08,
       "reforma": -427197.6,
       "codificado": 5274505.48,
-      "certificado": 0
+      "certificado": 0,
+      "comprometido": 0,
+      "devengado": 0,
+      "ejecutado": 0,
+      "pendienteCertificar": 0,
+      "pendienteDevengar": 0,
+      "pendienteEjecutar": 0
     }
   ],
   "blockMeta": {
