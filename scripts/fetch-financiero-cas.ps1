@@ -38,9 +38,15 @@ $loginHtmlPath = Join-Path $env:TEMP "financiero-cas-login.html"
 $headersPath = Join-Path $env:TEMP "financiero-cas-headers.txt"
 $authHtmlPath = Join-Path $env:TEMP "financiero-cas-auth.html"
 
+foreach ($tempPath in @($cookieJarPath, $loginHtmlPath, $headersPath, $authHtmlPath)) {
+  if (Test-Path -LiteralPath $tempPath) {
+    Remove-Item -LiteralPath $tempPath -Force -ErrorAction SilentlyContinue
+  }
+}
+
 curl.exe -s -L -c $cookieJarPath -b $cookieJarPath $casLoginUrl -o $loginHtmlPath | Out-Null
 $loginPage = Get-Content -LiteralPath $loginHtmlPath -Raw
-$executionMatch = [regex]::Match($loginPage, 'name="execution"\s+value="([^"]+)"')
+$executionMatch = [regex]::Match($loginPage, 'name="execution"[^>]*value="([^"]+)"')
 if (-not $executionMatch.Success) {
   throw "No se encontro el token execution del CAS."
 }

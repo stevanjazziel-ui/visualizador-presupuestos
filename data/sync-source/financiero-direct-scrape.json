@@ -1,9 +1,9 @@
 ﻿{
     "meta":  {
                  "source":  "financiero-cas-rpc",
-                 "capturedAt":  "2026-08-21T20:42:20.2785741Z",
-                 "rowCount":  1099,
-                 "ticket":  "ST-95575-36uYoCYJOwMx3FhTl4mWBDXdyos-srvegobcomercial#riobamba"
+                 "capturedAt":  "2026-08-21T21:11:05.3169238Z",
+                 "rowCount":  1101,
+                 "ticket":  "ST-95708-540ook70C9xwp1kWBs-0tVVZgLs-srvegobcomercial#riobamba"
              },
     "rows":  [
                  {
@@ -2403,12 +2403,12 @@
                      "initial_amount":  254000,
                      "reform_amount":  0,
                      "codified_amount":  254000,
-                     "certified_amount":  138310.59,
-                     "committed_amount":  138310.59,
+                     "certified_amount":  159114.2,
+                     "committed_amount":  159114.2,
                      "accrued_amount":  138119.09,
                      "executed_amount":  138119.09,
-                     "certified_pending":  115689.41,
-                     "accrued_pending":  191.5,
+                     "certified_pending":  94885.8,
+                     "accrued_pending":  20995.11,
                      "executed_pending":  0
                  },
                  {
@@ -2429,12 +2429,12 @@
                      "initial_amount":  15000,
                      "reform_amount":  0,
                      "codified_amount":  15000,
-                     "certified_amount":  10488.96,
-                     "committed_amount":  10488.96,
+                     "certified_amount":  11416.83,
+                     "committed_amount":  11416.83,
                      "accrued_amount":  10488.96,
                      "executed_amount":  10488.96,
-                     "certified_pending":  4511.04,
-                     "accrued_pending":  0,
+                     "certified_pending":  3583.17,
+                     "accrued_pending":  927.87,
                      "executed_pending":  0
                  },
                  {
@@ -2819,11 +2819,11 @@
                      "initial_amount":  460000,
                      "reform_amount":  -80000,
                      "codified_amount":  380000,
-                     "certified_amount":  374839.95,
+                     "certified_amount":  374927.95,
                      "committed_amount":  344839.95,
                      "accrued_amount":  321133.36,
                      "executed_amount":  321133.36,
-                     "certified_pending":  5160.05,
+                     "certified_pending":  5072.05,
                      "accrued_pending":  23706.59,
                      "executed_pending":  0
                  },
@@ -4080,11 +4080,11 @@
                      "initial_amount":  10000,
                      "reform_amount":  0,
                      "codified_amount":  10000,
-                     "certified_amount":  8867.67,
+                     "certified_amount":  8879.67,
                      "committed_amount":  8867.67,
                      "accrued_amount":  8867.67,
                      "executed_amount":  8867.67,
-                     "certified_pending":  1132.33,
+                     "certified_pending":  1120.33,
                      "accrued_pending":  0,
                      "executed_pending":  0
                  },
@@ -4189,6 +4189,32 @@
                      "accrued_amount":  157009,
                      "executed_amount":  157009,
                      "certified_pending":  192991,
+                     "accrued_pending":  0,
+                     "executed_pending":  0
+                 },
+                 {
+                     "code":  "58.04.07.2026.5.1.000.000.012.001",
+                     "initial_amount":  150000,
+                     "reform_amount":  0,
+                     "codified_amount":  150000,
+                     "certified_amount":  93975.76,
+                     "committed_amount":  93975.76,
+                     "accrued_amount":  93975.76,
+                     "executed_amount":  93975.76,
+                     "certified_pending":  56024.24,
+                     "accrued_pending":  0,
+                     "executed_pending":  0
+                 },
+                 {
+                     "code":  "58.04.07.2026.5.1.000.000.013.001",
+                     "initial_amount":  260000,
+                     "reform_amount":  0,
+                     "codified_amount":  260000,
+                     "certified_amount":  221038.08,
+                     "committed_amount":  221038.08,
+                     "accrued_amount":  221038.08,
+                     "executed_amount":  221038.08,
+                     "certified_pending":  38961.92,
                      "accrued_pending":  0,
                      "executed_pending":  0
                  },
@@ -5796,12 +5822,12 @@
                      "initial_amount":  3620,
                      "reform_amount":  0,
                      "codified_amount":  3620,
-                     "certified_amount":  2924.67,
-                     "committed_amount":  2924.67,
+                     "certified_amount":  3223.89,
+                     "committed_amount":  3223.89,
                      "accrued_amount":  2924.67,
                      "executed_amount":  2924.67,
-                     "certified_pending":  695.33,
-                     "accrued_pending":  0,
+                     "certified_pending":  396.11,
+                     "accrued_pending":  299.22,
                      "executed_pending":  0
                  },
                  {
@@ -5901,11 +5927,11 @@
                      "reform_amount":  23872.42,
                      "codified_amount":  332611.93,
                      "certified_amount":  221378.44,
-                     "committed_amount":  220711.77,
+                     "committed_amount":  221378.44,
                      "accrued_amount":  150221.69,
                      "executed_amount":  148089.21,
                      "certified_pending":  111233.49,
-                     "accrued_pending":  70490.08,
+                     "accrued_pending":  71156.75,
                      "executed_pending":  2132.48
                  },
                  {
@@ -6629,11 +6655,11 @@
                      "reform_amount":  84394.32,
                      "codified_amount":  212394.32,
                      "certified_amount":  127659.84,
-                     "committed_amount":  112675.64,
+                     "committed_amount":  125984.32,
                      "accrued_amount":  35878.92,
                      "executed_amount":  35424.59,
                      "certified_pending":  84734.48,
-                     "accrued_pending":  76796.72,
+                     "accrued_pending":  90105.4,
                      "executed_pending":  454.33
                  },
                  {

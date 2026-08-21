@@ -2,7 +2,7 @@ window.BUDGET_VIEWER_PAYLOAD = {
   "meta": {
     "title": "Direcciones - Monto codificado 2026",
     "year": 2026,
-    "updatedAt": "2026-08-21T20:42:21.443Z"
+    "updatedAt": "2026-08-21T21:11:06.525Z"
   },
   "items": [
     {
@@ -31,12 +31,12 @@ window.BUDGET_VIEWER_PAYLOAD = {
       "initial": 9937557.5,
       "reforma": 475025.7,
       "codificado": 10412583.2,
-      "certificado": 6905444.79,
-      "comprometido": 5655459.78,
+      "certificado": 6926348.4,
+      "comprometido": 5676263.39,
       "devengado": 4808924.03,
       "ejecutado": 4758739.96,
-      "pendienteCertificar": 3507138.41,
-      "pendienteDevengar": 846535.75,
+      "pendienteCertificar": 3486234.8,
+      "pendienteDevengar": 867339.36,
       "pendienteEjecutar": 50184.07
     },
     {
@@ -151,11 +151,11 @@ window.BUDGET_VIEWER_PAYLOAD = {
       "reforma": -454162.46,
       "codificado": 1942294.24,
       "certificado": 1144840.05,
-      "comprometido": 1081048.48,
+      "comprometido": 1081715.15,
       "devengado": 880038.78,
       "ejecutado": 862735.14,
       "pendienteCertificar": 797454.19,
-      "pendienteDevengar": 201009.7,
+      "pendienteDevengar": 201676.37,
       "pendienteEjecutar": 17303.64
     },
     {
@@ -201,12 +201,12 @@ window.BUDGET_VIEWER_PAYLOAD = {
       "initial": 3128442.31,
       "reforma": -383413.96,
       "codificado": 2745028.35,
-      "certificado": 1744256.57,
-      "comprometido": 1566998.65,
+      "certificado": 1744555.79,
+      "comprometido": 1580606.55,
       "devengado": 1275058.07,
       "ejecutado": 1245716.89,
-      "pendienteCertificar": 1000771.78,
-      "pendienteDevengar": 291940.58,
+      "pendienteCertificar": 1000472.56,
+      "pendienteDevengar": 305548.48,
       "pendienteEjecutar": 29341.18
     },
     {
@@ -320,12 +320,12 @@ window.BUDGET_VIEWER_PAYLOAD = {
       "initial": 1925091.3,
       "reforma": -9154.54,
       "codificado": 1915936.76,
-      "certificado": 1097820.95,
-      "comprometido": 957340.93,
+      "certificado": 1098748.82,
+      "comprometido": 958268.8,
       "devengado": 874871.84,
       "ejecutado": 856490.66,
-      "pendienteCertificar": 818115.81,
-      "pendienteDevengar": 82469.09,
+      "pendienteCertificar": 817187.94,
+      "pendienteDevengar": 83396.96,
       "pendienteEjecutar": 18381.18
     },
     {
@@ -369,14 +369,14 @@ window.BUDGET_VIEWER_PAYLOAD = {
       "block": "2026.5",
       "tone": "tone-d",
       "kind": "bloque",
-      "initial": 1084000,
+      "initial": 1494000,
       "reforma": 0,
-      "codificado": 1084000,
-      "certificado": 362329,
-      "comprometido": 362329,
-      "devengado": 362329,
-      "ejecutado": 362329,
-      "pendienteCertificar": 721671,
+      "codificado": 1494000,
+      "certificado": 677342.84,
+      "comprometido": 677342.84,
+      "devengado": 677342.84,
+      "ejecutado": 677342.84,
+      "pendienteCertificar": 816657.16,
       "pendienteDevengar": 0,
       "pendienteEjecutar": 0
     },
