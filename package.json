@@ -19,7 +19,9 @@
     "sync:financiero:direct": "powershell -ExecutionPolicy Bypass -File .\\scripts\\import-financiero-direct.ps1",
     "sync:financiero:direct:publish": "powershell -ExecutionPolicy Bypass -File .\\scripts\\import-financiero-direct.ps1 -Publish",
     "sync:financiero:direct:auto": "powershell -ExecutionPolicy Bypass -File .\\scripts\\run-financiero-direct-sync.ps1",
-    "sync:financiero:direct:watch": "powershell -ExecutionPolicy Bypass -File .\\scripts\\watch-financiero-direct.ps1 -Publish"
+    "sync:financiero:direct:watch": "powershell -ExecutionPolicy Bypass -File .\\scripts\\watch-financiero-direct.ps1 -Publish",
+    "sync:financiero:live": "powershell -ExecutionPolicy Bypass -File .\\scripts\\scrape-financiero-direct.ps1",
+    "sync:financiero:live:publish": "powershell -ExecutionPolicy Bypass -File .\\scripts\\scrape-financiero-direct.ps1 -Publish"
   },
   "dependencies": {
     "drizzle-orm": "0.45.2",
