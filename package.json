@@ -11,7 +11,11 @@
     "start": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vinext start",
     "test": "npm run build && node --test tests/rendered-html.test.mjs",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
-    "db:generate": "drizzle-kit generate"
+    "db:generate": "drizzle-kit generate",
+    "sync:financiero": "powershell -ExecutionPolicy Bypass -File .\\scripts\\import-financiero-exports.ps1",
+    "sync:financiero:publish": "powershell -ExecutionPolicy Bypass -File .\\scripts\\import-financiero-exports.ps1 -Publish",
+    "sync:financiero:auto": "powershell -ExecutionPolicy Bypass -File .\\scripts\\run-financiero-sync.ps1",
+    "sync:financiero:watch": "powershell -ExecutionPolicy Bypass -File .\\scripts\\watch-financiero-export.ps1 -Publish"
   },
   "dependencies": {
     "drizzle-orm": "0.45.2",

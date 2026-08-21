@@ -42,6 +42,13 @@ Ruta simple recomendada:
 - para traer datos reales desde exportes del financiero en Windows:
   - `powershell -ExecutionPolicy Bypass -File .\scripts\import-financiero-exports.ps1`
   - `powershell -ExecutionPolicy Bypass -File .\scripts\import-financiero-exports.ps1 -Publish`
+  - comandos cortos:
+    - `npm run sync:financiero`
+    - `npm run sync:financiero:publish`
+    - `npm run sync:financiero:auto`
+    - `npm run sync:financiero:watch`
+      - espera un nuevo `Partida XLS` en Descargas
+      - en cuanto aparece, sincroniza y publica
   - automatizacion local diaria:
     - `powershell -ExecutionPolicy Bypass -File .\scripts\run-financiero-sync.ps1`
     - logs en `logs/financiero-sync-*.log`
