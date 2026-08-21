@@ -2,7 +2,7 @@ window.BUDGET_VIEWER_PAYLOAD = {
   "meta": {
     "title": "Direcciones - Monto codificado 2026",
     "year": 2026,
-    "updatedAt": "2026-08-20T22:22:29.486Z"
+    "updatedAt": "2026-08-21T11:25:11.167Z"
   },
   "items": [
     {
