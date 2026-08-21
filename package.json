@@ -15,7 +15,9 @@
     "sync:financiero": "powershell -ExecutionPolicy Bypass -File .\\scripts\\import-financiero-exports.ps1",
     "sync:financiero:publish": "powershell -ExecutionPolicy Bypass -File .\\scripts\\import-financiero-exports.ps1 -Publish",
     "sync:financiero:auto": "powershell -ExecutionPolicy Bypass -File .\\scripts\\run-financiero-sync.ps1",
-    "sync:financiero:watch": "powershell -ExecutionPolicy Bypass -File .\\scripts\\watch-financiero-export.ps1 -Publish"
+    "sync:financiero:watch": "powershell -ExecutionPolicy Bypass -File .\\scripts\\watch-financiero-export.ps1 -Publish",
+    "sync:financiero:direct": "powershell -ExecutionPolicy Bypass -File .\\scripts\\import-financiero-direct.ps1",
+    "sync:financiero:direct:publish": "powershell -ExecutionPolicy Bypass -File .\\scripts\\import-financiero-direct.ps1 -Publish"
   },
   "dependencies": {
     "drizzle-orm": "0.45.2",
