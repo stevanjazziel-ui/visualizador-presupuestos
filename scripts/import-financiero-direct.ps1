@@ -48,6 +48,19 @@ function Round-Value {
   return [double]([math]::Round($Value, 2))
 }
 
+function Has-PropertyValue {
+  param(
+    [object]$Object,
+    [string]$Name
+  )
+
+  if ($null -eq $Object) {
+    return $false
+  }
+
+  return $Object.PSObject.Properties.Name -contains $Name
+}
+
 function Update-PayloadFromDirectRows {
   param(
     [object[]]$Rows,
@@ -73,13 +86,31 @@ function Update-PayloadFromDirectRows {
 
     if (-not $totalsByDirection.ContainsKey($directionCode)) {
       $totalsByDirection[$directionCode] = [ordered]@{
+        Initial = [decimal]::Zero
+        Reforma = [decimal]::Zero
         Codificado = [decimal]::Zero
         Certificado = [decimal]::Zero
         Comprometido = [decimal]::Zero
         Devengado = [decimal]::Zero
         Ejecutado = [decimal]::Zero
         PendienteCertificar = [decimal]::Zero
+        PendienteDevengar = [decimal]::Zero
+        PendienteEjecutar = [decimal]::Zero
+        HasInitial = $false
+        HasReforma = $false
+        HasPendienteDevengar = $false
+        HasPendienteEjecutar = $false
       }
+    }
+
+    if (Has-PropertyValue -Object $row -Name "initial_amount") {
+      $totalsByDirection[$directionCode].Initial += [decimal]$row.initial_amount
+      $totalsByDirection[$directionCode].HasInitial = $true
+    }
+
+    if (Has-PropertyValue -Object $row -Name "reform_amount") {
+      $totalsByDirection[$directionCode].Reforma += [decimal]$row.reform_amount
+      $totalsByDirection[$directionCode].HasReforma = $true
     }
 
     $totalsByDirection[$directionCode].Codificado += [decimal]$row.codified_amount
@@ -88,21 +119,35 @@ function Update-PayloadFromDirectRows {
     $totalsByDirection[$directionCode].Devengado += [decimal]$row.accrued_amount
     $totalsByDirection[$directionCode].Ejecutado += [decimal]$row.executed_amount
     $totalsByDirection[$directionCode].PendienteCertificar += [decimal]$row.certified_pending
+
+    if (Has-PropertyValue -Object $row -Name "accrued_pending") {
+      $totalsByDirection[$directionCode].PendienteDevengar += [decimal]$row.accrued_pending
+      $totalsByDirection[$directionCode].HasPendienteDevengar = $true
+    }
+
+    if (Has-PropertyValue -Object $row -Name "executed_pending") {
+      $totalsByDirection[$directionCode].PendienteEjecutar += [decimal]$row.executed_pending
+      $totalsByDirection[$directionCode].HasPendienteEjecutar = $true
+    }
   }
 
   $changed = $false
   foreach ($entry in $totalsByDirection.GetEnumerator()) {
     $item = $itemsByCode[$entry.Key]
 
+    $nextInitial = if ($entry.Value.HasInitial) { Round-Value $entry.Value.Initial } else { [double]$item.initial }
+    $nextReforma = if ($entry.Value.HasReforma) { Round-Value $entry.Value.Reforma } else { [double]$item.reforma }
     $nextCodificado = Round-Value $entry.Value.Codificado
     $nextCertificado = Round-Value $entry.Value.Certificado
     $nextComprometido = Round-Value $entry.Value.Comprometido
     $nextDevengado = Round-Value $entry.Value.Devengado
     $nextEjecutado = Round-Value $entry.Value.Ejecutado
     $nextPendienteCertificar = Round-Value $entry.Value.PendienteCertificar
-    $nextPendienteDevengar = Round-Value ($entry.Value.Comprometido - $entry.Value.Devengado)
-    $nextPendienteEjecutar = Round-Value ($entry.Value.Devengado - $entry.Value.Ejecutado)
+    $nextPendienteDevengar = if ($entry.Value.HasPendienteDevengar) { Round-Value $entry.Value.PendienteDevengar } else { Round-Value ($entry.Value.Comprometido - $entry.Value.Devengado) }
+    $nextPendienteEjecutar = if ($entry.Value.HasPendienteEjecutar) { Round-Value $entry.Value.PendienteEjecutar } else { Round-Value ($entry.Value.Devengado - $entry.Value.Ejecutado) }
 
+    $currentInitial = [double]$item.initial
+    $currentReforma = [double]$item.reforma
     $currentCertificado = if ($null -ne $item.PSObject.Properties["certificado"]) { [double]$item.certificado } else { 0 }
     $currentComprometido = if ($null -ne $item.PSObject.Properties["comprometido"]) { [double]$item.comprometido } else { 0 }
     $currentDevengado = if ($null -ne $item.PSObject.Properties["devengado"]) { [double]$item.devengado } else { 0 }
@@ -112,6 +157,8 @@ function Update-PayloadFromDirectRows {
     $currentPendienteEjecutar = if ($null -ne $item.PSObject.Properties["pendienteEjecutar"]) { [double]$item.pendienteEjecutar } else { 0 }
 
     if (
+      ($currentInitial -ne $nextInitial) -or
+      ($currentReforma -ne $nextReforma) -or
       ($item.codificado -ne $nextCodificado) -or
       ($currentCertificado -ne $nextCertificado) -or
       ($currentComprometido -ne $nextComprometido) -or
@@ -124,6 +171,8 @@ function Update-PayloadFromDirectRows {
       $changed = $true
     }
 
+    $item.initial = $nextInitial
+    $item.reforma = $nextReforma
     $item.codificado = $nextCodificado
     $item | Add-Member -NotePropertyName certificado -NotePropertyValue $nextCertificado -Force
     $item | Add-Member -NotePropertyName comprometido -NotePropertyValue $nextComprometido -Force

@@ -87,12 +87,16 @@ async function readVisibleState(tab) {
       .filter((cells) => cells.length >= 18)
       .map((cells) => ({
         code: cells[3],
+        initial_amount: cells[10],
         codified_amount: cells[12],
         certified_pending: cells[13],
         certified_amount: cells[14],
         committed_amount: cells[15],
         accrued_amount: cells[16],
         executed_amount: cells[17],
+        reform_amount: cells[11],
+        accrued_pending: cells[18] ?? "",
+        executed_pending: cells[19] ?? "",
       }))
       .filter((row) => /^\d{2}\.\d{2}\.\d{2}\.\d{4}\.\d+\.\d+(?:\.\d+){5}$/.test(row.code));
 
@@ -137,15 +141,50 @@ async function ensurePage(tab, expectedPrefix) {
   throw new Error(`No pude ubicar la pagina ${expectedPrefix}. Estado actual: ${current.badge || "sin badge"}`);
 }
 
+async function collectAllPages(tab) {
+  const seenCodes = new Set();
+  const collected = [];
+  const visitedBadges = new Set();
+
+  for (;;) {
+    const state = await readVisibleState(tab);
+    const badge = state.badge || `page-${visitedBadges.size + 1}`;
+    if (visitedBadges.has(badge)) {
+      break;
+    }
+    visitedBadges.add(badge);
+
+    for (const row of state.rows) {
+      if (seenCodes.has(row.code)) continue;
+      seenCodes.add(row.code);
+      collected.push(row);
+    }
+
+    const moved = await clickPager(tab, "next");
+    if (!moved) {
+      break;
+    }
+  }
+
+  return {
+    pages: [...visitedBadges],
+    rows: collected,
+  };
+}
+
 function rowsFromPage(page) {
   return page.rows.map((row) => ({
     code: row.code,
+    initial_amount: parseNumber(row.initial_amount),
+    reform_amount: parseNumber(row.reform_amount),
     codified_amount: parseNumber(row.codified_amount),
     certified_amount: parseNumber(row.certified_amount),
     committed_amount: parseNumber(row.committed_amount),
     accrued_amount: parseNumber(row.accrued_amount),
     executed_amount: parseNumber(row.executed_amount),
     certified_pending: parseNumber(row.certified_pending),
+    accrued_pending: parseNumber(row.accrued_pending),
+    executed_pending: parseNumber(row.executed_pending),
   }));
 }
 
@@ -166,18 +205,18 @@ async function main() {
   const agent = await getRuntime();
   const iab = await agent.browsers.get("iab");
   const tab = await openFinancialTab(iab);
-
-  const page1 = await ensurePage(tab, "1 /");
-  const page2 = await ensurePage(tab, "1001 /");
+  await ensurePage(tab, "1 /");
+  const collected = await collectAllPages(tab);
+  const parsedRows = rowsFromPage({ rows: collected.rows });
 
   const payload = {
     meta: {
       source: "financiero-direct-dom",
       capturedAt: new Date().toISOString(),
-      pages: [page1.badge, page2.badge],
-      rowCount: rowsFromPage(page1).length + rowsFromPage(page2).length,
+      pages: collected.pages,
+      rowCount: parsedRows.length,
     },
-    rows: [...rowsFromPage(page1), ...rowsFromPage(page2)],
+    rows: parsedRows,
   };
 
   await writeFile(args.output, `${JSON.stringify(payload, null, 2)}\n`, "utf8");

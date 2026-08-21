@@ -2,7 +2,7 @@
   "meta": {
     "title": "Direcciones - Monto codificado 2026",
     "year": 2026,
-    "updatedAt": "2026-08-21T17:13:09.3097260Z"
+    "updatedAt": "2026-08-21T20:42:21.3294020Z"
   },
   "items": [
     {
@@ -133,12 +133,12 @@
       "initial": 1941790.59,
       "reforma": 1159844.02,
       "codificado": 3101634.61,
-      "certificado": 1286374.55,
-      "comprometido": 1028821.31,
+      "certificado": 1286740.92,
+      "comprometido": 1029294.1,
       "devengado": 1028494.26,
       "ejecutado": 979132.82,
-      "pendienteCertificar": 1815260.06,
-      "pendienteDevengar": 327.05,
+      "pendienteCertificar": 1814893.69,
+      "pendienteDevengar": 799.84,
       "pendienteEjecutar": 49361.44
     },
     {
@@ -151,11 +151,11 @@
       "reforma": -454162.46,
       "codificado": 1942294.24,
       "certificado": 1144840.05,
-      "comprometido": 1081715.15,
+      "comprometido": 1081048.48,
       "devengado": 880038.78,
       "ejecutado": 862735.14,
       "pendienteCertificar": 797454.19,
-      "pendienteDevengar": 201676.37,
+      "pendienteDevengar": 201009.7,
       "pendienteEjecutar": 17303.64
     },
     {
@@ -202,11 +202,11 @@
       "reforma": -383413.96,
       "codificado": 2745028.35,
       "certificado": 1744256.57,
-      "comprometido": 1581982.85,
+      "comprometido": 1566998.65,
       "devengado": 1275058.07,
       "ejecutado": 1245716.89,
       "pendienteCertificar": 1000771.78,
-      "pendienteDevengar": 306924.78,
+      "pendienteDevengar": 291940.58,
       "pendienteEjecutar": 29341.18
     },
     {
@@ -235,12 +235,12 @@
       "initial": 5895574.59,
       "reforma": -95791.85,
       "codificado": 5799782.74,
-      "certificado": 4000100.36,
-      "comprometido": 3106061.78,
+      "certificado": 4000685.81,
+      "comprometido": 3107133.68,
       "devengado": 1698028.98,
       "ejecutado": 1648757.94,
-      "pendienteCertificar": 1799682.38,
-      "pendienteDevengar": 1408032.8,
+      "pendienteCertificar": 1799096.93,
+      "pendienteDevengar": 1409104.7,
       "pendienteEjecutar": 49271.04
     },
     {
@@ -369,7 +369,7 @@
       "block": "2026.5",
       "tone": "tone-d",
       "kind": "bloque",
-      "initial": 1494000,
+      "initial": 1084000,
       "reforma": 0,
       "codificado": 1084000,
       "certificado": 362329,

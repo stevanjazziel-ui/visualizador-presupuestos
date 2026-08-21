@@ -148,12 +148,16 @@ $rows = @($rowsResponse.result) | Where-Object {
 } | ForEach-Object {
   [ordered]@{
     code = [string]$_.code
+    initial_amount = Get-NumberValue $_.initial_amount
+    reform_amount = Get-NumberValue $_.reform_amount
     codified_amount = Get-NumberValue $_.codified_amount
     certified_amount = Get-NumberValue $_.certified_amount
     committed_amount = Get-NumberValue $_.committed_amount
     accrued_amount = Get-NumberValue $_.accrued_amount
     executed_amount = Get-NumberValue $_.executed_amount
     certified_pending = Get-NumberValue $_.certified_pending
+    accrued_pending = Get-NumberValue $_.accrued_pending
+    executed_pending = Get-NumberValue $_.executed_pending
   }
 }
 
