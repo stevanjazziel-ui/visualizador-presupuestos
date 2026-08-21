@@ -16,7 +16,7 @@ if (!html.includes("./budget-viewer-data.js")) {
   throw new Error("published-viewer.html no longer references budget-viewer-data.js.");
 }
 
-if (!dataJs.startsWith("window.BUDGET_VIEWER_PAYLOAD = ")) {
+if (!dataJs.trimStart().startsWith("window.BUDGET_VIEWER_PAYLOAD = ")) {
   throw new Error("budget-viewer-data.js does not expose the expected global payload.");
 }
 

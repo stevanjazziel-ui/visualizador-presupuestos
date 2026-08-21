@@ -156,6 +156,12 @@ function payloadFromCsvRecords(records, fallbackPayload) {
     reforma: toNumber(record.reforma, "reforma"),
     codificado: toNumber(record.codificado, "codificado"),
     certificado: toNumber(record.certificado || "0", "certificado"),
+    comprometido: toNumber(record.comprometido || "0", "comprometido"),
+    devengado: toNumber(record.devengado || "0", "devengado"),
+    ejecutado: toNumber(record.ejecutado || "0", "ejecutado"),
+    pendienteCertificar: toNumber(record.pendienteCertificar || "0", "pendienteCertificar"),
+    pendienteDevengar: toNumber(record.pendienteDevengar || "0", "pendienteDevengar"),
+    pendienteEjecutar: toNumber(record.pendienteEjecutar || "0", "pendienteEjecutar"),
     ...(record.focus ? { focus: /^(1|true|si|yes)$/i.test(record.focus) } : {})
   }));
 
@@ -197,8 +203,10 @@ function validatePayload(payload) {
       }
     }
 
-    if (typeof item.certificado !== "number" || Number.isNaN(item.certificado)) {
-      throw new Error(`Item ${item.code} has invalid certificado.`);
+    for (const field of ["certificado", "comprometido", "devengado", "ejecutado", "pendienteCertificar", "pendienteDevengar", "pendienteEjecutar"]) {
+      if (item[field] !== undefined && (typeof item[field] !== "number" || Number.isNaN(item[field]))) {
+        throw new Error(`Item ${item.code} has invalid ${field}.`);
+      }
     }
 
     if (!payload.blockMeta[item.block]) {
@@ -261,6 +269,24 @@ payload.items = payload.items.map((item) => ({
   certificado: item.certificado === undefined || item.certificado === null
     ? 0
     : toNumber(item.certificado, "certificado"),
+  comprometido: item.comprometido === undefined || item.comprometido === null
+    ? 0
+    : toNumber(item.comprometido, "comprometido"),
+  devengado: item.devengado === undefined || item.devengado === null
+    ? 0
+    : toNumber(item.devengado, "devengado"),
+  ejecutado: item.ejecutado === undefined || item.ejecutado === null
+    ? 0
+    : toNumber(item.ejecutado, "ejecutado"),
+  pendienteCertificar: item.pendienteCertificar === undefined || item.pendienteCertificar === null
+    ? 0
+    : toNumber(item.pendienteCertificar, "pendienteCertificar"),
+  pendienteDevengar: item.pendienteDevengar === undefined || item.pendienteDevengar === null
+    ? 0
+    : toNumber(item.pendienteDevengar, "pendienteDevengar"),
+  pendienteEjecutar: item.pendienteEjecutar === undefined || item.pendienteEjecutar === null
+    ? 0
+    : toNumber(item.pendienteEjecutar, "pendienteEjecutar"),
 }));
 
 validatePayload(payload);

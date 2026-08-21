@@ -1072,6 +1072,13 @@
                       <th>Inicial</th>
                       <th>Reforma</th>
                       <th>Codificado</th>
+                      <th>Certificado</th>
+                      <th>Comprometido</th>
+                      <th>Devengado</th>
+                      <th>Ejecutado</th>
+                      <th>Pend. cert.</th>
+                      <th>Pend. dev.</th>
+                      <th>Pend. ejec.</th>
                     </tr>
                   </thead>
                   <tbody id="tableBody"></tbody>
@@ -1383,38 +1390,81 @@
         `;
       }
 
+      function getFinancialMetrics(item) {
+        const certificado = item.certificado ?? 0;
+        const comprometido = item.comprometido ?? 0;
+        const devengado = item.devengado ?? 0;
+        const ejecutado = item.ejecutado ?? 0;
+        return {
+          initial: item.initial ?? 0,
+          codificado: item.codificado ?? 0,
+          certificado,
+          comprometido,
+          devengado,
+          ejecutado,
+          pendienteCertificar: item.pendienteCertificar ?? Math.max((item.codificado ?? 0) - certificado, 0),
+          pendienteDevengar: item.pendienteDevengar ?? Math.max(comprometido - devengado, 0),
+          pendienteEjecutar: item.pendienteEjecutar ?? Math.max(devengado - ejecutado, 0)
+        };
+      }
+
       function renderSummary(selected) {
         const ranking = rankItems();
         const rank = ranking.findIndex((item) => item.code === selected.code) + 1;
-        const shareTotal = share(selected.codificado, totalCodificado);
-        const relativeToLeader = share(selected.codificado, ranking[0].codificado);
-        const certifiedShare = share(selected.certificado || 0, selected.codificado || 0);
+        const financials = getFinancialMetrics(selected);
+        const shareTotal = share(financials.codificado, totalCodificado);
+        const relativeToLeader = share(financials.codificado, ranking[0].codificado);
+        const certifiedShare = share(financials.certificado, financials.codificado || 0);
         const cards = [
           {
-            label: "Monto certificado",
-            value: currency(selected.certificado || 0),
-            foot: `${percent(certifiedShare)} del codificado actual.`
+            label: "Monto inicial",
+            value: currency(financials.initial),
+            foot: "Base presupuestaria del corte seleccionado."
           },
           {
             label: "Monto codificado",
-            value: currency(selected.codificado),
-            foot: `${compact(selected.codificado)} del presupuesto consolidado.`
+            value: currency(financials.codificado),
+            foot: `${compact(financials.codificado)} del presupuesto consolidado.`
           },
           {
-            label: "Reforma neta",
-            value: signedCurrency(selected.reforma),
-            foot: selected.reforma >= 0 ? "Variacion al alza frente al inicial." : "Ajuste a la baja frente al inicial.",
-            className: selected.reforma > 0 ? "positive" : selected.reforma < 0 ? "negative" : ""
+            label: "Monto certificado",
+            value: currency(financials.certificado),
+            foot: `${percent(certifiedShare)} del codificado actual.`
+          },
+          {
+            label: "Monto comprometido",
+            value: currency(financials.comprometido),
+            foot: "Compromisos visibles en este corte."
+          },
+          {
+            label: "Monto devengado",
+            value: currency(financials.devengado),
+            foot: "Valor devengado visible en la consulta."
+          },
+          {
+            label: "Monto ejecutado",
+            value: currency(financials.ejecutado),
+            foot: "Valor ejecutado del registro seleccionado."
+          },
+          {
+            label: "Pendiente por certificar",
+            value: currency(financials.pendienteCertificar),
+            foot: "Saldo por certificar del corte actual."
+          },
+          {
+            label: "Pendiente por devengar",
+            value: currency(financials.pendienteDevengar),
+            foot: "Saldo entre comprometido y devengado."
+          },
+          {
+            label: "Pendiente por ejecutar",
+            value: currency(financials.pendienteEjecutar),
+            foot: "Saldo entre devengado y ejecutado."
           },
           {
             label: "Peso en el total",
             value: percent(shareTotal),
-            foot: `${selected.kind === "bloque" ? "Este bloque" : "Esta direccion"} explica ${percent(relativeToLeader)} del lider general.`
-          },
-          {
-            label: "Posicion general",
-            value: `#${rank}`,
-            foot: `Entre ${ranking.length} registros ordenados por codificado.`
+            foot: `${selected.kind === "bloque" ? "Este bloque" : "Esta direccion"} explica ${percent(relativeToLeader)} del lider general y ocupa #${rank}.`
           }
         ];
 
@@ -1437,16 +1487,17 @@
         const meta = BLOCK_META[selected.block];
         const blockItems = DATA.filter((item) => item.block === selected.block).sort((a, b) => b.codificado - a.codificado);
         const blockRank = blockItems.findIndex((item) => item.code === selected.code) + 1;
-        const blockShare = share(selected.codificado, blockStats[selected.block].codificado);
-        const totalShare = share(selected.codificado, totalCodificado);
-        const certifiedShare = share(selected.certificado || 0, selected.codificado || 0);
-        const ratio = selected.initial ? (selected.codificado / selected.initial) * 100 : 0;
+        const financials = getFinancialMetrics(selected);
+        const blockShare = share(financials.codificado, blockStats[selected.block].codificado);
+        const totalShare = share(financials.codificado, totalCodificado);
+        const certifiedShare = share(financials.certificado, financials.codificado || 0);
+        const ratio = financials.initial ? (financials.codificado / financials.initial) * 100 : 0;
         const tones = toneFor(selected);
         const equalBlockShare = 100 / blockItems.length;
         const equalTotalShare = 100 / DATA.length;
         const blockLeader = blockItems[0];
-        const leaderProximity = share(selected.codificado, blockLeader.codificado);
-        const referenceAmount = Math.max(selected.initial, selected.codificado, 1);
+        const leaderProximity = share(financials.codificado, blockLeader.codificado);
+        const referenceAmount = Math.max(financials.initial, financials.codificado, 1);
         const reformClass = selected.reforma > 0 ? "positive" : selected.reforma < 0 ? "negative" : "";
         const reformCopy = selected.reforma > 0
           ? `El cierre queda por encima del inicial en ${signedCurrency(selected.reforma)}.`
@@ -1473,8 +1524,13 @@
           },
           {
             label: "Monto certificado",
-            value: currency(selected.certificado || 0),
+            value: currency(financials.certificado),
             note: `${percent(certifiedShare)} del codificado ya fue certificado.`
+          },
+          {
+            label: "Comprometido / Devengado",
+            value: `${currency(financials.comprometido)} / ${currency(financials.devengado)}`,
+            note: `Ejecutado visible: ${currency(financials.ejecutado)}.`
           }
         ]
           .map(
@@ -1495,16 +1551,16 @@
             <div class="compare-stack">
               ${comparisonRow({
                 label: "Monto inicial",
-                valueLabel: currency(selected.initial),
-                fillPercent: share(selected.initial, referenceAmount),
+                valueLabel: currency(financials.initial),
+                fillPercent: share(financials.initial, referenceAmount),
                 note: "Base presupuestaria de partida para esta seleccion.",
                 fill: "linear-gradient(90deg, rgba(143,160,176,0.9), rgba(179,191,203,0.72))"
               })}
               ${comparisonRow({
                 label: "Monto codificado",
-                valueLabel: currency(selected.codificado),
-                fillPercent: share(selected.codificado, referenceAmount),
-                markerPercent: share(selected.initial, referenceAmount),
+                valueLabel: currency(financials.codificado),
+                fillPercent: share(financials.codificado, referenceAmount),
+                markerPercent: share(financials.initial, referenceAmount),
                 note: reformCopy,
                 fill: `linear-gradient(90deg, ${tones.strong}, ${tones.muted})`
               })}
@@ -1575,11 +1631,12 @@
         const overallRank = ranking.findIndex((item) => item.code === selected.code) + 1;
         const blockItems = DATA.filter((item) => item.block === selected.block).sort((a, b) => b.codificado - a.codificado);
         const blockRank = blockItems.findIndex((item) => item.code === selected.code) + 1;
-        const blockShare = share(selected.codificado, blockStats[selected.block].codificado);
-        const totalShare = share(selected.codificado, totalCodificado);
-        const relativeToMax = share(selected.codificado, maxCodificado);
+        const financials = getFinancialMetrics(selected);
+        const blockShare = share(financials.codificado, blockStats[selected.block].codificado);
+        const totalShare = share(financials.codificado, totalCodificado);
+        const relativeToMax = share(financials.codificado, maxCodificado);
         const reformShare = share(Math.abs(selected.reforma), maxReformaAbs);
-        const certifiedShare = share(selected.certificado || 0, selected.codificado || 0);
+        const certifiedShare = share(financials.certificado, financials.codificado || 0);
 
         focusCard.innerHTML = `
           <div class="focus-head">
@@ -1588,10 +1645,10 @@
               <h2 class="focus-title">${escapeHtml(selected.name)}</h2>
               <p class="focus-copy">
                 ${selected.kind === "bloque" ? "El bloque" : "La direccion"} parte de un inicial de
-                <strong>${currency(selected.initial)}</strong>, registra una reforma de
+                <strong>${currency(financials.initial)}</strong>, registra una reforma de
                 <strong>${signedCurrency(selected.reforma)}</strong> y termina con un codificado de
-                <strong>${currency(selected.codificado)}</strong>. El monto certificado visible es
-                <strong>${currency(selected.certificado || 0)}</strong>. Pertenece a <strong>${meta.label}</strong>,
+                <strong>${currency(financials.codificado)}</strong>. El monto certificado visible es
+                <strong>${currency(financials.certificado)}</strong>. Pertenece a <strong>${meta.label}</strong>,
                 asociado a ${meta.note.toLowerCase()}
               </p>
             </div>
@@ -1601,12 +1658,12 @@
           <div class="focus-grid">
             <article class="focus-stat">
               <div class="focus-stat-label">Inicial</div>
-              <div class="focus-stat-value">${currency(selected.initial)}</div>
+              <div class="focus-stat-value">${currency(financials.initial)}</div>
               <div class="focus-stat-foot">Base presupuestaria de partida.</div>
             </article>
             <article class="focus-stat">
               <div class="focus-stat-label">Certificado</div>
-              <div class="focus-stat-value">${currency(selected.certificado || 0)}</div>
+              <div class="focus-stat-value">${currency(financials.certificado)}</div>
               <div class="focus-stat-foot">${percent(certifiedShare)} del codificado actual.</div>
             </article>
             <article class="focus-stat">
@@ -1616,13 +1673,33 @@
             </article>
             <article class="focus-stat">
               <div class="focus-stat-label">Codificado final</div>
-              <div class="focus-stat-value">${currency(selected.codificado)}</div>
+              <div class="focus-stat-value">${currency(financials.codificado)}</div>
               <div class="focus-stat-foot">Puesto #${overallRank} en el ranking consolidado.</div>
+            </article>
+            <article class="focus-stat">
+              <div class="focus-stat-label">Comprometido</div>
+              <div class="focus-stat-value">${currency(financials.comprometido)}</div>
+              <div class="focus-stat-foot">Valor comprometido del corte.</div>
+            </article>
+            <article class="focus-stat">
+              <div class="focus-stat-label">Devengado</div>
+              <div class="focus-stat-value">${currency(financials.devengado)}</div>
+              <div class="focus-stat-foot">Valor devengado visible.</div>
+            </article>
+            <article class="focus-stat">
+              <div class="focus-stat-label">Ejecutado</div>
+              <div class="focus-stat-value">${currency(financials.ejecutado)}</div>
+              <div class="focus-stat-foot">Valor ejecutado del registro.</div>
+            </article>
+            <article class="focus-stat">
+              <div class="focus-stat-label">Pendiente por certificar</div>
+              <div class="focus-stat-value">${currency(financials.pendienteCertificar)}</div>
+              <div class="focus-stat-foot">Saldo restante por certificar.</div>
             </article>
           </div>
 
           <div class="meter-grid">
-            ${meterRow("Participacion en el total municipal", totalShare, `${currency(selected.codificado)} de ${currency(totalCodificado)}.`, tones.strong)}
+            ${meterRow("Participacion en el total municipal", totalShare, `${currency(financials.codificado)} de ${currency(totalCodificado)}.`, tones.strong)}
             ${meterRow(`Peso dentro de ${meta.label}`, blockShare, `${blockRank} de ${blockItems.length} en su bloque.`, tones.strong)}
             ${meterRow("Escala frente al mayor codificado", relativeToMax, `El lider general es ${currency(maxCodificado)}.`, tones.strong)}
             ${meterRow("Intensidad relativa de la reforma", reformShare, `Comparado contra la reforma absoluta maxima observada.`, selected.reforma >= 0 ? "var(--positive)" : selected.reforma < 0 ? "var(--negative)" : "var(--neutral)")}
@@ -1902,6 +1979,7 @@
             return a.block.localeCompare(b.block);
           })
           .map((item) => {
+            const financials = getFinancialMetrics(item);
             return `
               <tr class="${item.code === selectedCode ? "selected" : ""}">
                 <td>
@@ -1910,9 +1988,16 @@
                 </td>
                 <td>${item.kind === "bloque" ? "Bloque" : "Direccion"}</td>
                 <td>${BLOCK_META[item.block].label}</td>
-                <td class="row-money">${escapeHtml(currency(item.initial))}</td>
+                <td class="row-money">${escapeHtml(currency(financials.initial))}</td>
                 <td class="row-money ${item.reforma > 0 ? "positive" : item.reforma < 0 ? "negative" : ""}">${escapeHtml(signedCurrency(item.reforma))}</td>
-                <td class="row-money">${escapeHtml(currency(item.codificado))}</td>
+                <td class="row-money">${escapeHtml(currency(financials.codificado))}</td>
+                <td class="row-money">${escapeHtml(currency(financials.certificado))}</td>
+                <td class="row-money">${escapeHtml(currency(financials.comprometido))}</td>
+                <td class="row-money">${escapeHtml(currency(financials.devengado))}</td>
+                <td class="row-money">${escapeHtml(currency(financials.ejecutado))}</td>
+                <td class="row-money">${escapeHtml(currency(financials.pendienteCertificar))}</td>
+                <td class="row-money">${escapeHtml(currency(financials.pendienteDevengar))}</td>
+                <td class="row-money">${escapeHtml(currency(financials.pendienteEjecutar))}</td>
               </tr>
             `;
           })

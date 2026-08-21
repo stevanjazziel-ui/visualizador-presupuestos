@@ -44,8 +44,10 @@ function validatePayload(payload) {
       }
     }
 
-    if (item.certificado !== undefined && (typeof item.certificado !== "number" || Number.isNaN(item.certificado))) {
-      throw new Error(`Item ${item.code} has invalid certificado.`);
+    for (const field of ["certificado", "comprometido", "devengado", "ejecutado", "pendienteCertificar", "pendienteDevengar", "pendienteEjecutar"]) {
+      if (item[field] !== undefined && (typeof item[field] !== "number" || Number.isNaN(item[field]))) {
+        throw new Error(`Item ${item.code} has invalid ${field}.`);
+      }
     }
 
     if (seenCodes.has(item.code)) {
