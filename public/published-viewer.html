@@ -695,6 +695,10 @@
         gap: 14px;
       }
 
+      .wide-card {
+        margin-top: 14px;
+      }
+
       .focus-card {
         padding: 18px;
       }
@@ -834,6 +838,10 @@
 
       .chart-scroll.short {
         max-height: 340px;
+      }
+
+      .chart-scroll.tall {
+        max-height: 760px;
       }
 
       .chart-scroll svg {
@@ -1079,6 +1087,10 @@
         .layout {
           grid-template-columns: 1fr;
         }
+
+        .chart-scroll.tall {
+          max-height: 560px;
+        }
       }
 
       @media (max-width: 760px) {
@@ -1242,25 +1254,24 @@
           <section id="insightsCard" class="info-card panel"></section>
 
           <section id="alertsCard" class="info-card panel"></section>
-
-          <section class="chart-card panel">
-            <div class="chart-head">
-              <div>
-                <div class="section-kicker">Movimientos</div>
-                <h2>Reformas mas intensas</h2>
-              </div>
-              <p class="chart-note">Barras divergentes para ver que direcciones suben y cuales retroceden con mas fuerza.</p>
-            </div>
-            <div class="legend">
-              <span class="legend-item"><span class="legend-dot" style="background:#2f855a;"></span> Reforma positiva</span>
-              <span class="legend-item"><span class="legend-dot" style="background:#c05621;"></span> Reforma negativa</span>
-            </div>
-            <div id="reformChart" class="chart-scroll short"></div>
-            <p id="reformFooter" class="chart-footer"></p>
-          </section>
-
         </aside>
       </div>
+
+      <section class="chart-card panel wide-card">
+        <div class="chart-head">
+          <div>
+            <div class="section-kicker">Movimientos</div>
+            <h2>Reformas mas intensas</h2>
+          </div>
+          <p class="chart-note">Barras divergentes mas amplias para ver con claridad que direcciones suben y cuales retroceden con mas fuerza.</p>
+        </div>
+        <div class="legend">
+          <span class="legend-item"><span class="legend-dot" style="background:#2f855a;"></span> Reforma positiva</span>
+          <span class="legend-item"><span class="legend-dot" style="background:#c05621;"></span> Reforma negativa</span>
+        </div>
+        <div id="reformChart" class="chart-scroll tall"></div>
+        <p id="reformFooter" class="chart-footer"></p>
+      </section>
     </div>
 
     <script src="./budget-viewer-data.js"></script>
