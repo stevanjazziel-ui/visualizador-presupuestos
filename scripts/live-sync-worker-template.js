@@ -180,7 +180,13 @@ async function fetchBudgetRows(env) {
   const casCookie = parseCookieHeader(loginResponse.headers.get("set-cookie"));
   const executionToken = extractCasExecutionToken(loginHtml);
   if (!executionToken) {
-    throw new Error("No se encontró el token execution del CAS.");
+    const htmlPreview = String(loginHtml || "")
+      .replace(/\s+/g, " ")
+      .trim()
+      .slice(0, 240);
+    throw new Error(
+      `No se encontró el token execution del CAS. status=${loginResponse.status}; redirected=${loginResponse.redirected}; url=${loginResponse.url}; contentType=${loginResponse.headers.get("content-type") || "unknown"}; preview=${htmlPreview}`,
+    );
   }
 
   const formBody = new URLSearchParams({
