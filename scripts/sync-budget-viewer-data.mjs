@@ -131,14 +131,27 @@ function normalizePayload(payload, fallbackPayload) {
     blockMeta,
   });
   const dataChanged = previousComparable !== nextComparable;
+  const nextSourceUpdatedAt = normalized.meta?.sourceUpdatedAt
+    || normalized.meta?.updatedAt
+    || baseMeta.sourceUpdatedAt
+    || baseMeta.updatedAt
+    || new Date().toISOString();
+  const nextSourceCapturedAt = normalized.meta?.sourceCapturedAt
+    || normalized.meta?.capturedAt
+    || baseMeta.sourceCapturedAt
+    || null;
+  const nextPublishedAt = dataChanged
+    ? new Date().toISOString()
+    : (baseMeta.publishedAt || normalized.meta?.publishedAt || new Date().toISOString());
 
   return {
     meta: {
       title: normalized.meta?.title || baseMeta.title || "Direcciones - Monto codificado",
       year: normalized.meta?.year || baseMeta.year || new Date().getUTCFullYear(),
-      updatedAt: dataChanged
-        ? new Date().toISOString()
-        : (normalized.meta?.updatedAt || baseMeta.updatedAt || new Date().toISOString())
+      updatedAt: nextSourceUpdatedAt,
+      sourceUpdatedAt: nextSourceUpdatedAt,
+      sourceCapturedAt: nextSourceCapturedAt,
+      publishedAt: nextPublishedAt,
     },
     items,
     blockMeta

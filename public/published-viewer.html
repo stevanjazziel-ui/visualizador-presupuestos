@@ -370,6 +370,13 @@
         font-size: 12px;
       }
 
+      .refresh-meta {
+        min-height: 18px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
       .selector-meta {
         display: flex;
         flex-wrap: wrap;
@@ -1179,6 +1186,7 @@
               <button id="refreshButton" class="refresh-button" type="button">Actualizar informacion</button>
             </div>
             <div id="refreshStatus" class="refresh-status" aria-live="polite"></div>
+            <div id="refreshMeta" class="refresh-meta"></div>
             <div id="selectorMeta" class="selector-meta"></div>
           </div>
         </div>
@@ -1301,6 +1309,7 @@
       const selectorMeta = document.getElementById("selectorMeta");
       const refreshButton = document.getElementById("refreshButton");
       const refreshStatus = document.getElementById("refreshStatus");
+      const refreshMeta = document.getElementById("refreshMeta");
       const generalGrid = document.getElementById("generalGrid");
       const executiveKpis = document.getElementById("executiveKpis");
       const executiveVisuals = document.getElementById("executiveVisuals");
@@ -1331,6 +1340,14 @@
 
       function dateTimeLabel(value = new Date()) {
         return value.toLocaleString("es-EC");
+      }
+
+      function resolveSourceUpdatedAt(meta = VIEWER_META) {
+        return meta?.sourceUpdatedAt || meta?.updatedAt || null;
+      }
+
+      function resolvePublishedAt(meta = VIEWER_META) {
+        return meta?.publishedAt || meta?.updatedAt || null;
       }
 
       function compact(value) {
@@ -2011,36 +2028,73 @@
             : "var(--muted)";
       }
 
+      function renderRefreshMeta() {
+        const sourceUpdatedAt = resolveSourceUpdatedAt();
+        const publishedAt = resolvePublishedAt();
+        const sourceLabel = sourceUpdatedAt
+          ? dateTimeLabel(new Date(sourceUpdatedAt))
+          : "sin fecha";
+        const publishedLabel = publishedAt
+          ? dateTimeLabel(new Date(publishedAt))
+          : "sin fecha";
+
+        refreshMeta.textContent = `Ultimo corte publicado: ${sourceLabel}. Publicado en el visor: ${publishedLabel}.`;
+      }
+
       async function refreshPublishedData() {
         const selectedCode = directionSelect.value || getSelectedItem()?.code || null;
         const refreshStartedAt = new Date();
+        const previousPublishedAt = resolvePublishedAt();
         refreshButton.disabled = true;
         refreshButton.textContent = "Actualizando...";
         setRefreshStatus(`Consultando la publicacion mas reciente a las ${dateTimeLabel(refreshStartedAt)}...`);
 
         try {
-          const response = await fetch(`./budget-viewer-data.json?ts=${Date.now()}`, { cache: "no-store" });
-          if (!response.ok) {
-            throw new Error(`No se pudo leer la publicacion (${response.status}).`);
+          const [dataResponse, syncResponse] = await Promise.all([
+            fetch(`./budget-viewer-data.json?ts=${Date.now()}`, { cache: "no-store" }),
+            fetch(`./sync-source/latest.json?ts=${Date.now()}`, { cache: "no-store" }).catch(() => null),
+          ]);
+
+          if (!dataResponse.ok) {
+            throw new Error(`No se pudo leer la publicacion (${dataResponse.status}).`);
           }
 
-          const payload = await response.json();
+          const payload = await dataResponse.json();
           if (!Array.isArray(payload.items) || payload.items.length === 0) {
             throw new Error("La publicacion no devolvio datos validos.");
           }
 
+          let syncPayload = null;
+          if (syncResponse && syncResponse.ok) {
+            try {
+              syncPayload = await syncResponse.json();
+            } catch {}
+          }
+
           DATA = payload.items;
           BLOCK_META = payload.blockMeta && typeof payload.blockMeta === "object" ? payload.blockMeta : {};
-          VIEWER_META = payload.meta || {};
+          VIEWER_META = {
+            ...(payload.meta || {}),
+            sourceUpdatedAt: payload.meta?.sourceUpdatedAt || syncPayload?.meta?.updatedAt || null,
+            sourceCapturedAt: payload.meta?.sourceCapturedAt || syncPayload?.meta?.capturedAt || null,
+            publishedAt: payload.meta?.publishedAt || payload.meta?.updatedAt || null,
+          };
           recomputeState();
           buildOptions(selectedCode);
           render();
+          renderRefreshMeta();
 
           const refreshedAt = dateTimeLabel(new Date());
-          const sourceUpdatedAt = VIEWER_META.updatedAt
-            ? dateTimeLabel(new Date(VIEWER_META.updatedAt))
+          const sourceUpdatedAt = resolveSourceUpdatedAt()
+            ? dateTimeLabel(new Date(resolveSourceUpdatedAt()))
             : "sin fecha";
-          setRefreshStatus(`Datos refrescados a las ${refreshedAt}. Fuente publicada: ${sourceUpdatedAt}.`, "success");
+          const nextPublishedAt = resolvePublishedAt();
+          const hasNewPublication = Boolean(previousPublishedAt && nextPublishedAt && previousPublishedAt !== nextPublishedAt);
+          if (hasNewPublication) {
+            setRefreshStatus(`Se cargo una publicacion mas reciente a las ${refreshedAt}. Ultimo corte disponible: ${sourceUpdatedAt}.`, "success");
+          } else {
+            setRefreshStatus(`No habia una publicacion mas nueva a las ${refreshedAt}. Ultimo corte disponible: ${sourceUpdatedAt}.`, "success");
+          }
         } catch (error) {
           setRefreshStatus(error.message || "No se pudo actualizar la informacion.", "error");
         } finally {
@@ -2080,6 +2134,7 @@
         }
       });
       render();
+      renderRefreshMeta();
     </script>
       </main>
     </div>
